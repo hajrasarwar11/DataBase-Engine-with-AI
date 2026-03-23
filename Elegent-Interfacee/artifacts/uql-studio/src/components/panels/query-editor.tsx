@@ -398,9 +398,9 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
             }}
             textareaClassName={cn(
               "editor-textarea outline-none resize-none",
-              "text-transparent caret-white"
+              "text-transparent"
             )}
-            className="text-[#cccccc]"
+            className="text-[var(--uql-t3)]"
           />
         </div>
 

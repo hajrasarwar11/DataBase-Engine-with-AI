@@ -760,7 +760,7 @@ export default function Studio() {
                 activeDatabaseId={state.activeDatabaseId}
                 onSelectDatabase={state.setActiveDatabaseId}
                 onExecutionComplete={handleExecutionComplete}
-                theme={state.theme}
+                theme={isDark ? 'dark' : 'light'}
                 onOpenShortcuts={() => state.setShortcutsOpen(true)}
                 minimapOpen={state.minimapOpen}
                 onToggleMinimap={state.toggleMinimap}

@@ -101,6 +101,21 @@
   --uql-syn-bracket:  #aaaaaa;
 }
 
+/* body/html background for light mode */
+:root.uql-light, :root.uql-light body {
+  background-color: #f7f7f7;
+  color: #111;
+}
+
+/* Editor caret color per theme */
+.editor-textarea {
+  caret-color: #fff;
+}
+
+:root.uql-light .editor-textarea {
+  caret-color: #111;
+}
+
 :root.uql-light {
   --uql-editor:   #ffffff;
   --uql-panel:    #f7f7f7;
