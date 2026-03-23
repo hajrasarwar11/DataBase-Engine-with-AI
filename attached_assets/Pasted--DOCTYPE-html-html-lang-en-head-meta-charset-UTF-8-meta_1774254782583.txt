@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QueryForge — SQL Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:   #000000;
+    --gray-95: #0d0d0d;
+    --gray-90: #1a1a1a;
+    --gray-85: #222222;
+    --gray-80: #2a2a2a;
+    --gray-70: #333333;
+    --gray-60: #555555;
+    --gray-50: #666666;
+    --gray-40: #888888;
+    --gray-30: #aaaaaa;
+    --gray-20: #cccccc;
+    --gray-10: #e0e0e0;
+    --gray-05: #f0f0f0;
+    --white:   #ffffff;
+    --border:  #2e2e2e;
+    --border-light: #3d3d3d;
+    --font-ui:   'IBM Plex Sans', monospace;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 3px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--black);
+    color: var(--gray-20);
+    font-family: var(--font-ui);
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+  }
+ 
+  /* ── TITLE BAR ── */
+  .title-bar {
+    height: 32px;
+    background: var(--gray-90);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 14px;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .title-logo {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-right: 14px;
+    border-right: 1px solid var(--border-light);
+  }
+  .title-doc {
+    font-size: 11px;
+    color: var(--gray-40);
+    font-family: var(--font-mono);
+  }
+  .title-spacer { flex: 1; }
+  .title-actions { display: flex; gap: 6px; }
+  .win-btn {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--gray-70);
+    cursor: pointer; transition: background 0.15s;
+  }
+  .win-btn:hover { background: var(--gray-40); }
+ 
+  /* ── MENUBAR ── */
+  .menubar {
+    height: 26px;
+    background: var(--gray-90);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .menu-item {
+    padding: 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: var(--gray-20);
+    cursor: pointer;
+    transition: background 0.1s;
+    border-radius: var(--radius);
+  }
+  .menu-item:hover { background: var(--gray-80); color: var(--white); }
+ 
+  /* ── TOOLBAR ── */
+  .toolbar {
+    height: 34px;
+    background: var(--gray-85);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .tb-btn {
+    width: 26px; height: 26px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    color: var(--gray-30);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    transition: all 0.1s;
+    font-family: var(--font-mono);
+  }
+  .tb-btn:hover { background: var(--gray-70); border-color: var(--border-light); color: var(--white); }
+  .tb-btn.active { background: var(--gray-80); border-color: var(--gray-50); color: var(--white); }
+  .tb-sep { width: 1px; height: 20px; background: var(--border-light); margin: 0 4px; }
+  .tb-run {
+    display: flex; align-items: center; gap: 5px;
+    padding: 0 12px; height: 24px;
+    background: var(--white);
+    border: none; border-radius: var(--radius);
+    color: var(--black);
+    font-size: 11px; font-weight: 700;
+    font-family: var(--font-mono);
+    cursor: pointer; letter-spacing: 0.05em;
+    transition: all 0.1s;
+  }
+  .tb-run:hover { background: var(--gray-10); }
+  .db-select {
+    height: 22px; padding: 0 8px;
+    background: var(--gray-80);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    color: var(--gray-20);
+    font-family: var(--font-mono); font-size: 11px;
+    outline: none; cursor: pointer;
+    margin-left: 6px;
+  }
+  .db-select option { background: var(--gray-85); }
+ 
+  /* ── MAIN BODY ── */
+  .app-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+ 
+  /* ── LEFT PANEL (Object Explorer) ── */
+  .panel-left {
+    width: 230px;
+    flex-shrink: 0;
+    background: var(--gray-95);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 6px 10px;
+    background: var(--gray-90);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-20);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .panel-header-actions { display: flex; gap: 2px; }
+  .ph-btn {
+    width: 20px; height: 20px;
+    background: transparent; border: none;
+    color: var(--gray-40); cursor: pointer;
+    font-size: 11px; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.1s;
+  }
+  .ph-btn:hover { background: var(--gray-80); color: var(--white); }
+  .explorer-search {
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .explorer-search input {
+    width: 100%; background: var(--gray-80);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 3px 8px;
+    color: var(--gray-20);
+    font-size: 11px; font-family: var(--font-mono);
+    outline: none;
+  }
+  .explorer-search input::placeholder { color: var(--gray-60); }
+  .explorer-tree {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+  }
+  .tree-node { cursor: pointer; user-select: none; }
+  .tree-row {
+    display: flex; align-items: center;
+    gap: 4px;
+    padding: 3px 6px;
+    font-size: 12px;
+    color: var(--gray-30);
+    transition: background 0.08s;
+    white-space: nowrap;
+    border-left: 2px solid transparent;
+  }
+  .tree-row:hover { background: var(--gray-85); color: var(--white); }
+  .tree-row.selected {
+    background: var(--gray-80);
+    color: var(--white);
+    border-left-color: var(--white);
+  }
+  .tree-row.connected { color: var(--white); font-weight: 600; }
+  .tree-chev { font-size: 9px; color: var(--gray-50); width: 10px; flex-shrink: 0; transition: transform 0.12s; }
+  .tree-chev.open { transform: rotate(90deg); }
+  .tree-icon { font-size: 12px; flex-shrink: 0; }
+  .tree-children { overflow: hidden; }
+  .tree-children.hidden { display: none; }
+  /* indent levels */
+  .l1 { padding-left: 14px; }
+  .l2 { padding-left: 28px; }
+  .l3 { padding-left: 42px; }
+  .l4 { padding-left: 56px; }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gray-70); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gray-50); }
+ 
+  /* ── CENTER (Query Editor + Results) ── */
+  .panel-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--black);
+    min-width: 0;
+  }
+  /* Query tabs */
+  .query-tabs {
+    display: flex;
+    align-items: flex-end;
+    background: var(--gray-90);
+    border-bottom: 1px solid var(--border);
+    padding: 0 0 0 0;
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+  .q-tab {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 14px;
+    font-size: 11px; font-family: var(--font-mono);
+    color: var(--gray-40);
+    cursor: pointer;
+    border-top: 2px solid transparent;
+    border-right: 1px solid var(--border);
+    transition: all 0.1s;
+    white-space: nowrap;
+    background: var(--gray-90);
+  }
+  .q-tab:hover { color: var(--gray-20); background: var(--gray-85); }
+  .q-tab.active {
+    color: var(--white);
+    background: var(--black);
+    border-top-color: var(--white);
+  }
+  .q-tab-close { font-size: 12px; color: var(--gray-60); margin-left: 2px; }
+  .q-tab:hover .q-tab-close { color: var(--gray-30); }
+  .q-tab-add {
+    padding: 6px 12px; font-size: 16px;
+    color: var(--gray-60); cursor: pointer;
+    transition: color 0.1s;
+  }
+  .q-tab-add:hover { color: var(--white); }
+  /* Editor area */
+  .editor-area {
+    flex: 0 0 260px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .line-numbers {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 46px;
+    background: var(--gray-95);
+    border-right: 1px solid var(--border);
+    padding: 14px 0;
+    font-family: var(--font-mono); font-size: 12px;
+    line-height: 1.8;
+    color: var(--gray-60);
+    text-align: right;
+    padding-right: 10px;
+    user-select: none;
+    overflow: hidden;
+  }
+  .code-body {
+    position: absolute; left: 46px; top: 0; right: 0; bottom: 0;
+    padding: 14px 16px;
+    font-family: var(--font-mono); font-size: 12.5px;
+    line-height: 1.8;
+    overflow-y: auto;
+    color: var(--gray-10);
+    outline: none;
+  }
+  /* SQL syntax */
+  .kw  { color: #ffffff; font-weight: 600; }
+  .fn  { color: #cccccc; }
+  .str { color: #aaaaaa; }
+  .num { color: #dddddd; font-style: italic; }
+  .cmt { color: #555555; font-style: italic; }
+  .op  { color: #888888; }
+  .id  { color: #e0e0e0; }
+  .typ { color: #bbbbbb; text-decoration: underline; text-decoration-style: dotted; }
+  /* Current line highlight */
+  .cur-line { background: rgba(255,255,255,0.04); display: block; margin: 0 -16px; padding: 0 16px; }
+  /* Results panel */
+  .results-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .results-tabs {
+    display: flex; align-items: center; gap: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--gray-90);
+    flex-shrink: 0;
+  }
+  .res-tab {
+    padding: 5px 14px;
+    font-size: 11px; cursor: pointer;
+    color: var(--gray-40);
+    border-bottom: 2px solid transparent;
+    transition: all 0.1s;
+  }
+  .res-tab:hover { color: var(--gray-20); }
+  .res-tab.active { color: var(--white); border-bottom-color: var(--white); }
+  .results-body { flex: 1; overflow: auto; }
+  .result-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 11.5px; }
+  .result-table th {
+    background: var(--gray-85);
+    border-bottom: 1px solid var(--border-light);
+    border-right: 1px solid var(--border);
+    padding: 5px 12px;
+    text-align: left;
+    color: var(--gray-10);
+    font-weight: 600;
+    font-size: 11px;
+    white-space: nowrap;
+    position: sticky; top: 0;
+    letter-spacing: 0.03em;
+  }
+  .result-table td {
+    padding: 4px 12px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid rgba(60,60,60,0.5);
+    color: var(--gray-20);
+    white-space: nowrap;
+  }
+  .result-table tr:hover td { background: rgba(255,255,255,0.03); }
+  .result-table td.null-val { color: var(--gray-60); font-style: italic; }
+  /* Row numbers */
+  .result-table td:first-child, .result-table th:first-child {
+    color: var(--gray-60); font-size: 10px;
+    background: var(--gray-90);
+    min-width: 38px; text-align: right;
+    padding-right: 8px;
+    border-right-color: var(--border-light);
+    user-select: none;
+  }
+  .statusbar {
+    height: 22px;
+    background: var(--gray-90);
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 10px; gap: 16px;
+    flex-shrink: 0;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--gray-50);
+  }
+  .status-ok { color: var(--gray-20); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--white); display: inline-block; margin-right: 5px; }
+  .status-spacer { flex: 1; }
+ 
+  /* ── RIGHT PANEL (AI Assistant) ── */
+  .panel-right {
+    width: 300px;
+    flex-shrink: 0;
+    background: var(--gray-95);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .ai-header {
+    padding: 8px 12px;
+    background: var(--gray-90);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .ai-title {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 11px; font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.06em;
+    font-family: var(--font-mono);
+  }
+  .ai-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--white);
+    animation: ai-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes ai-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+  .ai-model {
+    font-size: 9px; font-family: var(--font-mono);
+    color: var(--gray-50);
+    letter-spacing: 0.05em;
+  }
+  .ai-chat {
+    flex: 1; overflow-y: auto;
+    padding: 10px 12px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .ai-msg { display: flex; flex-direction: column; gap: 4px; }
+  .ai-msg-from {
+    font-size: 9px; font-family: var(--font-mono);
+    color: var(--gray-60); letter-spacing: 0.06em;
+  }
+  .ai-bubble {
+    padding: 8px 11px;
+    border-radius: var(--radius);
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .ai-bubble.assistant {
+    background: var(--gray-85);
+    border: 1px solid var(--border-light);
+    color: var(--gray-10);
+    border-left: 2px solid var(--white);
+  }
+  .ai-bubble.user {
+    background: var(--gray-80);
+    border: 1px solid var(--border);
+    color: var(--gray-20);
+    align-self: flex-end;
+    max-width: 90%;
+  }
+  .ai-code-block {
+    background: var(--black);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--gray-10);
+    margin-top: 6px;
+    line-height: 1.6;
+    position: relative;
+  }
+  .ai-code-copy {
+    position: absolute; top: 5px; right: 6px;
+    font-size: 9px; color: var(--gray-60);
+    cursor: pointer; transition: color 0.1s;
+  }
+  .ai-code-copy:hover { color: var(--white); }
+  .ai-suggestions {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-top: 6px;
+  }
+  .ai-suggestion {
+    padding: 5px 9px;
+    background: var(--gray-90);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    font-size: 11px; font-family: var(--font-mono);
+    color: var(--gray-30);
+    cursor: pointer; transition: all 0.1s;
+  }
+  .ai-suggestion:hover {
+    background: var(--gray-80);
+    border-color: var(--gray-50);
+    color: var(--white);
+  }
+  .ai-thinking {
+    display: flex; gap: 4px; align-items: center;
+    padding: 8px 10px;
+  }
+  .ai-thinking span {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gray-50);
+    animation: ai-think 1.2s ease-in-out infinite;
+  }
+  .ai-thinking span:nth-child(2) { animation-delay: 0.2s; }
+  .ai-thinking span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes ai-think { 0%,80%,100% { opacity:0.3; transform:scale(0.8); } 40% { opacity:1; transform:scale(1.1); } }
+  .ai-divider {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 9px; font-family: var(--font-mono);
+    color: var(--gray-70); letter-spacing: 0.05em;
+  }
+  .ai-divider::before, .ai-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .ai-input-wrap {
+    padding: 8px 10px;
+    border-top: 1px solid var(--border);
+    background: var(--gray-90);
+    flex-shrink: 0;
+  }
+  .ai-input-box {
+    display: flex; gap: 5px;
+    background: var(--gray-80);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    transition: border-color 0.15s;
+  }
+  .ai-input-box:focus-within { border-color: var(--white); }
+  .ai-input-box textarea {
+    flex: 1; background: none; border: none; outline: none;
+    color: var(--gray-10);
+    font-family: var(--font-mono); font-size: 11.5px;
+    resize: none; line-height: 1.4;
+    max-height: 80px;
+    min-height: 18px;
+  }
+  .ai-input-box textarea::placeholder { color: var(--gray-60); }
+  .ai-send {
+    width: 24px; height: 24px;
+    background: var(--white);
+    border: none; border-radius: 2px;
+    color: var(--black);
+    font-size: 13px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; align-self: flex-end;
+    transition: background 0.1s;
+    font-weight: 700;
+  }
+  .ai-send:hover { background: var(--gray-10); }
+  .ai-context-bar {
+    display: flex; gap: 4px;
+    padding: 5px 10px 0;
+    flex-wrap: wrap;
+  }
+  .ai-ctx-chip {
+    padding: 2px 7px;
+    background: var(--gray-85);
+    border: 1px solid var(--border-light);
+    border-radius: 2px;
+    font-size: 9px; font-family: var(--font-mono);
+    color: var(--gray-40);
+    cursor: pointer; transition: all 0.1s;
+  }
+  .ai-ctx-chip.active { border-color: var(--gray-40); color: var(--white); }
+  .ai-ctx-chip:hover { color: var(--white); }
+ 
+  /* ── RESIZE HANDLE (visual only) ── */
+  .resize-handle {
+    width: 3px;
+    background: transparent;
+    cursor: col-resize;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .resize-handle:hover { background: var(--gray-50); }
+ 
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 999;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--gray-90);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    animation: modal-in 0.15s ease;
+    overflow: hidden;
+  }
+  @keyframes modal-in { from { transform: translateY(-10px); opacity:0; } to { transform:none; opacity:1; } }
+  .modal-titlebar {
+    background: var(--gray-85);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px; font-weight: 600; color: var(--white);
+    font-family: var(--font-mono);
+  }
+  .modal-close { cursor: pointer; color: var(--gray-50); font-size: 14px; transition: color 0.1s; }
+  .modal-close:hover { color: var(--white); }
+  .modal-body { padding: 18px; }
+  .modal-tabs {
+    display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+  }
+  .modal-tab {
+    padding: 5px 12px; font-size: 11px; cursor: pointer;
+    color: var(--gray-50); border-bottom: 2px solid transparent; transition: all 0.1s;
+  }
+  .modal-tab.active { color: var(--white); border-bottom-color: var(--white); }
+  .form-row { margin-bottom: 11px; }
+  .form-label { font-size: 11px; color: var(--gray-40); margin-bottom: 4px; font-family: var(--font-mono); display: block; }
+  .form-input, .form-select {
+    width: 100%; padding: 6px 10px;
+    background: var(--gray-80);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    color: var(--gray-10);
+    font-family: var(--font-mono); font-size: 12px;
+    outline: none; transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--white); }
+  .form-input::placeholder { color: var(--gray-60); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-footer {
+    padding: 10px 18px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end; gap: 6px;
+    background: var(--gray-85);
+  }
+  .btn {
+    padding: 5px 14px; border-radius: var(--radius);
+    font-size: 11px; font-family: var(--font-mono); cursor: pointer;
+    transition: all 0.1s;
+  }
+  .btn-ghost { background: transparent; border: 1px solid var(--border-light); color: var(--gray-30); }
+  .btn-ghost:hover { background: var(--gray-80); color: var(--white); }
+  .btn-solid { background: var(--white); border: 1px solid var(--white); color: var(--black); font-weight: 600; }
+  .btn-solid:hover { background: var(--gray-10); }
+  .checkbox-row { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--gray-30); font-family: var(--font-mono); }
+  .checkbox-row input { accent-color: var(--white); }
+ 
+  /* ── Context Menu ── */
+  .ctx-menu {
+    display: none; position: fixed;
+    background: var(--gray-85);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    z-index: 500;
+    min-width: 160px;
+    padding: 3px 0;
+  }
+  .ctx-menu.open { display: block; }
+  .ctx-item {
+    padding: 5px 14px;
+    font-size: 11px; font-family: var(--font-mono);
+    color: var(--gray-20); cursor: pointer;
+    transition: background 0.08s;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ctx-item:hover { background: var(--gray-80); color: var(--white); }
+  .ctx-item.sep { height: 1px; background: var(--border); padding: 0; margin: 3px 0; pointer-events: none; }
+  .ctx-shortcut { color: var(--gray-60); font-size: 10px; }
+</style>
+</head>
+<body>
+ 
+<!-- TITLE BAR -->
+<div class="title-bar">
+  <div class="title-logo">QueryForge</div>
+  <div class="title-doc">SQLQuery1.sql — DESKTOP\SQLEXPRESS01.master (Hajra)</div>
+  <div class="title-spacer"></div>
+  <div class="title-actions">
+    <div class="win-btn"></div>
+    <div class="win-btn"></div>
+    <div class="win-btn"></div>
+  </div>
+</div>
+ 
+<!-- MENUBAR -->
+<div class="menubar">
+  <div class="menu-item">File</div>
+  <div class="menu-item">Edit</div>
+  <div class="menu-item">View</div>
+  <div class="menu-item">Query</div>
+  <div class="menu-item">Tools</div>
+  <div class="menu-item">Window</div>
+  <div class="menu-item">Help</div>
+</div>
+ 
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="tb-run" onclick="runQuery()">▶ Execute</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" title="New Query">+</button>
+  <button class="tb-btn" title="Open File">📂</button>
+  <button class="tb-btn" title="Save">💾</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" title="Undo">↺</button>
+  <button class="tb-btn" title="Redo">↻</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" title="Comment">/*</button>
+  <button class="tb-btn" title="Indent">→</button>
+  <button class="tb-btn" title="Format">≡</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" title="Connect" onclick="openModal()">⚡</button>
+  <button class="tb-btn active" title="Object Explorer">🗂</button>
+  <select class="db-select" id="db-select">
+    <option>master</option>
+    <option>model</option>
+    <option>msdb</option>
+    <option>tempdb</option>
+  </select>
+</div>
+ 
+<!-- MAIN BODY -->
+<div class="app-body">
+ 
+  <!-- LEFT: Object Explorer -->
+  <div class="panel-left">
+    <div class="panel-header">
+      OBJECT EXPLORER
+      <div class="panel-header-actions">
+        <button class="ph-btn" title="Connect" onclick="openModal()">⚡</button>
+        <button class="ph-btn" title="New Query">+</button>
+        <button class="ph-btn" title="Refresh">↻</button>
+        <button class="ph-btn" title="Filter">⊟</button>
+      </div>
+    </div>
+    <div class="explorer-search">
+      <input placeholder="Search objects...">
+    </div>
+    <div class="explorer-tree" id="obj-tree">
+ 
+      <!-- Server Node -->
+      <div class="tree-node">
+        <div class="tree-row connected l0" onclick="toggle(this)">
+          <span class="tree-chev open">▶</span>
+          <span class="tree-icon">🖥</span>
+          <span>DESKTOP\SQLEXPRESS01</span>
+        </div>
+        <div class="tree-children">
+ 
+          <!-- Databases -->
+          <div class="tree-node">
+            <div class="tree-row l1" onclick="toggle(this)">
+              <span class="tree-chev open">▶</span>
+              <span class="tree-icon">🗃</span>
+              <span>Databases</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-node">
+                <div class="tree-row l2" onclick="toggle(this)">
+                  <span class="tree-chev">▶</span>
+                  <span class="tree-icon">📁</span>
+                  <span>System Databases</span>
+                </div>
+                <div class="tree-children hidden">
+                  <div class="tree-row l3" onclick="selectNode(this)" oncontextmenu="showCtx(event)"><span class="tree-chev" style="opacity:0">▶</span><span class="tree-icon">🗄</span><span>master</span></div>
+                  <div class="tree-row l3" onclick="selectNode(this)" oncontextmenu="showCtx(event)"><span class="tree-chev" style="opacity:0">▶</span><span class="tree-icon">🗄</span><span>model</span></div>
+                  <div class="tree-row l3" onclick="selectNode(this)" oncontextmenu="showCtx(event)"><span class="tree-chev" style="opacity:0">▶</span><span class="tree-icon">🗄</span><span>msdb</span></div>
+                  <div class="tree-row l3" onclick="selectNode(this)" oncontextmenu="showCtx(event)"><span class="tree-chev" style="opacity:0">▶</span><span class="tree-icon">🗄</span><span>tempdb</span></div>
+                </div>
+              </div>
+              <div class="tree-row l2"><span class="tree-chev" style="opacity:0">▶</span><span class="tree-icon">📸</span><span>Database Snapshots</span></div>
+            </div>
+          </div>
+ 
+          <!-- Security -->
+          <div class="tree-node">
+            <div class="tree-row l1" onclick="toggle(this)">
+              <span class="tree-chev open">▶</span>
+              <span class="tree-icon">🔒</span>
+              <span>Security</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-row l2" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">👤</span><span>Logins</span></div>
+              <div class="tree-row l2" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">🎭</span><span>Server Roles</span></div>
+              <div class="tree-row l2" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">🔑</span><span>Credentials</span></div>
+              <div class="tree-row l2" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">📋</span><span>Audits</span></div>
+              <div class="tree-row l2" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">📜</span><span>Server Audit Specifications</span></div>
+            </div>
+          </div>
+ 
+          <div class="tree-row l1" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">⚙</span><span>Server Objects</span></div>
+          <div class="tree-row l1" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">🔄</span><span>Replication</span></div>
+          <div class="tree-row l1" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">🛠</span><span>Management</span></div>
+          <div class="tree-row l1" onclick="toggle(this)"><span class="tree-chev">▶</span><span class="tree-icon">📊</span><span>XEvent Profiler</span></div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- RESIZE HANDLE -->
+  <div class="resize-handle"></div>
+ 
+  <!-- CENTER: Editor + Results -->
+  <div class="panel-center">
+    <!-- Query Tabs -->
+    <div class="query-tabs">
+      <div class="q-tab active">SQLQuery1.sql<span class="q-tab-close"> ×</span></div>
+      <div class="q-tab">SQLQuery2.sql<span class="q-tab-close"> ×</span></div>
+      <div class="q-tab-add">+</div>
+    </div>
+ 
+    <!-- Editor -->
+    <div class="editor-area">
+      <div class="line-numbers" id="line-nums">
+        <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+        <div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
+        <div>11</div><div>12</div><div>13</div><div>14</div><div>15</div>
+      </div>
+      <div class="code-body" contenteditable="true" spellcheck="false">
+<span class="cmt">-- QueryForge SQL Studio · Connected to DESKTOP\SQLEXPRESS01</span>
+<span class="cmt">-- Database: master · User: Hajra · 23/03/2026</span>
+&nbsp;
+<span class="kw">USE</span> <span class="id">master</span><span class="op">;</span>
+<span class="kw">GO</span>
+&nbsp;
+<span class="cur-line"><span class="kw">SELECT</span></span>
+    <span class="id">s</span><span class="op">.</span><span class="id">session_id</span><span class="op">,</span>
+    <span class="id">s</span><span class="op">.</span><span class="id">login_name</span><span class="op">,</span>
+    <span class="id">s</span><span class="op">.</span><span class="id">host_name</span><span class="op">,</span>
+    <span class="id">r</span><span class="op">.</span><span class="fn">status</span><span class="op">,</span>
+    <span class="id">r</span><span class="op">.</span><span class="id">command</span><span class="op">,</span>
+    <span class="fn">DB_NAME</span><span class="op">(</span><span class="id">r</span><span class="op">.</span><span class="id">database_id</span><span class="op">)</span> <span class="kw">AS</span> <span class="id">database_name</span>
+<span class="kw">FROM</span> <span class="id">sys</span><span class="op">.</span><span class="id">dm_exec_sessions</span> <span class="id">s</span>
+<span class="kw">LEFT JOIN</span> <span class="id">sys</span><span class="op">.</span><span class="id">dm_exec_requests</span> <span class="id">r</span> <span class="kw">ON</span> <span class="id">s</span><span class="op">.</span><span class="id">session_id</span> <span class="op">=</span> <span class="id">r</span><span class="op">.</span><span class="id">session_id</span>
+<span class="kw">WHERE</span> <span class="id">s</span><span class="op">.</span><span class="id">is_user_process</span> <span class="op">=</span> <span class="num">1</span>
+<span class="kw">ORDER BY</span> <span class="id">s</span><span class="op">.</span><span class="id">session_id</span><span class="op">;</span>
+      </div>
+    </div>
+ 
+    <!-- Results -->
+    <div class="results-area">
+      <div class="results-tabs">
+        <div class="res-tab active">Results</div>
+        <div class="res-tab">Messages</div>
+        <div class="res-tab">Execution Plan</div>
+        <div class="res-tab">Statistics</div>
+      </div>
+      <div class="results-body">
+        <table class="result-table">
+          <thead><tr>
+            <th></th>
+            <th>session_id</th>
+            <th>login_name</th>
+            <th>host_name</th>
+            <th>status</th>
+            <th>command</th>
+            <th>database_name</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>1</td><td>51</td><td>DESKTOP\Hajra</td><td>DESKTOP-1S2F1KB</td><td>running</td><td>SELECT</td><td>master</td></tr>
+            <tr><td>2</td><td>52</td><td>DESKTOP\Hajra</td><td>DESKTOP-1S2F1KB</td><td>sleeping</td><td class="null-val">NULL</td><td>master</td></tr>
+            <tr><td>3</td><td>53</td><td>sa</td><td>APP-SERVER-01</td><td>sleeping</td><td class="null-val">NULL</td><td>model</td></tr>
+            <tr><td>4</td><td>54</td><td>sa</td><td>APP-SERVER-01</td><td>running</td><td>UPDATE</td><td>msdb</td></tr>
+            <tr><td>5</td><td>55</td><td>DESKTOP\Hajra</td><td>DESKTOP-1S2F1KB</td><td>sleeping</td><td class="null-val">NULL</td><td>tempdb</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+ 
+    <!-- Status Bar -->
+    <div class="statusbar">
+      <span class="status-ok"><span class="status-dot"></span>Connected</span>
+      <span>DESKTOP\SQLEXPRESS01</span>
+      <span>DESKTOP\Hajra</span>
+      <span>master</span>
+      <div class="status-spacer"></div>
+      <span>00:00:00</span>
+      <span>5 rows</span>
+      <span>Ln 7  Col 1  Ch 1</span>
+      <span>INS</span>
+    </div>
+  </div>
+ 
+  <!-- RESIZE HANDLE -->
+  <div class="resize-handle"></div>
+ 
+  <!-- RIGHT: AI Assistant -->
+  <div class="panel-right">
+    <div class="ai-header">
+      <div class="ai-title">
+        <div class="ai-dot"></div>
+        AI ASSISTANT
+      </div>
+      <div class="ai-model">GPT-4o · Context: Query</div>
+    </div>
+ 
+    <div class="ai-chat" id="ai-chat">
+ 
+      <div class="ai-divider">SESSION START</div>
+ 
+      <div class="ai-msg">
+        <div class="ai-msg-from">ASSISTANT</div>
+        <div class="ai-bubble assistant">
+          Hello Hajra. I'm connected to your <strong>DESKTOP\SQLEXPRESS01</strong> session and have context of your current query editor.<br><br>
+          I can help you write SQL, optimize queries, explain execution plans, or explore your schema.
+        </div>
+        <div class="ai-suggestions">
+          <div class="ai-suggestion" onclick="sendSuggestion(this)">→ Explain this query</div>
+          <div class="ai-suggestion" onclick="sendSuggestion(this)">→ Optimize for performance</div>
+          <div class="ai-suggestion" onclick="sendSuggestion(this)">→ Show all tables in master</div>
+        </div>
+      </div>
+ 
+      <div class="ai-msg">
+        <div class="ai-msg-from">YOU</div>
+        <div class="ai-bubble user">What does sys.dm_exec_sessions contain?</div>
+      </div>
+ 
+      <div class="ai-msg">
+        <div class="ai-msg-from">ASSISTANT</div>
+        <div class="ai-bubble assistant">
+          <code>sys.dm_exec_sessions</code> is a dynamic management view that returns one row per authenticated session on SQL Server. Key columns include:<br><br>
+          <strong>session_id</strong> — unique ID per connection<br>
+          <strong>login_name</strong> — Windows or SQL login<br>
+          <strong>host_name</strong> — client machine name<br>
+          <strong>status</strong> — running, sleeping, or dormant<br>
+          <strong>cpu_time</strong> — CPU ms consumed<br>
+          <strong>memory_usage</strong> — pages of 8KB used
+        </div>
+        <div class="ai-code-block">
+<span class="cmt">-- Quick health check</span>
+<span class="kw">SELECT</span> <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> active_sessions
+<span class="kw">FROM</span> sys.dm_exec_sessions
+<span class="kw">WHERE</span> is_user_process <span class="op">=</span> <span class="num">1</span><span class="op">;</span>
+          <span class="ai-code-copy" onclick="copyCode(this)" title="Copy">⧉</span>
+        </div>
+      </div>
+ 
+      <div class="ai-divider">EARLIER TODAY</div>
+ 
+      <div class="ai-msg">
+        <div class="ai-msg-from">YOU</div>
+        <div class="ai-bubble user">How do I check which queries are blocking others?</div>
+      </div>
+ 
+      <div class="ai-msg">
+        <div class="ai-msg-from">ASSISTANT</div>
+        <div class="ai-bubble assistant">
+          Use <code>sys.dm_exec_requests</code> joined with <code>sys.dm_exec_sessions</code> to find blocking chains:
+        </div>
+        <div class="ai-code-block">
+<span class="kw">SELECT</span>
+  r.session_id<span class="op">,</span>
+  r.blocking_session_id<span class="op">,</span>
+  r.wait_type<span class="op">,</span>
+  r.wait_time<span class="op">,</span>
+  s.login_name
+<span class="kw">FROM</span> sys.dm_exec_requests r
+<span class="kw">JOIN</span> sys.dm_exec_sessions s
+  <span class="kw">ON</span> r.session_id <span class="op">=</span> s.session_id
+<span class="kw">WHERE</span> r.blocking_session_id <span class="op">></span> <span class="num">0</span><span class="op">;</span>
+          <span class="ai-code-copy" onclick="copyCode(this)" title="Copy">⧉</span>
+        </div>
+      </div>
+ 
+    </div>
+ 
+    <!-- Input -->
+    <div class="ai-input-wrap">
+      <div class="ai-context-bar">
+        <div class="ai-ctx-chip active">@ Editor</div>
+        <div class="ai-ctx-chip">@ Schema</div>
+        <div class="ai-ctx-chip">@ Results</div>
+        <div class="ai-ctx-chip">@ Docs</div>
+      </div>
+      <br>
+      <div class="ai-input-box">
+        <textarea id="ai-textarea" rows="1" placeholder="Ask about your query, schema, or SQL..." onkeydown="aiKeydown(event)"></textarea>
+        <button class="ai-send" onclick="sendMsg()">↑</button>
+      </div>
+    </div>
+  </div>
+ 
+</div><!-- /app-body -->
+ 
+<!-- CONNECTION MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-titlebar">
+      Connect to Server
+      <span class="modal-close" onclick="closeModal()">✕</span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <div class="modal-tab active">Login</div>
+        <div class="modal-tab">Connection Properties</div>
+        <div class="modal-tab">Always Encrypted</div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">SERVER TYPE</label>
+        <select class="form-select"><option>Database Engine</option><option>Analysis Services</option><option>Reporting Services</option></select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">SERVER NAME</label>
+        <input class="form-input" value="DESKTOP-1S2F1KB\SQLEXPRESS01">
+      </div>
+      <div class="form-row">
+        <label class="form-label">AUTHENTICATION</label>
+        <select class="form-select"><option selected>Windows Authentication</option><option>SQL Server Authentication</option></select>
+      </div>
+      <div class="form-grid">
+        <div class="form-row">
+          <label class="form-label">USER NAME</label>
+          <input class="form-input" value="DESKTOP-1S2F1KB\Hajra" disabled>
+        </div>
+        <div class="form-row">
+          <label class="form-label">PASSWORD</label>
+          <input class="form-input" type="password" disabled placeholder="••••••••">
+        </div>
+      </div>
+      <div style="margin-top:8px">
+        <label class="form-label">CONNECTION SECURITY · ENCRYPTION</label>
+        <select class="form-select"><option>Mandatory</option><option>Optional</option><option>Strict</option></select>
+      </div>
+      <div style="margin-top:10px">
+        <label class="checkbox-row"><input type="checkbox" checked> Trust server certificate</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-ghost">Help</button>
+      <button class="btn btn-solid" onclick="closeModal()">Connect</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- CONTEXT MENU -->
+<div class="ctx-menu" id="ctx-menu">
+  <div class="ctx-item">New Query <span class="ctx-shortcut">Ctrl+N</span></div>
+  <div class="ctx-item">Select Top 1000 Rows</div>
+  <div class="ctx-item">Edit Top 200 Rows</div>
+  <div class="ctx-item sep"></div>
+  <div class="ctx-item">Script Table as CREATE</div>
+  <div class="ctx-item">Script Table as DROP</div>
+  <div class="ctx-item sep"></div>
+  <div class="ctx-item">Properties</div>
+  <div class="ctx-item">Refresh</div>
+</div>
+ 
+<script>
+// ── TREE TOGGLE ──
+function toggle(row) {
+  const chev = row.querySelector('.tree-chev');
+  const children = row.nextElementSibling;
+  if (!children || !children.classList.contains('tree-children')) return;
+  children.classList.toggle('hidden');
+  if (chev) chev.classList.toggle('open');
+}
+ 
+// ── SELECT NODE ──
+function selectNode(row) {
+  document.querySelectorAll('.tree-row.selected').forEach(r => r.classList.remove('selected'));
+  row.classList.add('selected');
+}
+ 
+// ── MODAL ──
+function openModal() { document.getElementById('modal').classList.add('open'); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+ 
+// ── CONTEXT MENU ──
+function showCtx(e) {
+  e.preventDefault();
+  const menu = document.getElementById('ctx-menu');
+  menu.style.left = e.clientX + 'px';
+  menu.style.top = e.clientY + 'px';
+  menu.classList.add('open');
+}
+document.addEventListener('click', () => document.getElementById('ctx-menu').classList.remove('open'));
+ 
+// ── RUN QUERY ──
+function runQuery() {
+  const ai = document.getElementById('ai-chat');
+  const thinkDiv = document.createElement('div');
+  thinkDiv.className = 'ai-msg';
+  thinkDiv.innerHTML = `
+    <div class="ai-msg-from">ASSISTANT</div>
+    <div class="ai-bubble assistant">
+      <div class="ai-thinking"><span></span><span></span><span></span></div>
+    </div>`;
+  ai.appendChild(thinkDiv);
+  ai.scrollTop = ai.scrollHeight;
+  setTimeout(() => {
+    thinkDiv.querySelector('.ai-bubble').innerHTML = '✔ Query executed successfully. <strong>5 rows</strong> returned in <strong>12ms</strong>. No blocking detected. Query cost: 0.0031.';
+    ai.scrollTop = ai.scrollHeight;
+  }, 1400);
+}
+ 
+// ── AI SEND ──
+function sendMsg() {
+  const ta = document.getElementById('ai-textarea');
+  const text = ta.value.trim();
+  if (!text) return;
+  const chat = document.getElementById('ai-chat');
+  // user msg
+  const userDiv = document.createElement('div');
+  userDiv.className = 'ai-msg';
+  userDiv.innerHTML = `<div class="ai-msg-from">YOU</div><div class="ai-bubble user">${text}</div>`;
+  chat.appendChild(userDiv);
+  ta.value = '';
+  // thinking
+  const thinkDiv = document.createElement('div');
+  thinkDiv.className = 'ai-msg';
+  thinkDiv.innerHTML = `<div class="ai-msg-from">ASSISTANT</div><div class="ai-bubble assistant"><div class="ai-thinking"><span></span><span></span><span></span></div></div>`;
+  chat.appendChild(thinkDiv);
+  chat.scrollTop = chat.scrollHeight;
+  setTimeout(() => {
+    thinkDiv.querySelector('.ai-bubble').innerHTML = `I'm analyzing your question about <em>"${text}"</em>. Based on your current session context and the query in your editor, here's what I found — the <code>sys.dm_exec_sessions</code> DMV and related views give you full visibility into this.`;
+    chat.scrollTop = chat.scrollHeight;
+  }, 1200);
+}
+ 
+function sendSuggestion(el) {
+  const text = el.textContent.replace('→ ', '');
+  document.getElementById('ai-textarea').value = text;
+  el.closest('.ai-suggestions').remove();
+  sendMsg();
+}
+ 
+function aiKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+}
+ 
+function copyCode(btn) {
+  const code = btn.parentElement.innerText.replace('⧉','').trim();
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓';
+    setTimeout(() => btn.textContent = '⧉', 1500);
+  });
+}
+ 
+// ── MODAL TABS ──
+document.querySelectorAll('.modal-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+ 
+// ── RESULTS TABS ──
+document.querySelectorAll('.res-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+ 
+// ── QUERY TABS ──
+document.querySelectorAll('.q-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.q-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

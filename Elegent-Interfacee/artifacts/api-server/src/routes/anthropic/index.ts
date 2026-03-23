@@ -27,7 +27,6 @@ async function getOllamaStatus(): Promise<{ available: boolean; model: string | 
     const data = (await res.json()) as { models: OllamaModel[] };
     const names = (data.models ?? []).map((m) => m.name.split(":")[0]);
     const pick = PHI_CANDIDATES.find((c) => names.some((n) => n === c || n.startsWith(c)));
-    // If no Phi installed, use any first available model
     const anyModel = pick ?? (data.models[0]?.name ?? null);
     return { available: !!anyModel, model: anyModel, models: data.models.map((m) => m.name) };
   } catch {
@@ -79,8 +78,9 @@ async function streamOllama(
   return full;
 }
 
-// ── System prompt ─────────────────────────────────────────────────────────────
+// ── System prompts ─────────────────────────────────────────────────────────────
 
+// Full prompt for cloud models (Claude, GPT-4o)
 const SYSTEM_PROMPT = `You are UQL Copilot — an expert AI assistant embedded in UQL Studio, a multi-model database IDE. Your job is to fully help the user no matter what they ask. You analyze files, generate complete queries, explain concepts, and troubleshoot problems.
 
 ## UQL Syntax Reference
@@ -123,6 +123,21 @@ When the user attaches a file and asks you to do something with it:
 ### 4. Completeness
 - Generate the **full** set of queries needed — don't abbreviate.`;
 
+// Shorter prompt for local Phi models (they struggle with very long system prompts)
+const PHI_SYSTEM_PROMPT = `You are UQL Copilot, an AI assistant inside UQL Studio, a multi-model database IDE.
+
+UQL syntax:
+- CREATE DB <name>
+- CREATE TABLE|GRAPH|DOCUMENT <name> [IN <db>]
+- ADD <col> VALUES { key: value } [IN <db>]
+- FIND <col> [WHERE field op val] [LIMIT n] [IN <db>]
+- MODIFY <col> SET field=val WHERE ... [IN <db>]
+- REMOVE <col> WHERE ... [IN <db>]
+- DROP TABLE|GRAPH|DOCUMENT <col> [IN <db>]
+- WHERE operators: = != > >= < <= AND
+
+Always wrap UQL in \`\`\`uql blocks so users can click Run. One query per block. Use schema context when provided. Be concise and direct.`;
+
 // ── Conversation routes ───────────────────────────────────────────────────────
 
 router.get("/anthropic/conversations", (_req, res) => {
@@ -162,12 +177,19 @@ router.get("/anthropic/conversations/:id/messages", (req, res) => {
   } catch (err) { res.status(500).json({ error: String(err) }); }
 });
 
-// ── Local model status ────────────────────────────────────────────────────────
+// ── Local model status + model list ──────────────────────────────────────────
 
 router.get("/ai/local/status", async (_req, res) => {
   try {
     const status = await getOllamaStatus();
     res.json(status);
+  } catch (err) { res.status(500).json({ error: String(err) }); }
+});
+
+router.get("/ai/local/models", async (_req, res) => {
+  try {
+    const status = await getOllamaStatus();
+    res.json({ available: status.available, models: status.models, defaultModel: status.model });
   } catch (err) { res.status(500).json({ error: String(err) }); }
 });
 
@@ -187,11 +209,17 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
     databaseName,
     schema: schemaCtx,
     attachments,
+    lastQuery,
+    lastResult,
+    selectedModel,
   }: {
     content?: string;
     databaseName?: string;
     schema?: string;
     attachments?: AttachmentPayload[];
+    lastQuery?: string;
+    lastResult?: unknown;
+    selectedModel?: string;
   } = req.body;
 
   const hasAttachments = Array.isArray(attachments) && attachments.length > 0;
@@ -216,19 +244,6 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
 
   const history = store.listMessages(conversationId);
 
-  let systemPrompt = SYSTEM_PROMPT;
-  if (databaseName || schemaCtx) {
-    systemPrompt += "\n\n## Current Database Context:\n";
-    if (databaseName) systemPrompt += `Active database: **${databaseName}**\n`;
-    if (schemaCtx) systemPrompt += `Schema:\n${schemaCtx}`;
-  }
-  if (hasAttachments) {
-    systemPrompt +=
-      "\n\n## File Attachments:\nThe user has attached one or more files. " +
-      "Carefully read each file's content. If any file contains UQL queries, " +
-      "present them in ```uql code blocks so the user can run them.";
-  }
-
   // ── Determine provider priority ───────────────────────────────────────────
   const githubToken: string | undefined =
     (req as unknown as { session?: { github_token?: string } }).session?.github_token;
@@ -246,6 +261,43 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
         "or sign in with GitHub to use GitHub Models for free.",
     });
     return;
+  }
+
+  // Use shorter prompt for local models (Phi struggles with long prompts)
+  let systemPrompt = useLocal ? PHI_SYSTEM_PROMPT : SYSTEM_PROMPT;
+
+  // Append database / schema context
+  if (databaseName || schemaCtx) {
+    systemPrompt += "\n\n## Database Context:\n";
+    if (databaseName) systemPrompt += `Active DB: ${databaseName}\n`;
+    if (schemaCtx) systemPrompt += `Schema:\n${schemaCtx}`;
+  }
+
+  // Append last query result context
+  if (lastQuery || lastResult) {
+    systemPrompt += "\n\n## Last Query Result:\n";
+    if (lastQuery) systemPrompt += `Query: \`${lastQuery.trim()}\`\n`;
+    if (lastResult !== undefined && lastResult !== null) {
+      try {
+        const resultStr = JSON.stringify(lastResult, null, 2);
+        // Limit result size to avoid overwhelming local models
+        const maxLen = useLocal ? 800 : 3000;
+        systemPrompt += `Result:\n${resultStr.length > maxLen ? resultStr.slice(0, maxLen) + "\n...(truncated)" : resultStr}\n`;
+      } catch { /* ignore serialization errors */ }
+    }
+  }
+
+  if (hasAttachments) {
+    systemPrompt +=
+      "\n\n## File Attachments:\nThe user has attached one or more files. " +
+      "Carefully read each file's content. If any file contains UQL queries, " +
+      "present them in ```uql code blocks so the user can run them.";
+  }
+
+  // Resolve which Ollama model to use — honour user selection if valid
+  let ollamaModel = ollamaStatus.model!;
+  if (useLocal && selectedModel && ollamaStatus.models.includes(selectedModel)) {
+    ollamaModel = selectedModel;
   }
 
   // ── SSE setup ─────────────────────────────────────────────────────────────
@@ -282,7 +334,7 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
 
   try {
     if (useLocal) {
-      // ── Tier 1: Local Ollama (Phi) — no login required ──────────────────
+      // ── Tier 1: Local Ollama ──────────────────────────────────────────────
       const ollamaMessages = [
         { role: "system", content: systemPrompt },
         ...history.map((m, i) => ({
@@ -297,16 +349,15 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
       ];
 
       fullResponse = await streamOllama(
-        ollamaStatus.model!,
+        ollamaModel,
         ollamaMessages,
         (chunk) => {
           res.write(`data: ${JSON.stringify({ content: chunk })}\n\n`);
-        },
-        req.socket ? undefined : undefined
+        }
       );
 
     } else if (useGitHub) {
-      // ── Tier 2: GitHub Models (free with GitHub Education) ───────────────
+      // ── Tier 2: GitHub Models ─────────────────────────────────────────────
       const toOpenAIContent = (
         raw: ReturnType<typeof buildLastContent>
       ): OpenAI.ChatCompletionContentPart[] | string => {
@@ -356,7 +407,6 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
       } catch (err: unknown) {
         const statusCode = (err as { status?: number })?.status ?? 0;
         if (statusCode === 429) {
-          // Rate limit — tell frontend to show upgrade prompt
           res.write(`data: ${JSON.stringify({ error: "rate-limit", done: true })}\n\n`);
           res.end();
           return;
@@ -365,7 +415,7 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
       }
 
     } else {
-      // ── Tier 3: Anthropic (Replit integration) ───────────────────────────
+      // ── Tier 3: Anthropic (Replit integration) ────────────────────────────
       const anthropicMessages = history.map((m, i) => ({
         role: m.role as "user" | "assistant",
         content: i === history.length - 1 ? buildLastContent() : m.content,
@@ -396,7 +446,6 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
 
     store.insertMessage({ conversationId, role: "assistant", content: fullResponse });
 
-    // Auto-title from first message
     if (history.length === 1) {
       const titleBase = trimmedContent || attachments![0]?.name || "File attachment";
       store.updateConversationTitle(conversationId, titleBase.slice(0, 55) + (titleBase.length > 55 ? "…" : ""));

@@ -58,7 +58,7 @@ export function QueryHistory({ onLoadQuery }: QueryHistoryProps) {
                   ? f === "error"
                     ? "bg-red-500/15 text-red-400"
                     : f === "success"
-                    ? "bg-emerald-500/15 text-emerald-400"
+                    ? "bg-foreground/10 text-foreground/80"
                     : "bg-foreground/10 text-foreground"
                   : "text-muted-foreground/60 hover:text-muted-foreground"
               )}
@@ -99,7 +99,7 @@ export function QueryHistory({ onLoadQuery }: QueryHistoryProps) {
                 >
                   <td className="py-1.5 px-3">
                     {item.success ? (
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-foreground/40" />
                     ) : (
                       <XCircle className="w-3.5 h-3.5 text-red-400" />
                     )}
@@ -115,7 +115,7 @@ export function QueryHistory({ onLoadQuery }: QueryHistoryProps) {
                   <td className="py-1.5 px-3 text-muted-foreground/60">
                     <span className={cn(
                       "font-mono",
-                      item.executionTimeMs > 100 ? "text-orange-400/80" : "text-emerald-400/70"
+                      item.executionTimeMs > 100 ? "text-foreground/50" : "text-foreground/40"
                     )}>
                       {item.executionTimeMs}
                     </span>

@@ -19,7 +19,6 @@ interface ResultsViewProps {
   timingHistory?: TimingEntry[];
 }
 
-// ── Export helpers ──────────────────────────────────────────────────────────
 function downloadText(content: string, filename: string, mimeType: string) {
   const blob = new Blob([content], { type: mimeType });
   const url = URL.createObjectURL(blob);
@@ -46,24 +45,15 @@ function exportJSON(data: unknown) {
   downloadText(JSON.stringify(data, null, 2), "uql-results.json", "application/json");
 }
 
-// ── Plan strategy badge color ──────────────────────────────────────────────
-function strategyColor(strategy?: string) {
-  if (!strategy) return "bg-gray-500/20 text-gray-300";
-  if (strategy.includes("INDEX"))     return "bg-cyan-500/20 text-cyan-300";
-  if (strategy.includes("BFS"))       return "bg-purple-500/20 text-purple-300";
-  if (strategy.includes("JOIN"))      return "bg-orange-500/20 text-orange-300";
-  if (strategy.includes("AGGREGATE")) return "bg-green-500/20 text-green-300";
-  if (strategy.includes("FULL"))      return "bg-yellow-500/20 text-yellow-300";
-  if (strategy === "DDL")             return "bg-blue-500/20 text-blue-300";
-  if (strategy === "EXPLAIN")         return "bg-violet-500/20 text-violet-300";
-  return "bg-gray-500/20 text-gray-300";
+function strategyLabel(strategy?: string) {
+  if (!strategy) return "UNKNOWN";
+  return strategy;
 }
 
-// ── Sparkline SVG ──────────────────────────────────────────────────────────
 function Sparkline({ data }: { data: TimingEntry[] }) {
   if (data.length < 2) return null;
   const maxMs = Math.max(...data.map(d => d.ms), 1);
-  const w = 80, h = 18;
+  const w = 60, h = 14;
   const pts = data.map((d, i) => {
     const x = (i / (data.length - 1)) * w;
     const y = h - (d.ms / maxMs) * (h - 2) - 1;
@@ -71,16 +61,15 @@ function Sparkline({ data }: { data: TimingEntry[] }) {
   });
   const last = data[data.length - 1];
   return (
-    <span className="inline-flex items-center gap-1.5 shrink-0" title={`Last ${data.length} queries`}>
+    <span className="inline-flex items-center gap-1.5 shrink-0">
       <svg width={w} height={h} className="overflow-visible">
         <polyline
           points={pts.join(" ")}
           fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
+          stroke="rgba(200,200,200,0.35)"
+          strokeWidth="1"
           strokeLinejoin="round"
           strokeLinecap="round"
-          className="text-primary-foreground/50"
         />
         {data.map((d, i) => (
           <circle
@@ -88,11 +77,13 @@ function Sparkline({ data }: { data: TimingEntry[] }) {
             cx={(i / (data.length - 1)) * w}
             cy={h - (d.ms / maxMs) * (h - 2) - 1}
             r="1.5"
-            className={d.success ? "fill-emerald-300/80" : "fill-red-400/80"}
+            fill={d.success ? 'rgba(180,180,180,0.6)' : 'rgba(180,60,60,0.7)'}
           />
         ))}
       </svg>
-      <span className="text-primary-foreground/60 text-[10px] font-mono">{last.ms}ms</span>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#555' }}>
+        {last.ms}ms
+      </span>
     </span>
   );
 }
@@ -100,7 +91,6 @@ function Sparkline({ data }: { data: TimingEntry[] }) {
 export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [] }: ResultsViewProps) {
   const [page, setPage] = useState(0);
 
-  // Reset to page 0 when result changes
   const data: Record<string, unknown>[] = useMemo(() => {
     setPage(0);
     return Array.isArray(result?.data) ? result.data : [];
@@ -108,12 +98,10 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
 
   if (!result) {
     return (
-      <div className="flex flex-col h-full bg-panel-bg border-t border-panel-border">
-        <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm flex-col gap-3">
-          <div className="w-16 h-16 rounded-2xl bg-foreground/5 flex items-center justify-center border border-foreground/[0.08] shadow-inner">
-            <TableIcon className="w-8 h-8 opacity-20" />
-          </div>
-          <p>Run a query to see results</p>
+      <div className="flex flex-col h-full border-t" style={{ background: '#000000', borderColor: '#2e2e2e' }}>
+        <div className="flex-1 flex items-center justify-center flex-col gap-2">
+          <TableIcon className="w-8 h-8" style={{ color: '#555555' }} />
+          <p style={{ color: '#666666', fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}>run a query to see results</p>
         </div>
         <StatusBar timingHistory={timingHistory} result={null} />
       </div>
@@ -132,98 +120,127 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
   const pathIds: number[] = data.map((r: any) => r.id).filter(Boolean);
 
   return (
-    <div className="flex flex-col h-full bg-panel-bg border-t border-panel-border">
-      {/* Tabs + Export Buttons */}
-      <div className="flex items-center justify-between px-2 pt-2 border-b border-foreground/[0.08] bg-foreground/[0.03] shrink-0">
-        <div className="flex items-center">
-          <TabButton icon={TableIcon} label="Table"   tab="results" active={activeTab} onClick={setActiveTab} />
-          <TabButton icon={FileJson}  label="JSON"    tab="json"    active={activeTab} onClick={setActiveTab} />
-          <TabButton icon={Info}      label="Info"    tab="info"    active={activeTab} onClick={setActiveTab} />
+    <div className="flex flex-col h-full border-t" style={{ background: '#000000', borderColor: '#2e2e2e' }}>
+      {/* Tab Bar */}
+      <div
+        className="flex items-center justify-between shrink-0 border-b"
+        style={{ background: '#1a1a1a', borderColor: '#2e2e2e' }}
+      >
+        <div className="flex items-end">
+          <TabBtn icon={TableIcon} label="Table"   tab="results" active={activeTab} onClick={setActiveTab} />
+          <TabBtn icon={FileJson}  label="JSON"    tab="json"    active={activeTab} onClick={setActiveTab} />
+          <TabBtn icon={Info}      label="Info"    tab="info"    active={activeTab} onClick={setActiveTab} />
           {hasGraph && (
-            <TabButton icon={GitBranch} label="Graph" tab="graph" active={activeTab} onClick={setActiveTab} />
+            <TabBtn icon={GitBranch} label="Graph" tab="graph" active={activeTab} onClick={setActiveTab} />
           )}
         </div>
 
         <div className="flex items-center gap-2 pr-2">
-          {/* Pagination indicator */}
           {!isError && data.length > PAGE_SIZE && (
-            <div className="flex items-center gap-1 text-[10px] text-muted-foreground/60 font-mono mr-1">
-              <span>{safePage * PAGE_SIZE + 1}–{Math.min((safePage + 1) * PAGE_SIZE, data.length)}</span>
-              <span className="opacity-40">/ {data.length}</span>
+            <div
+              className="text-[10px]"
+              style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666' }}
+            >
+              {safePage * PAGE_SIZE + 1}–{Math.min((safePage + 1) * PAGE_SIZE, data.length)} / {data.length}
             </div>
           )}
-
-          {/* Export buttons */}
           {!isError && data.length > 0 && (
             <>
-              <button
-                onClick={() => exportCSV(data, result.columns ?? [])}
-                className="flex items-center gap-1 px-2 py-1 text-[11px] rounded-md border border-foreground/10 text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-all"
-                title="Export all rows as CSV"
-              >
-                <Download className="w-2.5 h-2.5" />
-                CSV
-              </button>
-              <button
-                onClick={() => exportJSON(data)}
-                className="flex items-center gap-1 px-2 py-1 text-[11px] rounded-md border border-foreground/10 text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-all"
-                title="Export all rows as JSON"
-              >
-                <Download className="w-2.5 h-2.5" />
-                JSON
-              </button>
+              <ExportBtn label="CSV"  onClick={() => exportCSV(data, result.columns ?? [])} />
+              <ExportBtn label="JSON" onClick={() => exportJSON(data)} />
             </>
           )}
         </div>
       </div>
 
-      {/* Content Area */}
-      <div className="flex-1 overflow-hidden relative bg-editor-bg">
+      {/* Content */}
+      <div className="flex-1 overflow-hidden relative" style={{ background: '#000000' }}>
         {isError ? (
-          <div className="absolute inset-0 p-6 flex items-start text-destructive-foreground bg-destructive/10 overflow-auto">
-            <AlertCircle className="w-5 h-5 mr-3 mt-0.5 text-destructive shrink-0" />
+          <div
+            className="absolute inset-0 p-5 flex items-start overflow-auto"
+            style={{ background: 'rgba(100,20,20,0.08)' }}
+          >
+            <AlertCircle className="w-4 h-4 mr-3 mt-0.5 shrink-0" style={{ color: '#c44' }} />
             <div>
-              <h3 className="font-semibold text-destructive mb-1">Query Execution Error</h3>
-              <p className="font-mono text-sm break-all whitespace-pre-wrap">{result.error}</p>
+              <h3
+                className="font-semibold mb-1"
+                style={{ color: '#e06060', fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}
+              >
+                Query Error
+              </h3>
+              <p
+                className="break-all whitespace-pre-wrap"
+                style={{ color: '#c87070', fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}
+              >
+                {result.error}
+              </p>
             </div>
           </div>
         ) : (
           <>
             {result.message && (
-              <div className="absolute top-0 left-0 right-0 z-20 flex items-center gap-3 px-4 py-2 bg-emerald-500/10 border-b border-emerald-500/20 text-emerald-300 text-sm font-medium">
-                <Activity className="w-4 h-4 shrink-0 text-emerald-400" />
+              <div
+                className="absolute top-0 left-0 right-0 z-20 flex items-center gap-2 px-3 py-1.5 border-b"
+                style={{ background: '#0f1a0f', borderColor: '#1e3a1e', color: '#7a9a7a', fontSize: 11, fontFamily: "'IBM Plex Mono', monospace" }}
+              >
+                <Activity className="w-3.5 h-3.5 shrink-0" />
                 <span>{result.message}</span>
               </div>
             )}
 
-            {/* TABLE VIEW */}
+            {/* TABLE */}
             {activeTab === "results" && (
-              <div className={cn("absolute inset-0 flex flex-col", result.message && "top-10")}>
+              <div className={cn("absolute inset-0 flex flex-col", result.message && "top-[30px]")}>
                 {data.length > 0 ? (
                   <>
                     <div className="flex-1 overflow-auto">
-                      <table className="w-full text-left border-collapse text-sm">
-                        <thead className="bg-background/80 sticky top-0 backdrop-blur-md z-10 shadow-sm border-b border-foreground/[0.12]">
+                      <table className="w-full text-left border-collapse" style={{ fontSize: 12 }}>
+                        <thead
+                          className="sticky top-0 z-10"
+                          style={{ background: '#1a1a1a', borderBottom: '1px solid #2e2e2e' }}
+                        >
                           <tr>
-                            <th className="py-2 px-3 font-medium text-muted-foreground w-10 text-center border-r border-foreground/[0.08] text-xs">#</th>
+                            <th
+                              className="py-1.5 px-3 text-center border-r w-8"
+                              style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666666', borderColor: '#2e2e2e', fontSize: 10, fontWeight: 400 }}
+                            >
+                              #
+                            </th>
                             {result.columns?.map((col: string) => (
-                              <th key={col} className="py-2 px-3 font-semibold text-foreground/80 border-r border-foreground/[0.08] last:border-0 truncate max-w-[200px] text-xs">
+                              <th
+                                key={col}
+                                className="py-1.5 px-3 border-r last:border-0 truncate max-w-[200px]"
+                                style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#cccccc', borderColor: '#2e2e2e', fontSize: 11, fontWeight: 500 }}
+                              >
                                 <div className="flex items-center gap-1.5">
-                                  <ArrowUpDown className="w-3 h-3 text-muted-foreground/30 shrink-0" />
+                                  <ArrowUpDown className="w-2.5 h-2.5 shrink-0" style={{ color: '#555' }} />
                                   {col}
                                 </div>
                               </th>
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="font-mono text-xs text-muted-foreground">
+                        <tbody>
                           {pageData.map((row: any, i: number) => (
-                            <tr key={safePage * PAGE_SIZE + i} className="border-b border-foreground/[0.06] hover:bg-foreground/[0.02] transition-colors">
-                              <td className="py-1.5 px-3 text-center text-muted-foreground/30 border-r border-foreground/[0.06] text-[11px]">
+                            <tr
+                              key={safePage * PAGE_SIZE + i}
+                              className="border-b"
+                              style={{ borderColor: '#1a1a1a' }}
+                              onMouseEnter={e => (e.currentTarget.style.background = '#0d0d0d')}
+                              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                            >
+                              <td
+                                className="py-1 px-3 text-center border-r"
+                                style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#555555', borderColor: '#1a1a1a', fontSize: 10 }}
+                              >
                                 {safePage * PAGE_SIZE + i + 1}
                               </td>
                               {result.columns?.map((col: string) => (
-                                <td key={col} className="py-1.5 px-3 border-r border-foreground/[0.06] last:border-0 truncate max-w-[300px]">
+                                <td
+                                  key={col}
+                                  className="py-1 px-3 border-r last:border-0 truncate max-w-[300px]"
+                                  style={{ fontFamily: "'IBM Plex Mono', monospace", borderColor: '#1a1a1a' }}
+                                >
                                   {formatCellValue(row[col])}
                                 </td>
                               ))}
@@ -233,37 +250,34 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
                       </table>
                     </div>
 
-                    {/* Row pagination */}
                     {totalPages > 1 && (
-                      <div className="flex items-center justify-between px-4 py-1.5 border-t border-foreground/[0.08] bg-foreground/[0.02] shrink-0">
-                        <span className="text-[10px] text-muted-foreground/50 font-mono">
-                          Showing {safePage * PAGE_SIZE + 1}–{Math.min((safePage + 1) * PAGE_SIZE, data.length)} of {data.length} rows
+                      <div
+                        className="flex items-center justify-between px-4 py-1 border-t shrink-0"
+                        style={{ background: '#1a1a1a', borderColor: '#2e2e2e' }}
+                      >
+                        <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}>
+                          {safePage * PAGE_SIZE + 1}–{Math.min((safePage + 1) * PAGE_SIZE, data.length)} of {data.length} rows
                         </span>
                         <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => setPage(p => Math.max(0, p - 1))}
-                            disabled={safePage === 0}
-                            className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-foreground/10 disabled:opacity-30 transition-all"
-                          >
-                            <ChevronLeft className="w-3.5 h-3.5" />
-                          </button>
-                          <span className="text-[11px] text-muted-foreground/60 px-2 font-mono">
+                          <PaginationBtn onClick={() => setPage(p => Math.max(0, p - 1))} disabled={safePage === 0}>
+                            <ChevronLeft className="w-3 h-3" />
+                          </PaginationBtn>
+                          <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#777', fontSize: 10, padding: '0 8px' }}>
                             {safePage + 1} / {totalPages}
                           </span>
-                          <button
-                            onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
-                            disabled={safePage >= totalPages - 1}
-                            className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-foreground/10 disabled:opacity-30 transition-all"
-                          >
-                            <ChevronRight className="w-3.5 h-3.5" />
-                          </button>
+                          <PaginationBtn onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={safePage >= totalPages - 1}>
+                            <ChevronRight className="w-3 h-3" />
+                          </PaginationBtn>
                         </div>
                       </div>
                     )}
                   </>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
-                    Success — no rows returned.
+                  <div
+                    className="h-full flex items-center justify-center"
+                    style={{ color: '#666', fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}
+                  >
+                    success — no rows returned
                   </div>
                 )}
               </div>
@@ -272,71 +286,50 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
             {/* RAW JSON */}
             {activeTab === "json" && (
               <div className="absolute inset-0 overflow-auto p-4">
-                <pre className="font-mono text-sm text-emerald-400/80 leading-relaxed">
+                <pre style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#aaaaaa', lineHeight: 1.6 }}>
                   {JSON.stringify(result.data || result, null, 2)}
                 </pre>
               </div>
             )}
 
-            {/* EXECUTION INFO */}
+            {/* INFO */}
             {activeTab === "info" && (
-              <div className="absolute inset-0 overflow-auto p-6">
-                <div className="max-w-2xl space-y-4">
-                  <div className="bg-foreground/[0.04] border border-foreground/[0.12] rounded-xl p-5">
-                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-                      <Activity className="w-4 h-4 text-primary" />
-                      Query Profile
-                    </h3>
-                    <div className="grid grid-cols-2 gap-3">
-                      <InfoCard icon={Clock}    label="Execution Time" value={`${result.executionTimeMs} ms`} />
-                      <InfoCard icon={Hash}     label="Rows Returned"  value={result.rowCount ?? 0} />
-                      <InfoCard icon={Database} label="Query Engine"   value="UQL C++ Engine v1.0" />
-                      <InfoCard icon={Info}     label="Status"         value="SUCCESS" valueClass="text-emerald-400" />
-                    </div>
-                  </div>
+              <div className="absolute inset-0 overflow-auto p-5">
+                <div className="max-w-xl space-y-3">
+                  <InfoSection title="Query Profile" icon={Activity}>
+                    <InfoRow label="Execution time" value={`${result.executionTimeMs} ms`} />
+                    <InfoRow label="Rows returned"  value={String(result.rowCount ?? 0)} />
+                    <InfoRow label="Engine"         value="UQL C++ Engine v1.0" />
+                    <InfoRow label="Status"         value="SUCCESS" highlight />
+                  </InfoSection>
 
                   {result.plan && (
-                    <div className="bg-foreground/[0.04] border border-foreground/[0.12] rounded-xl p-5">
-                      <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                        <Layers className="w-4 h-4 text-primary" />
-                        Query Execution Plan
-                      </h3>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-muted-foreground">Strategy:</span>
-                          <span className={cn("px-2 py-0.5 rounded-md text-xs font-mono font-semibold", strategyColor(result.plan.strategy))}>
-                            {result.plan.strategy}
-                          </span>
-                        </div>
-                        <div className="bg-foreground/[0.03] rounded-lg p-3 border border-foreground/[0.08]">
-                          <p className="text-xs text-muted-foreground leading-relaxed font-mono">{result.plan.detail}</p>
-                        </div>
-                        <div className="text-xs text-muted-foreground/60">
-                          UQL engine uses B+ Tree primary index for id=X lookups, secondary indexes for indexed fields, and sequential scans for all other queries.
-                        </div>
+                    <InfoSection title="Execution Plan" icon={Layers}>
+                      <InfoRow label="Strategy" value={strategyLabel(result.plan.strategy)} mono />
+                      <div
+                        className="mt-2 px-3 py-2 border rounded-sm"
+                        style={{ background: '#0d0d0d', borderColor: '#2e2e2e' }}
+                      >
+                        <p style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 11, lineHeight: 1.6 }}>
+                          {result.plan.detail}
+                        </p>
                       </div>
-                    </div>
+                    </InfoSection>
                   )}
 
                   {hasGraph && (
-                    <div className="bg-foreground/[0.04] border border-foreground/[0.12] rounded-xl p-5">
-                      <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                        <GitBranch className="w-4 h-4 text-purple-400" />
-                        Graph Traversal Info
-                      </h3>
-                      <div className="grid grid-cols-2 gap-3">
-                        <InfoCard icon={Hash}      label="Path Length"  value={result.rowCount ?? 0} />
-                        <InfoCard icon={Database}  label="Total Nodes"  value={result.graphData?.nodes?.length ?? 0} />
-                        <InfoCard icon={GitBranch} label="Total Edges"  value={result.graphData?.edges?.length ?? 0} />
-                        <InfoCard icon={Activity}  label="Algorithm"    value="BFS (Breadth-First Search)" />
-                      </div>
-                    </div>
+                    <InfoSection title="Graph Info" icon={GitBranch}>
+                      <InfoRow label="Path length"  value={String(result.rowCount ?? 0)} />
+                      <InfoRow label="Total nodes"  value={String(result.graphData?.nodes?.length ?? 0)} />
+                      <InfoRow label="Total edges"  value={String(result.graphData?.edges?.length ?? 0)} />
+                      <InfoRow label="Algorithm"    value="BFS" />
+                    </InfoSection>
                   )}
                 </div>
               </div>
             )}
 
-            {/* GRAPH VIEW */}
+            {/* GRAPH */}
             {activeTab === "graph" && hasGraph && (
               <div className="absolute inset-0">
                 <GraphView
@@ -355,31 +348,54 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
   );
 }
 
-// ── Status Bar ─────────────────────────────────────────────────────────────
+// ── Status Bar ──────────────────────────────────────────────────────────────
 function StatusBar({ result, timingHistory }: { result: any; timingHistory: TimingEntry[] }) {
   const isError = result && !result.success;
   return (
-    <div className="h-7 bg-primary text-primary-foreground flex items-center px-4 text-[11px] font-medium justify-between shadow-[0_-2px_10px_rgba(6,182,212,0.1)] shrink-0">
+    <div
+      className="flex items-center justify-between px-4 shrink-0"
+      style={{ height: 22, background: '#1a1a1a', borderTop: '1px solid #2e2e2e' }}
+    >
       <div className="flex items-center gap-4">
-        <span className="flex items-center gap-1.5">
-          <Activity className="w-3 h-3" /> UQL Engine Online
+        <span
+          className="flex items-center gap-1.5"
+          style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}
+        >
+          <Activity className="w-2.5 h-2.5" />
+          UQL Engine
         </span>
         {result && (
-          <span className={cn("px-2 py-0.5 rounded-sm bg-foreground/[0.03]", isError ? "text-red-200" : "text-emerald-100")}>
-            {isError ? "ERROR" : "SUCCESS"}
+          <span
+            style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              color: isError ? '#c44' : '#6a6',
+              fontSize: 10,
+            }}
+          >
+            {isError ? "ERROR" : "OK"}
           </span>
         )}
         {result?.plan?.strategy && (
-          <span className="text-primary-foreground/60">{result.plan.strategy}</span>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#555', fontSize: 10 }}>
+            {result.plan.strategy}
+          </span>
         )}
       </div>
-      <div className="flex items-center gap-4 text-primary-foreground/80">
+      <div className="flex items-center gap-4">
         {timingHistory.length >= 2 && <Sparkline data={timingHistory} />}
         {result && !isError && (
           <>
-            {result.graphData && <span className="flex items-center gap-1"><GitBranch className="w-3 h-3" /> Graph</span>}
-            <span>{result.rowCount ?? 0} rows</span>
-            <span>{result.executionTimeMs}ms</span>
+            {result.graphData && (
+              <span className="flex items-center gap-1" style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}>
+                <GitBranch className="w-2.5 h-2.5" /> graph
+              </span>
+            )}
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}>
+              {result.rowCount ?? 0} rows
+            </span>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}>
+              {result.executionTimeMs}ms
+            </span>
           </>
         )}
       </div>
@@ -387,47 +403,106 @@ function StatusBar({ result, timingHistory }: { result: any; timingHistory: Timi
   );
 }
 
-// ── Helpers ────────────────────────────────────────────────────────────────
+// ── Helpers ─────────────────────────────────────────────────────────────────
 function formatCellValue(val: any) {
-  if (val === null || val === undefined) return <span className="text-muted-foreground/30 italic">null</span>;
-  if (typeof val === "boolean") return <span className="text-purple-400">{val.toString()}</span>;
-  if (typeof val === "number")  return <span className="text-orange-400">{val}</span>;
-  if (typeof val === "object")  return <span className="text-emerald-600 truncate">{JSON.stringify(val)}</span>;
-  return <span>{String(val)}</span>;
+  if (val === null || val === undefined)
+    return <span style={{ color: '#555', fontStyle: 'italic' }}>null</span>;
+  if (typeof val === "boolean")
+    return <span style={{ color: '#aaa' }}>{val.toString()}</span>;
+  if (typeof val === "number")
+    return <span style={{ color: '#cccccc' }}>{val}</span>;
+  if (typeof val === "object")
+    return <span style={{ color: '#aaaaaa' }}>{JSON.stringify(val)}</span>;
+  return <span style={{ color: '#cccccc' }}>{String(val)}</span>;
 }
 
-function TabButton({ icon: Icon, label, tab, active, onClick }: {
+function TabBtn({ icon: Icon, label, tab, active, onClick }: {
   icon: any; label: string; tab: Tab; active: Tab; onClick: (t: Tab) => void;
 }) {
+  const isActive = active === tab;
   return (
     <button
       onClick={() => onClick(tab)}
-      className={cn(
-        "flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-t-lg transition-all border-b-2 border-transparent",
-        active === tab
-          ? "bg-editor-bg text-primary border-primary shadow-[0_-4px_10px_rgba(0,0,0,0.2)]"
-          : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground/80"
-      )}
+      className="flex items-center gap-1.5 px-3 transition-all border-t-2"
+      style={{
+        height: 30,
+        fontSize: 11,
+        fontFamily: "'IBM Plex Mono', monospace",
+        color: isActive ? '#ffffff' : '#888888',
+        background: isActive ? '#000000' : 'transparent',
+        borderTopColor: isActive ? '#ffffff' : 'transparent',
+      }}
+      onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#cccccc'; }}
+      onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = '#888888'; }}
     >
-      <Icon className="w-3.5 h-3.5" />
+      <Icon className="w-3 h-3" />
       {label}
     </button>
   );
 }
 
-function InfoCard({ icon: Icon, label, value, valueClass }: {
-  icon: any; label: string; value: any; valueClass?: string;
-}) {
+function ExportBtn({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <div className="bg-panel-bg border border-foreground/[0.08] p-3 rounded-lg flex items-center gap-3">
-      <div className="p-2 bg-foreground/5 rounded-md shrink-0">
-        <Icon className="w-4 h-4 text-muted-foreground" />
+    <button
+      onClick={onClick}
+      className="flex items-center gap-1 px-2 py-0.5 border transition-colors"
+      style={{
+        fontSize: 10,
+        fontFamily: "'IBM Plex Mono', monospace",
+        color: '#777',
+        borderColor: '#2a2a2a',
+        borderRadius: 3,
+        background: 'transparent',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.color = '#cccccc'; e.currentTarget.style.borderColor = '#444'; }}
+      onMouseLeave={e => { e.currentTarget.style.color = '#777'; e.currentTarget.style.borderColor = '#2a2a2a'; }}
+    >
+      <Download className="w-2.5 h-2.5" />
+      {label}
+    </button>
+  );
+}
+
+function PaginationBtn({ children, onClick, disabled }: { children: React.ReactNode; onClick: () => void; disabled: boolean }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className="p-0.5 transition-colors disabled:opacity-30"
+      style={{ color: '#666', borderRadius: 2 }}
+      onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.color = '#cccccc'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#666'; }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function InfoSection({ title, icon: Icon, children }: { title: string; icon: any; children: React.ReactNode }) {
+  return (
+    <div className="border" style={{ borderColor: '#2e2e2e', borderRadius: 3 }}>
+      <div className="flex items-center gap-2 px-4 py-2 border-b" style={{ borderColor: '#2e2e2e', background: '#1a1a1a' }}>
+        <Icon className="w-3.5 h-3.5" style={{ color: '#888888' }} />
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#cccccc', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          {title}
+        </span>
       </div>
-      <div className="min-w-0">
-        <div className="text-xs text-muted-foreground mb-0.5">{label}</div>
-        <div className={cn("text-sm font-semibold font-mono truncate", valueClass || "text-foreground")}>{value}</div>
-      </div>
+      <div className="px-4 py-3 space-y-2">{children}</div>
     </div>
   );
 }
 
+function InfoRow({ label, value, mono, highlight }: { label: string; value: string; mono?: boolean; highlight?: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", color: '#777', fontSize: 11 }}>{label}</span>
+      <span style={{
+        fontFamily: mono || highlight ? "'IBM Plex Mono', monospace" : "'IBM Plex Sans', sans-serif",
+        color: highlight ? '#8a8' : '#aaa',
+        fontSize: 11,
+      }}>
+        {value}
+      </span>
+    </div>
+  );
+}
