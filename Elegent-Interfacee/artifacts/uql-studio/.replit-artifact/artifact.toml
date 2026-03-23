@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "UQL Studio"
+version = "1.0.0"
+id = "artifacts/uql-studio"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 21358
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/uql-studio run dev"
+
+[services.env]
+PORT = "21358"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/uql-studio", "run", "build"]
+publicDir = "artifacts/uql-studio/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"

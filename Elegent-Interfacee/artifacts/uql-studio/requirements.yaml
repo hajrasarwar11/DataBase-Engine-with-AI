@@ -1,0 +1,16 @@
+packages:
+  "framer-motion": "For smooth panel collapsing, resizing, and AI assistant pulsing animations"
+  "react-simple-code-editor": "For the UQL query editor with lightweight custom syntax highlighting overlay"
+  "date-fns": "For elegant, human-readable timestamp formatting in the query history panel"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility to efficiently merge Tailwind CSS classes"
+
+images:
+  - path: "artifacts/uql-studio/public/images/ai-core.png"
+    description: "A sleek, abstract geometric AI core or glowing ethereal sphere in deep cyan and purple, isolated on a dark transparent background, suitable for a dark mode developer tool avatar"
+    aspect_ratio: "1:1"
+
+notes:
+  - Assuming @workspace/api-client-react provides all TanStack Query hooks natively
+  - Running in dark mode by default to match IDE aesthetic
+  - Custom UQL highlighting implemented locally without heavy Prism/Monaco dependencies
