@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, forwardRef, useImperativeHandle } from "react";
 import {
   Sparkles, Plus, LayoutList, Send, X, Trash2,
   Copy, Play, Check, Database, ChevronDown,
@@ -111,6 +111,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
   const [interimText, setInterimText] = useState("");
   const [attachments, setAttachments] = useState<AttachmentFile[]>([]);
   const [attachError, setAttachError] = useState<string | null>(null);
+  const [taHeight, setTaHeight] = useState(38);
   const [availableModels, setAvailableModels] = useState<string[]>([]);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [showModelSelector, setShowModelSelector] = useState(false);
@@ -152,7 +153,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
     onFinal: useCallback((t: string) => {
       setInterimText("");
       setInputText(prev => { const p = prev.trim(); return p ? `${p} ${t}` : t; });
-      setTimeout(() => { if (textareaRef.current) { textareaRef.current.style.height = "auto"; textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 160)}px`; textareaRef.current.focus(); } }, 0);
+      setTimeout(() => { autoResizeTextarea(); if (textareaRef.current) textareaRef.current.focus(); }, 0);
     }, []),
   });
 
@@ -164,8 +165,22 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
 
   const autoResizeTextarea = useCallback(() => {
-    if (textareaRef.current) { textareaRef.current.style.height = "auto"; textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 160)}px`; }
+    const el = textareaRef.current;
+    if (!el) return;
+    const cs = getComputedStyle(el);
+    const lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.625;
+    const padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+    const borV = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
+    const oneRow = Math.ceil(lineH + padV + borV);
+
+    el.style.height = "1px";
+    const scrollH = el.scrollHeight + borV;
+    const h = Math.min(el.value.trim() ? Math.max(scrollH, oneRow) : oneRow, 160);
+    el.style.height = `${h}px`;
+    setTaHeight(h);
   }, []);
+
+  useLayoutEffect(() => { autoResizeTextarea(); }, []);
 
   const buildSchemaContext = useCallback((): string => {
     if (!collections.length) return "";
@@ -242,7 +257,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
     setInputText("");
     const sentAttachments = [...attachments];
     setAttachments([]); setAttachError(null);
-    if (textareaRef.current) textareaRef.current.style.height = "auto";
+    setTimeout(() => autoResizeTextarea(), 0);
 
     let convId = activeConversationId;
     if (!convId) {
@@ -741,11 +756,11 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
               value={speech.isListening && interimText ? interimText : inputText}
               onChange={e => { if (!speech.isListening) { setInputText(e.target.value); autoResizeTextarea(); } }}
               onKeyDown={handleKeyDown}
-              placeholder={isStreaming ? "AI is responding…" : speech.isListening ? "Speak now…" : attachments.length > 0 ? "Add a message or send the file…" : "Ask me to write a query or explain UQL…"}
+              placeholder={isStreaming ? "AI is responding…" : speech.isListening ? "Speak now…" : attachments.length > 0 ? "Add a message…" : "Ask me anything…"}
               disabled={isStreaming}
               readOnly={speech.isListening}
               rows={1}
-              className="w-full border px-3 pr-16 py-2 outline-none resize-none leading-relaxed transition-colors disabled:opacity-60"
+              className="uql-ai-input w-full border px-3 pr-16 py-2 outline-none resize-none leading-relaxed transition-colors disabled:opacity-60"
               style={{
                 background: 'var(--uql-editor)',
                 borderColor: speech.isListening ? '#4a2a2a' : 'var(--uql-b3)',
@@ -753,6 +768,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                 fontSize: 12,
                 fontFamily: "'IBM Plex Mono', monospace",
                 borderRadius: 3,
+                height: taHeight,
+                maxHeight: taHeight,
+                overflowY: 'hidden',
               }}
               onFocus={e => (e.currentTarget.style.borderColor = 'var(--uql-linenum)')}
               onBlur={e => (e.currentTarget.style.borderColor = speech.isListening ? '#4a2a2a' : 'var(--uql-b3)')}

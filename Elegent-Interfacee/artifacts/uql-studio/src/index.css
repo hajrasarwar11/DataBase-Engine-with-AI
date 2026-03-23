@@ -112,6 +112,12 @@
   caret-color: #fff;
 }
 
+/* AI input: single-line initial height, grows via JS auto-resize */
+.uql-ai-input {
+  height: 38px;
+  overflow-y: hidden;
+}
+
 :root.uql-light .editor-textarea {
   caret-color: #111;
 }
