@@ -764,9 +764,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                   disabled={isStreaming}
                   title={speech.isListening ? "Stop recording" : "Speak"}
                   className="p-1.5 transition-colors"
-                  style={{ color: speech.isListening ? '#c44' : 'var(--uql-linenum)', borderRadius: 3 }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = speech.isListening ? '#e44' : 'var(--uql-t4)')}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = speech.isListening ? '#c44' : 'var(--uql-linenum)')}
+                  style={{ color: speech.isListening ? '#c44' : 'var(--uql-t5)', borderRadius: 3 }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = speech.isListening ? '#e44' : 'var(--uql-t3)')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = speech.isListening ? '#c44' : 'var(--uql-t5)')}
                 >
                   {speech.isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
                 </button>
@@ -776,9 +776,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                 disabled={(!inputText.trim() && attachments.length === 0) || isStreaming || speech.isListening}
                 className="p-1.5 transition-colors disabled:opacity-30"
                 style={{
-                  background: (inputText.trim() || attachments.length > 0) && !isStreaming ? 'var(--uql-exec-bg)' : 'var(--uql-header)',
-                  color: (inputText.trim() || attachments.length > 0) && !isStreaming ? 'var(--uql-exec-text)' : 'var(--uql-linenum)',
-                  borderRadius: 3,
+                  background: (inputText.trim() || attachments.length > 0) && !isStreaming ? 'var(--uql-exec-bg)' : 'transparent',
+                  color: (inputText.trim() || attachments.length > 0) && !isStreaming ? 'var(--uql-exec-text)' : 'var(--uql-t5)',
+                  borderRadius: 4,
                 }}
               >
                 {isStreaming ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}

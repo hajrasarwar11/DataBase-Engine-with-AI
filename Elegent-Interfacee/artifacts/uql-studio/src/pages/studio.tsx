@@ -343,7 +343,7 @@ export default function Studio() {
   }, [resultsHeight]);
 
   return (
-    <div className="flex flex-col h-screen w-full bg-background overflow-hidden" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+    <div className="flex flex-col h-screen w-full overflow-hidden" style={{ fontFamily: "'IBM Plex Sans', sans-serif", background: 'var(--uql-panel)' }}>
       <ShortcutsOverlay open={state.shortcutsOpen} onClose={() => state.setShortcutsOpen(false)} />
 
       {/* ── Title Bar ── */}
