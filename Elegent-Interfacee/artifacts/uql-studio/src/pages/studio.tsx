@@ -13,7 +13,9 @@ import {
   Play, Loader2, FolderOpen, Save, Undo2, Redo2,
   MessageSquare, Wand2, Copy, Check, Database, ChevronDown,
   Map, Keyboard, RefreshCw, Sparkles, LayoutList,
+  Sun, Moon,
 } from "lucide-react";
+import { useTheme } from "@/lib/theme-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { cn } from "@/lib/utils";
@@ -60,12 +62,12 @@ function TBtn({
       className="w-[26px] h-[26px] flex items-center justify-center transition-all disabled:opacity-30 shrink-0"
       style={{
         borderRadius: 3,
-        background: active ? '#2a2a2a' : 'transparent',
-        border: `1px solid ${active ? '#555555' : 'transparent'}`,
-        color: active ? '#ffffff' : '#aaaaaa',
+        background: active ? 'var(--uql-input)' : 'transparent',
+        border: `1px solid ${active ? 'var(--uql-b2)' : 'transparent'}`,
+        color: active ? 'var(--uql-t1)' : 'var(--uql-t4)',
       }}
-      onMouseEnter={e => { if (!disabled) { e.currentTarget.style.background = '#333333'; e.currentTarget.style.borderColor = '#3d3d3d'; e.currentTarget.style.color = '#ffffff'; } }}
-      onMouseLeave={e => { e.currentTarget.style.background = active ? '#2a2a2a' : 'transparent'; e.currentTarget.style.borderColor = active ? '#555555' : 'transparent'; e.currentTarget.style.color = active ? '#ffffff' : '#aaaaaa'; }}
+      onMouseEnter={e => { if (!disabled) { e.currentTarget.style.background = 'var(--uql-input)'; e.currentTarget.style.borderColor = 'var(--uql-b2)'; e.currentTarget.style.color = 'var(--uql-t1)'; } }}
+      onMouseLeave={e => { e.currentTarget.style.background = active ? 'var(--uql-input)' : 'transparent'; e.currentTarget.style.borderColor = active ? 'var(--uql-b2)' : 'transparent'; e.currentTarget.style.color = active ? 'var(--uql-t1)' : 'var(--uql-t4)'; }}
     >
       <Icon className="w-3.5 h-3.5" />
     </button>
@@ -73,7 +75,7 @@ function TBtn({
 }
 
 function Sep() {
-  return <div className="h-4 w-px mx-1 shrink-0" style={{ background: '#3d3d3d' }} />;
+  return <div className="h-4 w-px mx-1 shrink-0" style={{ background: 'var(--uql-b2)' }} />;
 }
 
 function TitleBtn({ icon: Icon, active, onClick, title }: any) {
@@ -84,12 +86,12 @@ function TitleBtn({ icon: Icon, active, onClick, title }: any) {
       className="w-6 h-6 flex items-center justify-center transition-colors"
       style={{
         borderRadius: 3,
-        background: active ? '#2a2a2a' : 'transparent',
-        color: active ? '#cccccc' : '#888888',
-        border: `1px solid ${active ? '#3d3d3d' : 'transparent'}`,
+        background: active ? 'var(--uql-input)' : 'transparent',
+        color: active ? 'var(--uql-t3)' : 'var(--uql-t5)',
+        border: `1px solid ${active ? 'var(--uql-b2)' : 'transparent'}`,
       }}
-      onMouseEnter={e => { if (!active) e.currentTarget.style.color = '#ffffff'; }}
-      onMouseLeave={e => { if (!active) e.currentTarget.style.color = '#888888'; }}
+      onMouseEnter={e => { if (!active) e.currentTarget.style.color = 'var(--uql-t1)'; }}
+      onMouseLeave={e => { if (!active) e.currentTarget.style.color = 'var(--uql-t5)'; }}
     >
       <Icon className="w-3.5 h-3.5" />
     </button>
@@ -123,66 +125,66 @@ function DbSelector({ activeDatabaseId, onSelectDatabase }: {
         onClick={() => setOpen(o => !o)}
         className="flex items-center gap-1.5 px-2.5 py-1 text-[11px] border transition-colors min-w-[120px] max-w-[180px]"
         style={{
-          background: '#2a2a2a',
-          borderColor: '#3d3d3d',
-          color: activeDb ? '#cccccc' : '#888888',
+          background: 'var(--uql-input)',
+          borderColor: 'var(--uql-b2)',
+          color: activeDb ? 'var(--uql-t3)' : 'var(--uql-t5)',
           borderRadius: 3,
           fontFamily: "'IBM Plex Mono', monospace",
           height: 26,
         }}
       >
-        <Database className="w-3 h-3 shrink-0 text-[#666]" />
+        <Database className="w-3 h-3 shrink-0" style={{ color: 'var(--uql-t7)' }} />
         <span className="flex-1 text-left truncate">{activeDb ? activeDb.name : "no database"}</span>
-        <ChevronDown className={cn("w-3 h-3 shrink-0 transition-transform text-[#666]", open && "rotate-180")} />
+        <ChevronDown className={cn("w-3 h-3 shrink-0 transition-transform", open && "rotate-180")} style={{ color: 'var(--uql-t7)' }} />
       </button>
 
       {open && (
         <div
           className="absolute top-full left-0 mt-0.5 z-50 border min-w-[180px] max-w-[280px] overflow-hidden"
-          style={{ background: '#1a1a1a', borderColor: '#2e2e2e', borderRadius: 3 }}
+          style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b1)', borderRadius: 3 }}
         >
           <button
             onClick={() => { onSelectDatabase(null); setOpen(false); }}
             className="w-full flex items-center gap-2 px-3 py-1.5 text-[11px] text-left transition-colors"
             style={{
-              color: !activeDb ? '#e0e0e0' : '#888',
-              background: !activeDb ? '#1e1e1e' : 'transparent',
+              color: !activeDb ? 'var(--uql-t2)' : 'var(--uql-t5)',
+              background: !activeDb ? 'var(--uql-row-b)' : 'transparent',
               fontFamily: "'IBM Plex Mono', monospace",
             }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
-            onMouseLeave={e => (e.currentTarget.style.background = !activeDb ? '#1e1e1e' : 'transparent')}
+            onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-input)')}
+            onMouseLeave={e => (e.currentTarget.style.background = !activeDb ? 'var(--uql-row-b)' : 'transparent')}
           >
             <span className="w-3 flex items-center justify-center shrink-0">
               {!activeDb && <Check className="w-2.5 h-2.5" />}
             </span>
-            <span className="italic text-[#555]">none</span>
+            <span className="italic" style={{ color: 'var(--uql-t8)' }}>none</span>
           </button>
           {Array.isArray(databases) && databases.length > 0 && (
-            <div className="border-t" style={{ borderColor: '#2a2a2a' }}>
+            <div className="border-t" style={{ borderColor: 'var(--uql-b3)' }}>
               {databases.map(db => (
                 <button
                   key={db.id}
                   onClick={() => { onSelectDatabase(db.id); setOpen(false); }}
                   className="w-full flex items-center gap-2 px-3 py-1.5 text-[11px] text-left transition-colors"
                   style={{
-                    color: db.id === activeDatabaseId ? '#e0e0e0' : '#888',
-                    background: db.id === activeDatabaseId ? '#1e1e1e' : 'transparent',
+                    color: db.id === activeDatabaseId ? 'var(--uql-t2)' : 'var(--uql-t5)',
+                    background: db.id === activeDatabaseId ? 'var(--uql-row-b)' : 'transparent',
                     fontFamily: "'IBM Plex Mono', monospace",
                   }}
-                  onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
-                  onMouseLeave={e => (e.currentTarget.style.background = db.id === activeDatabaseId ? '#1e1e1e' : 'transparent')}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-input)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = db.id === activeDatabaseId ? 'var(--uql-row-b)' : 'transparent')}
                 >
                   <span className="w-3 flex items-center justify-center shrink-0">
                     {db.id === activeDatabaseId && <Check className="w-2.5 h-2.5" />}
                   </span>
-                  <Database className="w-3 h-3 shrink-0 text-[#666]" />
+                  <Database className="w-3 h-3 shrink-0" style={{ color: 'var(--uql-t7)' }} />
                   <span className="flex-1 truncate">{db.name}</span>
                 </button>
               ))}
             </div>
           )}
           {(!databases || (Array.isArray(databases) && databases.length === 0)) && (
-            <div className="px-3 py-2 text-[11px] text-[#666] italic" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+            <div className="px-3 py-2 text-[11px] italic" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)' }}>
               no databases
             </div>
           )}
@@ -193,6 +195,7 @@ function DbSelector({ activeDatabaseId, onSelectDatabase }: {
 }
 
 export default function Studio() {
+  const { isDark, toggle: toggleTheme } = useTheme();
   const state = useIdeState();
   const queryClient = useQueryClient();
   const { data: databases = [], refetch: refetchDatabases } = useListDatabases();
@@ -344,20 +347,20 @@ export default function Studio() {
       <ShortcutsOverlay open={state.shortcutsOpen} onClose={() => state.setShortcutsOpen(false)} />
 
       {/* ── Title Bar ── */}
-      <div className="h-8 border-b border-[#2e2e2e] flex items-center px-3 gap-4 shrink-0 select-none" style={{ background: '#1a1a1a' }}>
-        <div className="flex items-center gap-2 pr-4 border-r border-[#3d3d3d]">
-          <LayoutTemplate className="w-3.5 h-3.5 text-white" />
-          <span className="text-[11px] font-bold text-white tracking-[0.1em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+      <div className="h-8 flex items-center px-3 gap-4 shrink-0 select-none border-b" style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b1)' }}>
+        <div className="flex items-center gap-2 pr-4 border-r" style={{ borderColor: 'var(--uql-b2)' }}>
+          <LayoutTemplate className="w-3.5 h-3.5" style={{ color: 'var(--uql-t1)' }} />
+          <span className="text-[11px] font-bold tracking-[0.1em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t1)' }}>
             UQL Studio
           </span>
         </div>
 
-        <div className="flex items-center gap-1 text-[11px]" style={{ color: '#888888', fontFamily: "'IBM Plex Mono', monospace" }}>
+        <div className="flex items-center gap-1 text-[11px]" style={{ color: 'var(--uql-t5)', fontFamily: "'IBM Plex Mono', monospace" }}>
           {connStatus === "online"
-            ? <Wifi className="w-3 h-3" style={{ color: '#888888' }} />
+            ? <Wifi className="w-3 h-3" style={{ color: 'var(--uql-t5)' }} />
             : connStatus === "offline"
-            ? <WifiOff className="w-3 h-3" style={{ color: '#555555' }} />
-            : <Zap className="w-3 h-3 animate-pulse" style={{ color: '#555555' }} />
+            ? <WifiOff className="w-3 h-3" style={{ color: 'var(--uql-t8)' }} />
+            : <Zap className="w-3 h-3 animate-pulse" style={{ color: 'var(--uql-t8)' }} />
           }
           <span>
             {connStatus === "online" ? `${latency}ms` : connStatus === "offline" ? "offline" : "…"}
@@ -365,6 +368,18 @@ export default function Studio() {
         </div>
 
         <div className="flex-1" />
+
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          className="w-6 h-6 flex items-center justify-center transition-colors mr-1"
+          style={{ color: 'var(--uql-t5)', borderRadius: 3 }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t1)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t5)')}
+        >
+          {isDark ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+        </button>
 
         <div className="flex items-center gap-1">
           <TitleBtn
@@ -379,7 +394,7 @@ export default function Studio() {
             onClick={() => state.setSavedQueriesOpen(v => !v)}
             title="Toggle Saved Queries (Ctrl+Shift+S)"
           />
-          <div className="h-4 w-px mx-0.5" style={{ background: '#3d3d3d' }} />
+          <div className="h-4 w-px mx-0.5" style={{ background: 'var(--uql-b2)' }} />
           <TitleBtn
             icon={PanelLeft}
             active={state.leftPanelOpen}
@@ -423,10 +438,10 @@ export default function Studio() {
         )}
       </AnimatePresence>
 
-      {/* ── Toolbar Row (was Tab Bar) — picture 2 style ── */}
+      {/* ── Toolbar Row ── */}
       <div
         className="flex items-center gap-0.5 px-2 shrink-0 border-b"
-        style={{ background: '#222222', borderColor: '#2e2e2e', height: 36 }}
+        style={{ background: 'var(--uql-toolbar)', borderColor: 'var(--uql-b1)', height: 36 }}
       >
         {/* Execute */}
         <button
@@ -434,12 +449,14 @@ export default function Studio() {
           disabled={editorState.isPending}
           className="flex items-center gap-1.5 px-3 py-1 text-[11px] font-semibold disabled:opacity-40 transition-colors shrink-0 mr-1"
           style={{
-            background: '#f0f0f0',
-            color: '#0a0a0a',
+            background: 'var(--uql-exec-bg)',
+            color: 'var(--uql-exec-text)',
             borderRadius: 3,
             fontFamily: "'IBM Plex Mono', monospace",
             height: 26,
           }}
+          onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-exec-hover)')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-exec-bg)')}
         >
           {editorState.isPending
             ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -540,7 +557,7 @@ export default function Studio() {
 
         <span
           className="ml-auto text-[10px] shrink-0 hidden sm:block"
-          style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#555555' }}
+          style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t8)' }}
         >
           Ctrl+Enter to run
         </span>
@@ -549,14 +566,14 @@ export default function Studio() {
       {/* ── Combined OBJECT EXPLORER header + File Tabs Strip ── */}
       <div
         className="flex items-stretch border-b shrink-0 overflow-hidden"
-        style={{ background: '#1a1a1a', borderColor: '#2e2e2e', minHeight: 32 }}
+        style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b1)', minHeight: 32 }}
       >
         {/* Left portion — mirrors sidebar width, shows OBJECT EXPLORER header */}
         <div
           className="shrink-0 overflow-hidden flex items-center border-r"
           style={{
-            borderColor: '#2e2e2e',
-            background: '#1a1a1a',
+            borderColor: 'var(--uql-b1)',
+            background: 'var(--uql-header)',
             width: state.leftPanelOpen ? leftWidth : 0,
             transition: isDragging ? 'none' : 'width 0.15s ease',
           }}
@@ -566,7 +583,7 @@ export default function Studio() {
           >
             <span
               className="flex items-center gap-1.5 truncate"
-              style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#cccccc', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}
+              style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}
             >
               <Database className="w-3 h-3 shrink-0" />
               Object Explorer
@@ -576,9 +593,9 @@ export default function Studio() {
                 onClick={() => refetchDatabases()}
                 title="Refresh"
                 className="w-5 h-5 flex items-center justify-center rounded transition-colors"
-                style={{ color: '#666666' }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#666666')}
+                style={{ color: 'var(--uql-t7)' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t1)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
               >
                 <RefreshCw className="w-3 h-3" />
               </button>
@@ -586,9 +603,9 @@ export default function Studio() {
                 onClick={() => setIsCreateDbOpen(true)}
                 title="New Database"
                 className="w-5 h-5 flex items-center justify-center rounded transition-colors"
-                style={{ color: '#666666' }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#666666')}
+                style={{ color: 'var(--uql-t7)' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t1)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
               >
                 <Plus className="w-3 h-3" />
               </button>
@@ -607,19 +624,19 @@ export default function Studio() {
                 height: 32,
                 fontSize: 11,
                 fontFamily: "'IBM Plex Mono', monospace",
-                borderColor: '#2e2e2e',
-                borderTop: `2px solid ${state.activeTabId === tab.id ? '#ffffff' : 'transparent'}`,
-                background: state.activeTabId === tab.id ? '#000000' : '#1a1a1a',
-                color: state.activeTabId === tab.id ? '#ffffff' : '#777777',
+                borderColor: 'var(--uql-b1)',
+                borderTop: `2px solid ${state.activeTabId === tab.id ? 'var(--uql-t1)' : 'transparent'}`,
+                background: state.activeTabId === tab.id ? 'var(--uql-tab-active)' : 'var(--uql-tab-inactive)',
+                color: state.activeTabId === tab.id ? 'var(--uql-t1)' : 'var(--uql-t7)',
               }}
-              onMouseEnter={e => { if (state.activeTabId !== tab.id) e.currentTarget.style.color = '#cccccc'; }}
-              onMouseLeave={e => { if (state.activeTabId !== tab.id) e.currentTarget.style.color = '#777777'; }}
+              onMouseEnter={e => { if (state.activeTabId !== tab.id) e.currentTarget.style.color = 'var(--uql-t3)'; }}
+              onMouseLeave={e => { if (state.activeTabId !== tab.id) e.currentTarget.style.color = 'var(--uql-t7)'; }}
             >
               <span className="truncate max-w-[140px]">{tab.title}</span>
               <button
                 onClick={(e) => { e.stopPropagation(); state.closeTab(tab.id); }}
                 className="opacity-0 group-hover:opacity-60 hover:!opacity-100 transition-all ml-0.5"
-                style={{ color: '#aaaaaa' }}
+                style={{ color: 'var(--uql-t4)' }}
                 title="Close tab"
               >
                 <XIcon className="w-3 h-3" />
@@ -632,9 +649,9 @@ export default function Studio() {
             onClick={() => state.addTab()}
             title="New query tab (Ctrl+T)"
             className="flex items-center justify-center w-8 h-8 transition-colors shrink-0"
-            style={{ color: '#555555' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#555555')}
+            style={{ color: 'var(--uql-t7)' }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t1)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
           >
             <Plus className="w-3.5 h-3.5" />
           </button>
@@ -644,8 +661,8 @@ export default function Studio() {
         <div
           className="shrink-0 overflow-hidden flex items-center border-l"
           style={{
-            borderColor: '#2e2e2e',
-            background: '#1a1a1a',
+            borderColor: 'var(--uql-b1)',
+            background: 'var(--uql-header)',
             width: state.rightPanelOpen ? rightWidth : 0,
             transition: isDragging ? 'none' : 'width 0.15s ease',
           }}
@@ -653,13 +670,13 @@ export default function Studio() {
           <div style={{ width: rightWidth, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px', flexShrink: 0 }}>
             <span
               className="flex items-center gap-1.5 truncate"
-              style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#888', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}
+              style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}
             >
               <Sparkles className="w-3 h-3 shrink-0" />
               UQL Copilot
               <span
                 className="px-1 ml-0.5"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#444', background: '#141414', border: '1px solid #2a2a2a', borderRadius: 2 }}
+                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-t8)', background: 'var(--uql-panel)', border: '1px solid var(--uql-b3)', borderRadius: 2 }}
               >
                 AI
               </span>
@@ -669,15 +686,15 @@ export default function Studio() {
                 onClick={() => aiRef.current?.toggleSessions()}
                 title="Sessions"
                 className="relative w-5 h-5 flex items-center justify-center rounded transition-colors"
-                style={{ color: aiPanelState.showSessions ? '#ffffff' : '#666666' }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
-                onMouseLeave={e => (e.currentTarget.style.color = aiPanelState.showSessions ? '#ffffff' : '#666666')}
+                style={{ color: aiPanelState.showSessions ? 'var(--uql-t1)' : 'var(--uql-t7)' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t1)')}
+                onMouseLeave={e => (e.currentTarget.style.color = aiPanelState.showSessions ? 'var(--uql-t1)' : 'var(--uql-t7)')}
               >
                 <LayoutList className="w-3 h-3" />
                 {aiPanelState.conversationCount > 0 && (
                   <span
                     className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full flex items-center justify-center"
-                    style={{ background: '#3a3a3a', fontSize: 8, color: '#aaa', fontFamily: "'IBM Plex Mono', monospace" }}
+                    style={{ background: 'var(--uql-b2)', fontSize: 8, color: 'var(--uql-t4)', fontFamily: "'IBM Plex Mono', monospace" }}
                   >
                     {aiPanelState.conversationCount > 9 ? "9+" : aiPanelState.conversationCount}
                   </span>
@@ -687,9 +704,9 @@ export default function Studio() {
                 onClick={() => aiRef.current?.newChat()}
                 title="New Chat"
                 className="w-5 h-5 flex items-center justify-center rounded transition-colors"
-                style={{ color: '#666666' }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#666666')}
+                style={{ color: 'var(--uql-t7)' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t1)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
               >
                 <Plus className="w-3 h-3" />
               </button>
@@ -727,7 +744,7 @@ export default function Studio() {
           <div
             style={{ width: 4, cursor: 'col-resize', flexShrink: 0, zIndex: 10, background: 'transparent', transition: 'background 0.1s' }}
             onMouseDown={startLeftDrag}
-            onMouseEnter={e => (e.currentTarget.style.background = '#3d3d3d')}
+            onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-drag-hover)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
           />
         )}
@@ -753,10 +770,10 @@ export default function Studio() {
             {hasResult && (
               <>
                 <div
-                  style={{ height: 4, cursor: 'row-resize', flexShrink: 0, background: '#2e2e2e', transition: 'background 0.1s' }}
+                  style={{ height: 4, cursor: 'row-resize', flexShrink: 0, background: 'var(--uql-b1)', transition: 'background 0.1s' }}
                   onMouseDown={startResultsDrag}
-                  onMouseEnter={e => (e.currentTarget.style.background = '#555555')}
-                  onMouseLeave={e => (e.currentTarget.style.background = '#2e2e2e')}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-drag-hover)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-b1)')}
                 />
                 <div style={{ height: resultsHeight, flexShrink: 0, overflow: 'hidden' }}>
                   <ResultsView
@@ -775,7 +792,8 @@ export default function Studio() {
             initial={false}
             animate={{ height: state.bottomPanelOpen ? 260 : 0 }}
             transition={{ duration: 0.15 }}
-            className="w-full shrink-0 overflow-hidden z-20 absolute bottom-0 left-0 bg-[#0d0d0d] border-t border-[#2e2e2e]"
+            className="w-full shrink-0 overflow-hidden z-20 absolute bottom-0 left-0 border-t"
+            style={{ background: 'var(--uql-panel)', borderColor: 'var(--uql-b1)' }}
           >
             <div className="h-[260px] w-full">
               <QueryHistory onLoadQuery={(q) => state.setQueryText(q)} />
@@ -790,7 +808,8 @@ export default function Studio() {
                 animate={{ height: 280 }}
                 exit={{ height: 0 }}
                 transition={{ duration: 0.15 }}
-                className="w-full shrink-0 overflow-hidden z-[25] absolute bottom-0 left-0 bg-[#0d0d0d] border-t border-[#2e2e2e]"
+                className="w-full shrink-0 overflow-hidden z-[25] absolute bottom-0 left-0 border-t"
+                style={{ background: 'var(--uql-panel)', borderColor: 'var(--uql-b1)' }}
               >
                 <div className="h-[280px] w-full">
                   <SavedQueries
@@ -811,15 +830,16 @@ export default function Studio() {
           <div
             style={{ width: 4, cursor: 'col-resize', flexShrink: 0, zIndex: 10, background: 'transparent', transition: 'background 0.1s' }}
             onMouseDown={startRightDrag}
-            onMouseEnter={e => (e.currentTarget.style.background = '#3d3d3d')}
+            onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-drag-hover)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
           />
         )}
 
         {/* Right Sidebar - AI Assistant */}
         <div
-          className="shrink-0 h-full overflow-hidden border-l border-[#2e2e2e]"
+          className="shrink-0 h-full overflow-hidden border-l"
           style={{
+            borderColor: 'var(--uql-b1)',
             width: state.rightPanelOpen ? rightWidth : 0,
             opacity: state.rightPanelOpen ? 1 : 0,
             transition: isDragging ? 'opacity 0.15s' : 'width 0.15s ease, opacity 0.15s',

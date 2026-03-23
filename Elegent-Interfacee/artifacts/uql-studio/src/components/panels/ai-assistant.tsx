@@ -349,26 +349,26 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
   return (
     <div
       className="flex flex-col h-full overflow-hidden relative"
-      style={{ background: '#0d0d0d', borderLeft: '1px solid #2e2e2e' }}
+      style={{ background: 'var(--uql-panel)', borderLeft: '1px solid var(--uql-b1)' }}
     >
       {/* Header — hidden when rendered in parent strip */}
       {!hideHeader && <div
         className="flex items-center justify-between px-3 py-2 shrink-0 border-b"
-        style={{ background: '#1a1a1a', borderColor: '#2e2e2e' }}
+        style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b1)' }}
       >
         <div className="flex items-center gap-2">
           <div
             className="w-5 h-5 flex items-center justify-center"
-            style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 3 }}
+            style={{ background: 'var(--uql-header)', border: '1px solid var(--uql-b2)', borderRadius: 3 }}
           >
-            <Sparkles className="w-3 h-3" style={{ color: '#888' }} />
+            <Sparkles className="w-3 h-3" style={{ color: 'var(--uql-t5)' }} />
           </div>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#888', fontWeight: 600 }}>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)', fontWeight: 600 }}>
             UQL Copilot
           </span>
           <span
             className="px-1"
-            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#444', background: '#141414', border: '1px solid #2a2a2a', borderRadius: 2 }}
+            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)', background: 'var(--uql-deeper)', border: '1px solid var(--uql-b3)', borderRadius: 2 }}
           >
             AI
           </span>
@@ -379,7 +379,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
             {conversations.length > 0 && (
               <span
                 className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full flex items-center justify-center"
-                style={{ background: '#3a3a3a', fontSize: 8, color: '#aaa', fontFamily: "'IBM Plex Mono', monospace" }}
+                style={{ background: 'var(--uql-b2)', fontSize: 8, color: 'var(--uql-t4)', fontFamily: "'IBM Plex Mono', monospace" }}
               >
                 {conversations.length > 9 ? "9+" : conversations.length}
               </span>
@@ -391,16 +391,16 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
 
           {/* Model selector — shown when Ollama is available */}
           {authStatus?.localModel?.available && (
-            <div ref={modelSelectorRef} className="relative ml-1 pl-1.5 border-l" style={{ borderColor: '#2a2a2a' }}>
+            <div ref={modelSelectorRef} className="relative ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)' }}>
               <button
                 onClick={() => setShowModelSelector(s => !s)}
                 title="Select Ollama model"
                 className="flex items-center gap-1 px-1.5 py-0.5 transition-colors"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#666', borderRadius: 2 }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#aaa')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#666')}
+                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-t7)', borderRadius: 2 }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t4)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
               >
-                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#555' }} />
+                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'var(--uql-t8)' }} />
                 <span className="max-w-[55px] truncate">
                   {selectedModel?.split(":")[0] ?? authStatus.localModel.model?.split(":")[0] ?? "local"}
                 </span>
@@ -414,9 +414,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                     exit={{ opacity: 0, y: -4 }}
                     transition={{ duration: 0.1 }}
                     className="absolute right-0 top-full mt-0.5 z-50 min-w-[130px] border overflow-hidden"
-                    style={{ background: '#111', borderColor: '#2a2a2a', borderRadius: 3 }}
+                    style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3 }}
                   >
-                    <div className="px-2.5 pt-2 pb-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#444', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    <div className="px-2.5 pt-2 pb-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                       Ollama models
                     </div>
                     {availableModels.map(m => (
@@ -426,22 +426,22 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                         className="w-full flex items-center gap-2 px-2.5 py-1.5 text-left transition-colors"
                         style={{
                           fontFamily: "'IBM Plex Mono', monospace", fontSize: 11,
-                          color: selectedModel === m ? '#ddd' : '#666',
-                          background: selectedModel === m ? '#1a1a1a' : 'transparent',
+                          color: selectedModel === m ? 'var(--uql-t2)' : 'var(--uql-t7)',
+                          background: selectedModel === m ? 'var(--uql-header)' : 'transparent',
                         }}
-                        onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
-                        onMouseLeave={e => (e.currentTarget.style.background = selectedModel === m ? '#1a1a1a' : 'transparent')}
+                        onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
+                        onMouseLeave={e => (e.currentTarget.style.background = selectedModel === m ? 'var(--uql-header)' : 'transparent')}
                       >
                         {selectedModel === m ? <Check className="w-2.5 h-2.5 shrink-0" /> : <span className="w-2.5 shrink-0" />}
                         <span className="truncate">{m}</span>
                       </button>
                     ))}
-                    <div className="px-2.5 pb-2 pt-1 border-t" style={{ borderColor: '#1e1e1e', marginTop: 4 }}>
+                    <div className="px-2.5 pb-2 pt-1 border-t" style={{ borderColor: 'var(--uql-b4)', marginTop: 4 }}>
                       <a href="https://ollama.com/library" target="_blank" rel="noreferrer"
                         className="flex items-center gap-1.5 transition-colors"
-                        style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#444' }}
-                        onMouseEnter={e => (e.currentTarget.style.color = '#888')}
-                        onMouseLeave={e => (e.currentTarget.style.color = '#444')}
+                        style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t5)')}
+                        onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-linenum)')}
                       >
                         <Download className="w-2.5 h-2.5" />
                         Get more models
@@ -455,22 +455,22 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
 
           {/* GitHub auth indicator */}
           {authStatus?.provider === "github" && authStatus.user && (
-            <div className="flex items-center gap-1.5 ml-1 pl-1.5 border-l" style={{ borderColor: '#2a2a2a' }}>
-              <img src={authStatus.user.avatar_url} alt={authStatus.user.name} title={`Signed in as ${authStatus.user.name}`} className="w-4 h-4 rounded-full" style={{ outline: '1px solid #333' }} />
+            <div className="flex items-center gap-1.5 ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)' }}>
+              <img src={authStatus.user.avatar_url} alt={authStatus.user.name} title={`Signed in as ${authStatus.user.name}`} className="w-4 h-4 rounded-full" style={{ outline: '1px solid var(--uql-b2)' }} />
               <button
                 onClick={async () => { await fetch("/api/auth/logout", { method: "POST", credentials: "include" }); refreshAuth(); }}
                 title="Sign out"
                 className="transition-colors"
-                style={{ color: '#444', padding: 2, borderRadius: 2 }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#aaa')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#444')}
+                style={{ color: 'var(--uql-linenum)', padding: 2, borderRadius: 2 }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-linenum)')}
               >
                 <X className="w-2.5 h-2.5" />
               </button>
             </div>
           )}
           {authStatus?.provider === "anthropic" && (
-            <div className="ml-1 pl-1.5 border-l" style={{ borderColor: '#2a2a2a', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#444' }}>
+            <div className="ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)' }}>
               Claude
             </div>
           )}
@@ -486,18 +486,18 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.15 }}
             className="border-b overflow-y-auto shrink-0"
-            style={{ borderColor: '#2e2e2e', background: '#1a1a1a' }}
+            style={{ borderColor: 'var(--uql-b1)', background: 'var(--uql-header)' }}
           >
-            <div className="px-3 py-1.5 flex items-center justify-between sticky top-0 z-10 border-b" style={{ background: '#111', borderColor: '#1e1e1e' }}>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#444', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <div className="px-3 py-1.5 flex items-center justify-between sticky top-0 z-10 border-b" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b4)' }}>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Sessions
               </span>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#333' }}>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)' }}>
                 {conversations.length}
               </span>
             </div>
             {conversations.length === 0 ? (
-              <div className="px-3 py-4 text-center" style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#333', fontSize: 11 }}>
+              <div className="px-3 py-4 text-center" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-linenum)', fontSize: 11 }}>
                 no sessions yet
               </div>
             ) : (
@@ -507,26 +507,26 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                     key={conv.id}
                     onClick={() => loadConversation(conv.id)}
                     className="flex items-center justify-between px-3 py-1.5 cursor-pointer group transition-colors"
-                    style={{ background: activeConversationId === conv.id ? '#161616' : 'transparent' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = '#111')}
-                    onMouseLeave={e => (e.currentTarget.style.background = activeConversationId === conv.id ? '#161616' : 'transparent')}
+                    style={{ background: activeConversationId === conv.id ? 'var(--uql-row-a)' : 'transparent' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-deeper)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = activeConversationId === conv.id ? 'var(--uql-row-a)' : 'transparent')}
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      <MessageSquare className="w-3 h-3 shrink-0" style={{ color: '#444' }} />
-                      <span className="truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#888', fontSize: 11 }}>
+                      <MessageSquare className="w-3 h-3 shrink-0" style={{ color: 'var(--uql-linenum)' }} />
+                      <span className="truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t5)', fontSize: 11 }}>
                         {conv.title}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 shrink-0 ml-2">
-                      <span className="group-hover:hidden" style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#333', fontSize: 10 }}>
+                      <span className="group-hover:hidden" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-linenum)', fontSize: 10 }}>
                         {formatRelativeTime(conv.createdAt)}
                       </span>
                       <button
                         onClick={e => handleDeleteConversation(conv.id, e)}
                         className="hidden group-hover:flex p-0.5 transition-colors"
-                        style={{ color: '#555', borderRadius: 2 }}
+                        style={{ color: 'var(--uql-t8)', borderRadius: 2 }}
                         onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#c44')}
-                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
+                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t8)')}
                       >
                         <Trash2 className="w-3 h-3" />
                       </button>
@@ -550,28 +550,28 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
             style={{ borderColor: '#3a3a1a', background: '#1a1a0a', borderRadius: 3 }}
           >
             <div className="flex items-start gap-2 mb-2">
-              <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: '#888' }} />
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#888' }}>
+              <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: 'var(--uql-t5)' }} />
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)' }}>
                 GitHub Models rate limit reached. Use a local Ollama model or a GitHub Pro/Education account.
               </div>
-              <button onClick={() => setRateLimitHit(false)} style={{ color: '#444', marginLeft: 'auto', borderRadius: 2 }}>
+              <button onClick={() => setRateLimitHit(false)} style={{ color: 'var(--uql-linenum)', marginLeft: 'auto', borderRadius: 2 }}>
                 <X className="w-3 h-3" />
               </button>
             </div>
             <div className="flex gap-2">
               <a href="https://ollama.com/library/phi4" target="_blank" rel="noreferrer"
                 className="flex-1 flex items-center justify-center gap-1.5 py-1.5 border transition-colors"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#888', borderColor: '#333', borderRadius: 3, background: '#111' }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#111')}
+                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)', borderColor: 'var(--uql-b2)', borderRadius: 3, background: 'var(--uql-deeper)' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-deeper)')}
               >
                 Install Phi (local)
               </a>
               <a href="/api/auth/github"
                 className="flex-1 flex items-center justify-center gap-1.5 py-1.5 border transition-colors"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#888', borderColor: '#333', borderRadius: 3, background: '#111' }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#111')}
+                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)', borderColor: 'var(--uql-b2)', borderRadius: 3, background: 'var(--uql-deeper)' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-deeper)')}
               >
                 Sign in with GitHub
               </a>
@@ -612,13 +612,13 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 10, opacity: 0 }}
             className="mx-3 mb-2 border p-3 shrink-0"
-            style={{ borderColor: '#333', background: '#111', borderRadius: 3 }}
+            style={{ borderColor: 'var(--uql-b2)', background: 'var(--uql-deeper)', borderRadius: 3 }}
           >
             <div className="flex items-start gap-2 mb-2">
-              <Zap className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: '#666' }} />
+              <Zap className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: 'var(--uql-t7)' }} />
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#888', marginBottom: 4 }}>Run this query?</div>
-                <div className="px-2 py-1.5 border" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#ccc', background: '#0a0a0a', borderColor: '#2a2a2a', borderRadius: 2 }}>
+                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)', marginBottom: 4 }}>Run this query?</div>
+                <div className="px-2 py-1.5 border" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t3)', background: 'var(--uql-panel)', borderColor: 'var(--uql-b3)', borderRadius: 2 }}>
                   {pendingRun.query}
                 </div>
               </div>
@@ -627,9 +627,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
               <button
                 onClick={confirmRun} disabled={isRunning}
                 className="flex-1 flex items-center justify-center gap-1.5 py-1.5 border transition-colors disabled:opacity-40"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#e0e0e0', background: '#222', borderColor: '#444', borderRadius: 3 }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#2a2a2a')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#222')}
+                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-exec-bg)', background: 'var(--uql-toolbar)', borderColor: 'var(--uql-linenum)', borderRadius: 3 }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-b3)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-toolbar)')}
               >
                 {isRunning ? <Loader2 className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3" />}
                 Yes, run it
@@ -637,9 +637,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
               <button
                 onClick={() => setPendingRun(null)}
                 className="px-3 py-1.5 border transition-colors"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#666', borderColor: '#2a2a2a', borderRadius: 3 }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#aaa')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#666')}
+                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t7)', borderColor: 'var(--uql-b3)', borderRadius: 3 }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t4)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
               >
                 Cancel
               </button>
@@ -652,7 +652,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
       <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf,.txt,.csv,.json,.md,.sql,.py,.js,.ts,.tsx,.jsx,.html,.xml,.yaml,.yml,.log,.sh,.env" className="hidden" onChange={handleFileSelect} />
 
       {/* Input Area */}
-      <div className="border-t p-2.5 shrink-0" style={{ borderColor: '#2e2e2e', background: '#1a1a1a' }}>
+      <div className="border-t p-2.5 shrink-0" style={{ borderColor: 'var(--uql-b1)', background: 'var(--uql-header)' }}>
         {/* Attachment chips */}
         <AnimatePresence>
           {attachments.length > 0 && (
@@ -664,7 +664,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   className="flex items-center gap-1.5 pl-1.5 pr-1 py-0.5 border"
-                  style={{ background: '#111', borderColor: '#2a2a2a', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#888' }}
+                  style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)' }}
                 >
                   {att.fileType === "image" && att.preview
                     ? <img src={att.preview} alt={att.name} className="w-3.5 h-3.5 object-cover" style={{ borderRadius: 2 }} />
@@ -675,7 +675,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                     : <FileText className="w-3 h-3 shrink-0" />
                   }
                   <span className="max-w-[90px] truncate">{att.name}</span>
-                  <button onClick={() => removeAttachment(att.id)} style={{ color: '#444', borderRadius: 2, padding: 2 }} onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#aaa')} onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#444')}>
+                  <button onClick={() => removeAttachment(att.id)} style={{ color: 'var(--uql-linenum)', borderRadius: 2, padding: 2 }} onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')} onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-linenum)')}>
                     <X className="w-2.5 h-2.5" />
                   </button>
                 </motion.div>
@@ -701,7 +701,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
         {/* DB label */}
         {activeDatabaseName && (
           <div className="flex items-center gap-1.5 mb-2">
-            <div className="flex items-center gap-1 px-1.5 py-0.5 border" style={{ background: '#111', borderColor: '#2a2a2a', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#555' }}>
+            <div className="flex items-center gap-1 px-1.5 py-0.5 border" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t8)' }}>
               <Database className="w-2.5 h-2.5" />
               {activeDatabaseName}
             </div>
@@ -728,9 +728,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
             disabled={isStreaming}
             title="Attach file"
             className="mb-1 p-1.5 transition-colors disabled:opacity-40 shrink-0"
-            style={{ color: '#444', borderRadius: 3 }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#aaa')}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#444')}
+            style={{ color: 'var(--uql-linenum)', borderRadius: 3 }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-linenum)')}
           >
             <Paperclip className="w-3.5 h-3.5" />
           </button>
@@ -747,15 +747,15 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
               rows={1}
               className="w-full border px-3 pr-16 py-2 outline-none resize-none leading-relaxed transition-colors disabled:opacity-60"
               style={{
-                background: '#080808',
-                borderColor: speech.isListening ? '#4a2a2a' : '#2a2a2a',
-                color: '#c8c8c8',
+                background: 'var(--uql-editor)',
+                borderColor: speech.isListening ? '#4a2a2a' : 'var(--uql-b3)',
+                color: 'var(--uql-t2)',
                 fontSize: 12,
                 fontFamily: "'IBM Plex Mono', monospace",
                 borderRadius: 3,
               }}
-              onFocus={e => (e.currentTarget.style.borderColor = '#444')}
-              onBlur={e => (e.currentTarget.style.borderColor = speech.isListening ? '#4a2a2a' : '#2a2a2a')}
+              onFocus={e => (e.currentTarget.style.borderColor = 'var(--uql-linenum)')}
+              onBlur={e => (e.currentTarget.style.borderColor = speech.isListening ? '#4a2a2a' : 'var(--uql-b3)')}
             />
             <div className="absolute right-1.5 bottom-1.5 flex items-center gap-0.5">
               {speech.isSupported && (
@@ -764,9 +764,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                   disabled={isStreaming}
                   title={speech.isListening ? "Stop recording" : "Speak"}
                   className="p-1.5 transition-colors"
-                  style={{ color: speech.isListening ? '#c44' : '#444', borderRadius: 3 }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = speech.isListening ? '#e44' : '#aaa')}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = speech.isListening ? '#c44' : '#444')}
+                  style={{ color: speech.isListening ? '#c44' : 'var(--uql-linenum)', borderRadius: 3 }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = speech.isListening ? '#e44' : 'var(--uql-t4)')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = speech.isListening ? '#c44' : 'var(--uql-linenum)')}
                 >
                   {speech.isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
                 </button>
@@ -776,8 +776,8 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                 disabled={(!inputText.trim() && attachments.length === 0) || isStreaming || speech.isListening}
                 className="p-1.5 transition-colors disabled:opacity-30"
                 style={{
-                  background: (inputText.trim() || attachments.length > 0) && !isStreaming ? '#e0e0e0' : '#1a1a1a',
-                  color: (inputText.trim() || attachments.length > 0) && !isStreaming ? '#0a0a0a' : '#444',
+                  background: (inputText.trim() || attachments.length > 0) && !isStreaming ? 'var(--uql-exec-bg)' : 'var(--uql-header)',
+                  color: (inputText.trim() || attachments.length > 0) && !isStreaming ? 'var(--uql-exec-text)' : 'var(--uql-linenum)',
                   borderRadius: 3,
                 }}
               >
@@ -786,7 +786,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
             </div>
           </div>
         </div>
-        <div className="mt-1.5 text-center" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#333' }}>
+        <div className="mt-1.5 text-center" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)' }}>
           Enter to send · Shift+Enter for newline
         </div>
       </div>
@@ -800,9 +800,9 @@ function AiBtn({ children, onClick, active, title }: { children: React.ReactNode
       onClick={onClick}
       title={title}
       className="relative w-6 h-6 flex items-center justify-center transition-colors"
-      style={{ color: active ? '#bbb' : '#444', background: active ? '#1a1a1a' : 'transparent', borderRadius: 3 }}
-      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#aaa')}
-      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = active ? '#bbb' : '#444')}
+      style={{ color: active ? 'var(--uql-t3)' : 'var(--uql-linenum)', background: active ? 'var(--uql-header)' : 'transparent', borderRadius: 3 }}
+      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
+      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = active ? 'var(--uql-t3)' : 'var(--uql-linenum)')}
     >
       {children}
     </button>
@@ -813,53 +813,53 @@ function NoProviderScreen() {
   return (
     <div className="flex flex-col h-full p-4">
       <div className="flex flex-col items-center justify-center flex-1 text-center">
-        <div className="w-10 h-10 flex items-center justify-center mb-4 border" style={{ background: '#111', borderColor: '#222', borderRadius: 3 }}>
-          <Sparkles className="w-5 h-5" style={{ color: '#444' }} />
+        <div className="w-10 h-10 flex items-center justify-center mb-4 border" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b2)', borderRadius: 3 }}>
+          <Sparkles className="w-5 h-5" style={{ color: 'var(--uql-linenum)' }} />
         </div>
-        <h3 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#888', fontWeight: 600, marginBottom: 4 }}>
+        <h3 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t5)', fontWeight: 600, marginBottom: 4 }}>
           UQL Copilot
         </h3>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#444', marginBottom: 20, maxWidth: 200, lineHeight: 1.6 }}>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginBottom: 20, maxWidth: 200, lineHeight: 1.6 }}>
           Choose how to power your AI — locally or via GitHub.
         </p>
 
         {/* Local Phi */}
-        <div className="w-full mb-3 border p-3 text-left" style={{ borderColor: '#2a2a2a', background: '#0d0d0d', borderRadius: 3 }}>
+        <div className="w-full mb-3 border p-3 text-left" style={{ borderColor: 'var(--uql-b3)', background: 'var(--uql-panel)', borderRadius: 3 }}>
           <div className="flex items-center gap-2 mb-2">
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#888', fontWeight: 600 }}>Local Phi — offline, no login</span>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)', fontWeight: 600 }}>Local Phi — offline, no login</span>
           </div>
-          <div className="border p-2 mb-2 space-y-1.5" style={{ borderColor: '#1e1e1e', background: '#080808', borderRadius: 2 }}>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#444', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Step 1 — Install Ollama</div>
+          <div className="border p-2 mb-2 space-y-1.5" style={{ borderColor: 'var(--uql-b4)', background: 'var(--uql-editor)', borderRadius: 2 }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Step 1 — Install Ollama</div>
             <div className="grid grid-cols-3 gap-1">
               {[["🪟 Win", "https://ollama.com/download/windows"], ["🍎 Mac", "https://ollama.com/download/mac"], ["🐧 Linux", "https://ollama.com/download/linux"]].map(([label, url]) => (
                 <a key={url} href={url} target="_blank" rel="noreferrer"
                   className="flex items-center justify-center py-1 border transition-colors"
-                  style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#666', borderColor: '#2a2a2a', borderRadius: 2, background: '#111' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#aaa')}
-                  onMouseLeave={e => (e.currentTarget.style.color = '#666')}
+                  style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)', borderColor: 'var(--uql-b3)', borderRadius: 2, background: 'var(--uql-deeper)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t4)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
                 >
                   {label}
                 </a>
               ))}
             </div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#444', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>Step 2 — Pull a model</div>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>Step 2 — Pull a model</div>
             <div className="space-y-0.5">
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#666' }}>
-                <span style={{ color: '#555' }}>$ </span>ollama pull phi4 <span style={{ color: '#333' }}># 9 GB</span>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)' }}>
+                <span style={{ color: 'var(--uql-t8)' }}>$ </span>ollama pull phi4 <span style={{ color: 'var(--uql-linenum)' }}># 9 GB</span>
               </div>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#666' }}>
-                <span style={{ color: '#555' }}>$ </span>ollama pull phi3:mini <span style={{ color: '#333' }}># 2 GB</span>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)' }}>
+                <span style={{ color: 'var(--uql-t8)' }}>$ </span>ollama pull phi3:mini <span style={{ color: 'var(--uql-linenum)' }}># 2 GB</span>
               </div>
             </div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#333', marginTop: 2 }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginTop: 2 }}>
               Step 3 — Refresh this page
             </div>
           </div>
           <a href="https://ollama.com" target="_blank" rel="noreferrer"
             className="w-full flex items-center justify-center gap-2 py-2 border transition-colors"
-            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#888', borderColor: '#2a2a2a', borderRadius: 3, background: '#111' }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
-            onMouseLeave={e => (e.currentTarget.style.background = '#111')}
+            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)', borderColor: 'var(--uql-b3)', borderRadius: 3, background: 'var(--uql-deeper)' }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-deeper)')}
           >
             <Download className="w-3.5 h-3.5" />
             Download Ollama
@@ -867,23 +867,23 @@ function NoProviderScreen() {
         </div>
 
         <div className="flex items-center w-full gap-2 mb-3">
-          <div className="flex-1 h-px" style={{ background: '#1e1e1e' }} />
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#333' }}>or</span>
-          <div className="flex-1 h-px" style={{ background: '#1e1e1e' }} />
+          <div className="flex-1 h-px" style={{ background: 'var(--uql-b4)' }} />
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)' }}>or</span>
+          <div className="flex-1 h-px" style={{ background: 'var(--uql-b4)' }} />
         </div>
 
         <a href="/api/auth/github"
           className="w-full flex items-center justify-center gap-2 py-2 border transition-colors"
-          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#e0e0e0', background: '#e0e0e0', borderColor: '#e0e0e0', borderRadius: 3 }}
-          onMouseEnter={e => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.borderColor = '#ffffff'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = '#e0e0e0'; e.currentTarget.style.borderColor = '#e0e0e0'; }}
+          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-exec-text)', background: 'var(--uql-exec-bg)', borderColor: 'var(--uql-exec-bg)', borderRadius: 3 }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--uql-exec-hover)'; e.currentTarget.style.borderColor = 'var(--uql-exec-hover)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'var(--uql-exec-bg)'; e.currentTarget.style.borderColor = 'var(--uql-exec-bg)'; }}
         >
-          <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" style={{ fill: "#0a0a0a" }}>
+          <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" style={{ fill: "var(--uql-exec-text)" }}>
             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
           </svg>
-          <span style={{ color: '#0a0a0a' }}>Continue with GitHub</span>
+          <span style={{ color: 'var(--uql-exec-text)' }}>Continue with GitHub</span>
         </a>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#333', marginTop: 8 }}>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginTop: 8 }}>
           Free via GitHub Models — Education &amp; Pro plans
         </p>
       </div>
@@ -898,25 +898,25 @@ function WelcomeScreen({ activeDatabaseName, onPromptClick }: { activeDatabaseNa
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-4">
-      <div className="w-10 h-10 flex items-center justify-center mb-4 border" style={{ background: '#111', borderColor: '#222', borderRadius: 3 }}>
-        <Sparkles className="w-5 h-5" style={{ color: '#555' }} />
+      <div className="w-10 h-10 flex items-center justify-center mb-4 border" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b2)', borderRadius: 3 }}>
+        <Sparkles className="w-5 h-5" style={{ color: 'var(--uql-t8)' }} />
       </div>
-      <h3 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#888', fontWeight: 600, marginBottom: 4 }}>UQL Copilot</h3>
-      <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#444', marginBottom: 20, lineHeight: 1.6, textAlign: 'center', maxWidth: 200 }}>
+      <h3 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t5)', fontWeight: 600, marginBottom: 4 }}>UQL Copilot</h3>
+      <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginBottom: 20, lineHeight: 1.6, textAlign: 'center', maxWidth: 200 }}>
         Ask me to write queries, explain UQL syntax, or help design your schema.
       </p>
       <div className="w-full space-y-1.5">
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#333', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>Try asking</div>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>Try asking</div>
         {prompts.map(prompt => (
           <button
             key={prompt}
             onClick={() => onPromptClick(prompt)}
             className="w-full text-left px-3 py-2 border transition-colors flex items-center gap-2"
-            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#666', background: '#0d0d0d', borderColor: '#1e1e1e', borderRadius: 3 }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#111'; e.currentTarget.style.color = '#aaa'; e.currentTarget.style.borderColor = '#2a2a2a'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#0d0d0d'; e.currentTarget.style.color = '#666'; e.currentTarget.style.borderColor = '#1e1e1e'; }}
+            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t7)', background: 'var(--uql-panel)', borderColor: 'var(--uql-b4)', borderRadius: 3 }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--uql-deeper)'; e.currentTarget.style.color = 'var(--uql-t4)'; e.currentTarget.style.borderColor = 'var(--uql-b3)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--uql-panel)'; e.currentTarget.style.color = 'var(--uql-t7)'; e.currentTarget.style.borderColor = 'var(--uql-b4)'; }}
           >
-            <span style={{ color: '#333' }}>›</span>
+            <span style={{ color: 'var(--uql-linenum)' }}>›</span>
             {prompt}
           </button>
         ))}
@@ -940,7 +940,7 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
             <div className="flex flex-wrap gap-1.5 justify-end">
               {message.attachments.map((att, i) => (
                 <div key={i} className="flex items-center gap-1.5 px-2 py-0.5 border"
-                  style={{ background: '#111', borderColor: '#2a2a2a', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#666' }}
+                  style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)' }}
                 >
                   {att.fileType === "image" && att.preview
                     ? <img src={att.preview} alt={att.name} className="w-4 h-4 object-cover" style={{ borderRadius: 2 }} />
@@ -955,7 +955,7 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
           )}
           {message.content && (
             <div className="px-3 py-2 border"
-              style={{ background: '#1a1a1a', borderColor: '#333', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#c8c8c8', lineHeight: 1.6 }}
+              style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b2)', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t2)', lineHeight: 1.6 }}
             >
               {message.content}
             </div>
@@ -967,15 +967,15 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
 
   return (
     <div className="flex gap-2">
-      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 border" style={{ background: '#111', borderColor: '#2a2a2a', borderRadius: 2 }}>
-        <Sparkles className="w-3 h-3" style={{ color: '#555' }} />
+      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 border" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 2 }}>
+        <Sparkles className="w-3 h-3" style={{ color: 'var(--uql-t8)' }} />
       </div>
       <div className="flex-1 min-w-0 space-y-2">
         {message.isStreaming && message.content === "" ? (
           <div className="flex items-center gap-1 py-1">
-            <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#444', animationDelay: '0ms' }} />
-            <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#444', animationDelay: '150ms' }} />
-            <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#444', animationDelay: '300ms' }} />
+            <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--uql-linenum)', animationDelay: '0ms' }} />
+            <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--uql-linenum)', animationDelay: '150ms' }} />
+            <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--uql-linenum)', animationDelay: '300ms' }} />
           </div>
         ) : (
           <>
@@ -983,7 +983,7 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
               if (part.type === "text") {
                 return (
                   <div key={i} className="whitespace-pre-wrap"
-                    style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#888', lineHeight: 1.7 }}
+                    style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t5)', lineHeight: 1.7 }}
                   >
                     {part.value}
                   </div>
@@ -992,9 +992,9 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
               const copyKey = `${message.id}-uql-${i}`;
               const existingResult = runResults.find(r => r.query === part.value);
               return (
-                <div key={i} className="border overflow-hidden" style={{ borderColor: '#2a2a2a', borderRadius: 3 }}>
-                  <div className="flex items-center justify-between px-3 py-1 border-b" style={{ background: '#111', borderColor: '#1e1e1e' }}>
-                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#444', textTransform: 'uppercase', letterSpacing: '0.06em' }}>UQL</span>
+                <div key={i} className="border overflow-hidden" style={{ borderColor: 'var(--uql-b3)', borderRadius: 3 }}>
+                  <div className="flex items-center justify-between px-3 py-1 border-b" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b4)' }}>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>UQL</span>
                     <div className="flex items-center gap-0.5">
                       <CodeBtn onClick={() => onInsert?.(part.value)} title="Insert into editor">
                         <Table2 className="w-2.5 h-2.5" />
@@ -1007,15 +1007,15 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
                       <button
                         onClick={() => onCopy(part.value, copyKey)}
                         className="p-1 transition-colors"
-                        style={{ color: copiedId === copyKey ? '#8a8' : '#444', borderRadius: 2 }}
-                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#aaa')}
-                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = copiedId === copyKey ? '#8a8' : '#444')}
+                        style={{ color: copiedId === copyKey ? '#8a8' : 'var(--uql-linenum)', borderRadius: 2 }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
+                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = copiedId === copyKey ? '#8a8' : 'var(--uql-linenum)')}
                       >
                         {copiedId === copyKey ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}
                       </button>
                     </div>
                   </div>
-                  <div className="px-3 py-2.5" style={{ background: '#060606', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#c8c8c8', lineHeight: 1.6 }}>
+                  <div className="px-3 py-2.5" style={{ background: 'var(--uql-editor)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t2)', lineHeight: 1.6 }}>
                     {part.value}
                   </div>
                   {existingResult && <InlineResult result={existingResult.result} />}
@@ -1023,7 +1023,7 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
               );
             })}
             {message.isStreaming && (
-              <span className="inline-block w-0.5 h-3 animate-pulse rounded-sm ml-0.5" style={{ background: '#666' }} />
+              <span className="inline-block w-0.5 h-3 animate-pulse rounded-sm ml-0.5" style={{ background: 'var(--uql-t7)' }} />
             )}
           </>
         )}
@@ -1038,9 +1038,9 @@ function CodeBtn({ onClick, title, children }: { onClick: () => void; title: str
       onClick={onClick}
       title={title}
       className="flex items-center gap-1 px-2 py-0.5 transition-colors"
-      style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#555', borderRadius: 2 }}
-      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#aaa')}
-      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
+      style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t8)', borderRadius: 2 }}
+      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
+      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t8)')}
     >
       {children}
     </button>
@@ -1050,7 +1050,7 @@ function CodeBtn({ onClick, title, children }: { onClick: () => void; title: str
 function InlineResult({ result }: { result: { success: boolean; rows?: any[]; rowCount?: number; error?: string } }) {
   if (!result.success) {
     return (
-      <div className="px-3 py-2 flex items-start gap-1.5 border-t" style={{ borderColor: '#2a1a1a', background: '#120808' }}>
+      <div className="px-3 py-2 flex items-start gap-1.5 border-t" style={{ borderColor: 'rgba(160,40,40,0.3)', background: 'rgba(30,8,8,0.8)' }}>
         <AlertCircle className="w-3 h-3 shrink-0 mt-0.5" style={{ color: '#c44' }} />
         <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#c44', lineHeight: 1.5 }}>{result.error ?? "Query failed"}</span>
       </div>
@@ -1058,29 +1058,29 @@ function InlineResult({ result }: { result: { success: boolean; rows?: any[]; ro
   }
   const rows = result.rows ?? [], rowCount = result.rowCount ?? rows.length;
   return (
-    <div className="border-t" style={{ borderColor: '#1a2a1a', background: '#080f08' }}>
-      <div className="px-3 py-1 flex items-center gap-1.5 border-b" style={{ borderColor: '#1a2a1a' }}>
+    <div className="border-t" style={{ borderColor: 'rgba(40,100,40,0.3)', background: 'rgba(8,20,8,0.8)' }}>
+      <div className="px-3 py-1 flex items-center gap-1.5 border-b" style={{ borderColor: 'rgba(40,100,40,0.3)' }}>
         <Check className="w-3 h-3" style={{ color: '#5a8' }} />
         <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#5a8' }}>{rowCount} row{rowCount !== 1 ? "s" : ""} affected</span>
       </div>
       {rows.length > 0 && (
         <div className="overflow-x-auto max-h-[100px] overflow-y-auto">
           <table className="w-full border-collapse" style={{ fontSize: 10 }}>
-            <thead style={{ background: '#0a0a0a' }}>
+            <thead style={{ background: 'var(--uql-panel)' }}>
               <tr>
                 {Object.keys(rows[0]).map(k => (
                   <th key={k} className="px-2 py-0.5 text-left border-b whitespace-nowrap"
-                    style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#555', borderColor: '#1e1e1e', fontWeight: 500 }}
+                    style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t8)', borderColor: 'var(--uql-b4)', fontWeight: 500 }}
                   >{k}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {rows.slice(0, 5).map((row, i) => (
-                <tr key={i} className="border-b" style={{ borderColor: '#111' }}>
+                <tr key={i} className="border-b" style={{ borderColor: 'var(--uql-deeper)' }}>
                   {Object.values(row).map((v: any, j) => (
                     <td key={j} className="px-2 py-0.5 whitespace-nowrap max-w-[80px] overflow-hidden text-ellipsis"
-                      style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#888' }}
+                      style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t5)' }}
                     >
                       {typeof v === "object" ? JSON.stringify(v) : String(v)}
                     </td>
@@ -1090,7 +1090,7 @@ function InlineResult({ result }: { result: { success: boolean; rows?: any[]; ro
             </tbody>
           </table>
           {rows.length > 5 && (
-            <div className="px-2 py-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#444' }}>
+            <div className="px-2 py-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)' }}>
               + {rows.length - 5} more rows
             </div>
           )}

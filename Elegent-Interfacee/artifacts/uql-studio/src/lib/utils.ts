@@ -9,8 +9,43 @@ const UQL_KEYWORDS = ['FIND', 'ADD', 'MODIFY', 'REMOVE', 'WHERE', 'SET', 'VALUES
 
 export type Theme = 'dark' | 'light';
 
-export const highlightUQL = (code: string, _theme: Theme = 'dark'): string => {
+interface SyntaxColors {
+  comment: string;
+  string: string;
+  object: string;
+  keyword: string;
+  ident: string;
+  number: string;
+  operator: string;
+  bracket: string;
+}
+
+const DARK_COLORS: SyntaxColors = {
+  comment: '#555555',
+  string: '#aaaaaa',
+  object: '#cccccc',
+  keyword: '#ffffff',
+  ident: '#e0e0e0',
+  number: '#dddddd',
+  operator: '#888888',
+  bracket: '#aaaaaa',
+};
+
+const LIGHT_COLORS: SyntaxColors = {
+  comment: '#999999',
+  string: '#4a4a4a',
+  object: '#333333',
+  keyword: '#000000',
+  ident: '#1a1a1a',
+  number: '#333333',
+  operator: '#555555',
+  bracket: '#666666',
+};
+
+export const highlightUQL = (code: string, theme: Theme = 'dark'): string => {
+  const c = theme === 'light' ? LIGHT_COLORS : DARK_COLORS;
   const lines = code.split('\n');
+
   const processedLines = lines.map(line => {
     let result = '';
     let i = 0;
@@ -18,7 +53,7 @@ export const highlightUQL = (code: string, _theme: Theme = 'dark'): string => {
 
     while (i < chars.length) {
       if (chars[i] === '-' && chars[i + 1] === '-') {
-        result += `<span style="color:#555555;font-style:italic">${escapeHtml(chars.slice(i))}</span>`;
+        result += `<span style="color:${c.comment};font-style:italic">${escapeHtml(chars.slice(i))}</span>`;
         break;
       }
 
@@ -26,7 +61,7 @@ export const highlightUQL = (code: string, _theme: Theme = 'dark'): string => {
         const quote = chars[i];
         let j = i + 1;
         while (j < chars.length && chars[j] !== quote) j++;
-        result += `<span style="color:#aaaaaa">${escapeHtml(chars.slice(i, j + 1))}</span>`;
+        result += `<span style="color:${c.string}">${escapeHtml(chars.slice(i, j + 1))}</span>`;
         i = j + 1;
         continue;
       }
@@ -39,7 +74,7 @@ export const highlightUQL = (code: string, _theme: Theme = 'dark'): string => {
           if (chars[j] === '}') depth--;
           j++;
         }
-        result += `<span style="color:#cccccc">${escapeHtml(chars.slice(i, j))}</span>`;
+        result += `<span style="color:${c.object}">${escapeHtml(chars.slice(i, j))}</span>`;
         i = j;
         continue;
       }
@@ -50,9 +85,9 @@ export const highlightUQL = (code: string, _theme: Theme = 'dark'): string => {
         const word = chars.slice(i, j);
         const upper = word.toUpperCase().replace(/\./g, '');
         if (UQL_KEYWORDS.includes(upper)) {
-          result += `<span style="color:#ffffff;font-weight:600">${word.toUpperCase()}</span>`;
+          result += `<span style="color:${c.keyword};font-weight:600">${word.toUpperCase()}</span>`;
         } else {
-          result += `<span style="color:#e0e0e0">${escapeHtml(word)}</span>`;
+          result += `<span style="color:${c.ident}">${escapeHtml(word)}</span>`;
         }
         i = j;
         continue;
@@ -61,7 +96,7 @@ export const highlightUQL = (code: string, _theme: Theme = 'dark'): string => {
       if (/\d/.test(chars[i])) {
         let j = i;
         while (j < chars.length && /[\d.]/.test(chars[j])) j++;
-        result += `<span style="color:#dddddd;font-style:italic">${escapeHtml(chars.slice(i, j))}</span>`;
+        result += `<span style="color:${c.number};font-style:italic">${escapeHtml(chars.slice(i, j))}</span>`;
         i = j;
         continue;
       }
@@ -69,13 +104,13 @@ export const highlightUQL = (code: string, _theme: Theme = 'dark'): string => {
       if (/[=<>!]/.test(chars[i])) {
         let j = i;
         while (j < chars.length && /[=<>!]/.test(chars[j])) j++;
-        result += `<span style="color:#888888">${escapeHtml(chars.slice(i, j))}</span>`;
+        result += `<span style="color:${c.operator}">${escapeHtml(chars.slice(i, j))}</span>`;
         i = j;
         continue;
       }
 
       if (/[()[\]]/.test(chars[i])) {
-        result += `<span style="color:#aaaaaa">${escapeHtml(chars[i])}</span>`;
+        result += `<span style="color:${c.bracket}">${escapeHtml(chars[i])}</span>`;
         i++;
         continue;
       }

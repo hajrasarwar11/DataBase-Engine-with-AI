@@ -107,7 +107,7 @@ function highlightWithError(code: string, theme: Theme, errorLine: number | null
 function Minimap({ code, theme, errorLine }: { code: string; theme: Theme; errorLine: number | null }) {
   const lines = code.split('\n');
   return (
-    <div className="w-[100px] shrink-0 h-full overflow-hidden border-l border-[#2e2e2e] bg-[#0d0d0d] select-none">
+    <div className="w-[100px] shrink-0 h-full overflow-hidden border-l select-none" style={{ borderColor: 'var(--uql-b1)', background: 'var(--uql-gutter)' }}>
       <div className="px-1 py-1 origin-top-left" style={{ transform: 'scale(0.22)', width: '455px', transformOrigin: '0 0' }}>
         {lines.map((line, i) => (
           <div
@@ -328,7 +328,7 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
     <>
     <div
       className="flex flex-col h-full relative"
-      style={{ background: '#000000' }}
+      style={{ background: 'var(--uql-editor)' }}
       onKeyDown={handleKeyDown}
     >
       <input ref={fileInputRef} type="file" accept=".uql,.sql,.txt" className="hidden" onChange={handleFileChange} />
@@ -336,9 +336,9 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
       {/* Loading overlay when executing */}
       {executeMutation.isPending && (
         <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5 px-2 py-1 rounded"
-          style={{ background: '#1a1a1a', border: '1px solid #2e2e2e' }}>
-          <Loader2 className="w-3 h-3 animate-spin" style={{ color: '#888888' }} />
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#888888' }}>running…</span>
+          style={{ background: 'var(--uql-header)', border: '1px solid var(--uql-b1)' }}>
+          <Loader2 className="w-3 h-3 animate-spin" style={{ color: 'var(--uql-t5)' }} />
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)' }}>running…</span>
         </div>
       )}
 
@@ -349,8 +349,8 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
         <div
           ref={gutterRef}
           style={{
-            background: '#0d0d0d',
-            borderRight: '1px solid #1e1e1e',
+            background: 'var(--uql-gutter)',
+            borderRight: '1px solid var(--uql-b4)',
             width: lineCount >= 100 ? 52 : 44,
             flexShrink: 0,
             overflowY: 'hidden',
@@ -366,7 +366,7 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
                 height: `${FONT_SIZE * LINE_HEIGHT}px`,
                 lineHeight: `${FONT_SIZE * LINE_HEIGHT}px`,
                 fontSize: FONT_SIZE - 1,
-                color: lastErrorLine === n - 1 ? '#c44' : '#444444',
+                color: lastErrorLine === n - 1 ? '#c44' : 'var(--uql-linenum)',
                 textAlign: 'right',
                 paddingRight: 10,
                 fontFamily: "'IBM Plex Mono', monospace",
@@ -381,7 +381,7 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
         <div
           ref={containerRef}
           className="flex-1 overflow-auto uql-editor-container relative min-w-0"
-          style={{ background: '#000000' }}
+          style={{ background: 'var(--uql-editor)' }}
           onScroll={handleEditorScroll}
         >
           <Editor
@@ -420,8 +420,8 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
         <div
           style={{
             width: 360,
-            background: '#1a1a1a',
-            border: '1px solid #3d3d3d',
+            background: 'var(--uql-header)',
+            border: '1px solid var(--uql-b2)',
             borderRadius: 3,
             boxShadow: '0 20px 60px rgba(0,0,0,0.85)',
             animation: 'save-dialog-in 0.14s ease',
@@ -431,16 +431,16 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
           {/* Title bar */}
           <div
             className="flex items-center justify-between px-4 py-2"
-            style={{ background: '#222222', borderBottom: '1px solid #2e2e2e' }}
+            style={{ background: 'var(--uql-toolbar)', borderBottom: '1px solid var(--uql-b1)' }}
           >
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, fontWeight: 600, color: '#ffffff' }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, fontWeight: 600, color: 'var(--uql-t1)' }}>
               Save Query File
             </span>
             <button
               onClick={() => setSaveDialogOpen(false)}
-              style={{ color: '#777', background: 'none', border: 'none', cursor: 'pointer', padding: '2px' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#777')}
+              style={{ color: 'var(--uql-t6)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t1)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t6)')}
             >
               <XIcon className="w-3.5 h-3.5" />
             </button>
@@ -451,7 +451,7 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
             onSubmit={(e) => { e.preventDefault(); doSave(saveFilename); }}
           >
             <div className="px-5 py-5">
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#888', letterSpacing: '0.04em', marginBottom: 6 }}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)', letterSpacing: '0.04em', marginBottom: 6 }}>
                 FILE NAME
               </div>
               <input
@@ -461,19 +461,19 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
                 onKeyDown={e => { if (e.key === 'Escape') setSaveDialogOpen(false); }}
                 className="w-full px-3 py-1.5 outline-none"
                 style={{
-                  background: '#2a2a2a',
-                  border: '1px solid #3d3d3d',
-                  color: '#e0e0e0',
+                  background: 'var(--uql-input)',
+                  border: '1px solid var(--uql-b2)',
+                  color: 'var(--uql-t2)',
                   fontSize: 12,
                   fontFamily: "'IBM Plex Mono', monospace",
                   borderRadius: 3,
                 }}
                 placeholder="query.uql"
                 spellCheck={false}
-                onFocus={e => (e.currentTarget.style.borderColor = '#888')}
-                onBlur={e => (e.currentTarget.style.borderColor = '#3d3d3d')}
+                onFocus={e => (e.currentTarget.style.borderColor = 'var(--uql-t5)')}
+                onBlur={e => (e.currentTarget.style.borderColor = 'var(--uql-b2)')}
               />
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#555', marginTop: 6 }}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t8)', marginTop: 6 }}>
                 The file will be saved to your browser's download location.
               </div>
             </div>
@@ -481,7 +481,7 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
             {/* Footer */}
             <div
               className="flex items-center justify-end gap-2 px-5 py-3"
-              style={{ background: '#222222', borderTop: '1px solid #2e2e2e' }}
+              style={{ background: 'var(--uql-toolbar)', borderTop: '1px solid var(--uql-b1)' }}
             >
               <button
                 type="button"
@@ -489,15 +489,15 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
                 style={{
                   padding: '5px 16px',
                   fontFamily: "'IBM Plex Mono', monospace",
-                  color: '#aaa',
+                  color: 'var(--uql-t4)',
                   background: 'transparent',
-                  border: '1px solid #3d3d3d',
+                  border: '1px solid var(--uql-b2)',
                   fontSize: 11,
                   borderRadius: 3,
                   cursor: 'pointer',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#666'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = '#aaa'; e.currentTarget.style.borderColor = '#3d3d3d'; }}
+                onMouseEnter={e => { e.currentTarget.style.color = 'var(--uql-t1)'; e.currentTarget.style.borderColor = 'var(--uql-t7)'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'var(--uql-t4)'; e.currentTarget.style.borderColor = 'var(--uql-b2)'; }}
               >
                 Cancel
               </button>
@@ -506,16 +506,16 @@ export const QueryEditor = forwardRef<QueryEditorHandle, QueryEditorProps>(funct
                 style={{
                   padding: '5px 20px',
                   fontFamily: "'IBM Plex Mono', monospace",
-                  background: '#f0f0f0',
-                  color: '#0a0a0a',
+                  background: 'var(--uql-exec-bg)',
+                  color: 'var(--uql-exec-text)',
                   border: '1px solid transparent',
                   fontSize: 11,
                   borderRadius: 3,
                   fontWeight: 700,
                   cursor: 'pointer',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#ffffff')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#f0f0f0')}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-exec-hover)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-exec-bg)')}
               >
                 Save
               </button>

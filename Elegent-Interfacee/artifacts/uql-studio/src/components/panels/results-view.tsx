@@ -77,11 +77,11 @@ function Sparkline({ data }: { data: TimingEntry[] }) {
             cx={(i / (data.length - 1)) * w}
             cy={h - (d.ms / maxMs) * (h - 2) - 1}
             r="1.5"
-            fill={d.success ? 'rgba(180,180,180,0.6)' : 'rgba(180,60,60,0.7)'}
+            fill={d.success ? 'rgba(140,140,140,0.6)' : 'rgba(180,60,60,0.7)'}
           />
         ))}
       </svg>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#555' }}>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t8)' }}>
         {last.ms}ms
       </span>
     </span>
@@ -98,10 +98,10 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
 
   if (!result) {
     return (
-      <div className="flex flex-col h-full border-t" style={{ background: '#000000', borderColor: '#2e2e2e' }}>
+      <div className="flex flex-col h-full border-t" style={{ background: 'var(--uql-editor)', borderColor: 'var(--uql-b1)' }}>
         <div className="flex-1 flex items-center justify-center flex-col gap-2">
-          <TableIcon className="w-8 h-8" style={{ color: '#555555' }} />
-          <p style={{ color: '#666666', fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}>run a query to see results</p>
+          <TableIcon className="w-8 h-8" style={{ color: 'var(--uql-t8)' }} />
+          <p style={{ color: 'var(--uql-t7)', fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}>run a query to see results</p>
         </div>
         <StatusBar timingHistory={timingHistory} result={null} />
       </div>
@@ -120,11 +120,11 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
   const pathIds: number[] = data.map((r: any) => r.id).filter(Boolean);
 
   return (
-    <div className="flex flex-col h-full border-t" style={{ background: '#000000', borderColor: '#2e2e2e' }}>
+    <div className="flex flex-col h-full border-t" style={{ background: 'var(--uql-editor)', borderColor: 'var(--uql-b1)' }}>
       {/* Tab Bar */}
       <div
         className="flex items-center justify-between shrink-0 border-b"
-        style={{ background: '#1a1a1a', borderColor: '#2e2e2e' }}
+        style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b1)' }}
       >
         <div className="flex items-end">
           <TabBtn icon={TableIcon} label="Table"   tab="results" active={activeTab} onClick={setActiveTab} />
@@ -139,7 +139,7 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
           {!isError && data.length > PAGE_SIZE && (
             <div
               className="text-[10px]"
-              style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666' }}
+              style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)' }}
             >
               {safePage * PAGE_SIZE + 1}–{Math.min((safePage + 1) * PAGE_SIZE, data.length)} / {data.length}
             </div>
@@ -154,7 +154,7 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-hidden relative" style={{ background: '#000000' }}>
+      <div className="flex-1 overflow-hidden relative" style={{ background: 'var(--uql-editor)' }}>
         {isError ? (
           <div
             className="absolute inset-0 p-5 flex items-start overflow-auto"
@@ -197,12 +197,12 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
                       <table className="w-full text-left border-collapse" style={{ fontSize: 12 }}>
                         <thead
                           className="sticky top-0 z-10"
-                          style={{ background: '#1a1a1a', borderBottom: '1px solid #2e2e2e' }}
+                          style={{ background: 'var(--uql-header)', borderBottom: '1px solid var(--uql-b1)' }}
                         >
                           <tr>
                             <th
                               className="py-1.5 px-3 text-center border-r w-8"
-                              style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666666', borderColor: '#2e2e2e', fontSize: 10, fontWeight: 400 }}
+                              style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)', borderColor: 'var(--uql-b1)', fontSize: 10, fontWeight: 400 }}
                             >
                               #
                             </th>
@@ -210,10 +210,10 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
                               <th
                                 key={col}
                                 className="py-1.5 px-3 border-r last:border-0 truncate max-w-[200px]"
-                                style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#cccccc', borderColor: '#2e2e2e', fontSize: 11, fontWeight: 500 }}
+                                style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t3)', borderColor: 'var(--uql-b1)', fontSize: 11, fontWeight: 500 }}
                               >
                                 <div className="flex items-center gap-1.5">
-                                  <ArrowUpDown className="w-2.5 h-2.5 shrink-0" style={{ color: '#555' }} />
+                                  <ArrowUpDown className="w-2.5 h-2.5 shrink-0" style={{ color: 'var(--uql-t8)' }} />
                                   {col}
                                 </div>
                               </th>
@@ -225,13 +225,13 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
                             <tr
                               key={safePage * PAGE_SIZE + i}
                               className="border-b"
-                              style={{ borderColor: '#1a1a1a' }}
-                              onMouseEnter={e => (e.currentTarget.style.background = '#0d0d0d')}
+                              style={{ borderColor: 'var(--uql-header)' }}
+                              onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-panel)')}
                               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                             >
                               <td
                                 className="py-1 px-3 text-center border-r"
-                                style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#555555', borderColor: '#1a1a1a', fontSize: 10 }}
+                                style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t8)', borderColor: 'var(--uql-header)', fontSize: 10 }}
                               >
                                 {safePage * PAGE_SIZE + i + 1}
                               </td>
@@ -239,7 +239,7 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
                                 <td
                                   key={col}
                                   className="py-1 px-3 border-r last:border-0 truncate max-w-[300px]"
-                                  style={{ fontFamily: "'IBM Plex Mono', monospace", borderColor: '#1a1a1a' }}
+                                  style={{ fontFamily: "'IBM Plex Mono', monospace", borderColor: 'var(--uql-header)' }}
                                 >
                                   {formatCellValue(row[col])}
                                 </td>
@@ -253,16 +253,16 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
                     {totalPages > 1 && (
                       <div
                         className="flex items-center justify-between px-4 py-1 border-t shrink-0"
-                        style={{ background: '#1a1a1a', borderColor: '#2e2e2e' }}
+                        style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b1)' }}
                       >
-                        <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}>
+                        <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)', fontSize: 10 }}>
                           {safePage * PAGE_SIZE + 1}–{Math.min((safePage + 1) * PAGE_SIZE, data.length)} of {data.length} rows
                         </span>
                         <div className="flex items-center gap-1">
                           <PaginationBtn onClick={() => setPage(p => Math.max(0, p - 1))} disabled={safePage === 0}>
                             <ChevronLeft className="w-3 h-3" />
                           </PaginationBtn>
-                          <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#777', fontSize: 10, padding: '0 8px' }}>
+                          <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t6)', fontSize: 10, padding: '0 8px' }}>
                             {safePage + 1} / {totalPages}
                           </span>
                           <PaginationBtn onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={safePage >= totalPages - 1}>
@@ -275,7 +275,7 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
                 ) : (
                   <div
                     className="h-full flex items-center justify-center"
-                    style={{ color: '#666', fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}
+                    style={{ color: 'var(--uql-t7)', fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}
                   >
                     success — no rows returned
                   </div>
@@ -286,7 +286,7 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
             {/* RAW JSON */}
             {activeTab === "json" && (
               <div className="absolute inset-0 overflow-auto p-4">
-                <pre style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#aaaaaa', lineHeight: 1.6 }}>
+                <pre style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t4)', lineHeight: 1.6 }}>
                   {JSON.stringify(result.data || result, null, 2)}
                 </pre>
               </div>
@@ -308,9 +308,9 @@ export function ResultsView({ result, activeTab, setActiveTab, timingHistory = [
                       <InfoRow label="Strategy" value={strategyLabel(result.plan.strategy)} mono />
                       <div
                         className="mt-2 px-3 py-2 border rounded-sm"
-                        style={{ background: '#0d0d0d', borderColor: '#2e2e2e' }}
+                        style={{ background: 'var(--uql-panel)', borderColor: 'var(--uql-b1)' }}
                       >
-                        <p style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 11, lineHeight: 1.6 }}>
+                        <p style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)', fontSize: 11, lineHeight: 1.6 }}>
                           {result.plan.detail}
                         </p>
                       </div>
@@ -354,12 +354,12 @@ function StatusBar({ result, timingHistory }: { result: any; timingHistory: Timi
   return (
     <div
       className="flex items-center justify-between px-4 shrink-0"
-      style={{ height: 22, background: '#1a1a1a', borderTop: '1px solid #2e2e2e' }}
+      style={{ height: 22, background: 'var(--uql-header)', borderTop: '1px solid var(--uql-b1)' }}
     >
       <div className="flex items-center gap-4">
         <span
           className="flex items-center gap-1.5"
-          style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}
+          style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)', fontSize: 10 }}
         >
           <Activity className="w-2.5 h-2.5" />
           UQL Engine
@@ -376,7 +376,7 @@ function StatusBar({ result, timingHistory }: { result: any; timingHistory: Timi
           </span>
         )}
         {result?.plan?.strategy && (
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#555', fontSize: 10 }}>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t8)', fontSize: 10 }}>
             {result.plan.strategy}
           </span>
         )}
@@ -386,14 +386,14 @@ function StatusBar({ result, timingHistory }: { result: any; timingHistory: Timi
         {result && !isError && (
           <>
             {result.graphData && (
-              <span className="flex items-center gap-1" style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}>
+              <span className="flex items-center gap-1" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)', fontSize: 10 }}>
                 <GitBranch className="w-2.5 h-2.5" /> graph
               </span>
             )}
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)', fontSize: 10 }}>
               {result.rowCount ?? 0} rows
             </span>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#666', fontSize: 10 }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t7)', fontSize: 10 }}>
               {result.executionTimeMs}ms
             </span>
           </>
@@ -406,14 +406,14 @@ function StatusBar({ result, timingHistory }: { result: any; timingHistory: Timi
 // ── Helpers ─────────────────────────────────────────────────────────────────
 function formatCellValue(val: any) {
   if (val === null || val === undefined)
-    return <span style={{ color: '#555', fontStyle: 'italic' }}>null</span>;
+    return <span style={{ color: 'var(--uql-t8)', fontStyle: 'italic' }}>null</span>;
   if (typeof val === "boolean")
-    return <span style={{ color: '#aaa' }}>{val.toString()}</span>;
+    return <span style={{ color: 'var(--uql-t4)' }}>{val.toString()}</span>;
   if (typeof val === "number")
-    return <span style={{ color: '#cccccc' }}>{val}</span>;
+    return <span style={{ color: 'var(--uql-t3)' }}>{val}</span>;
   if (typeof val === "object")
-    return <span style={{ color: '#aaaaaa' }}>{JSON.stringify(val)}</span>;
-  return <span style={{ color: '#cccccc' }}>{String(val)}</span>;
+    return <span style={{ color: 'var(--uql-t4)' }}>{JSON.stringify(val)}</span>;
+  return <span style={{ color: 'var(--uql-t3)' }}>{String(val)}</span>;
 }
 
 function TabBtn({ icon: Icon, label, tab, active, onClick }: {
@@ -428,12 +428,12 @@ function TabBtn({ icon: Icon, label, tab, active, onClick }: {
         height: 30,
         fontSize: 11,
         fontFamily: "'IBM Plex Mono', monospace",
-        color: isActive ? '#ffffff' : '#888888',
-        background: isActive ? '#000000' : 'transparent',
-        borderTopColor: isActive ? '#ffffff' : 'transparent',
+        color: isActive ? 'var(--uql-t1)' : 'var(--uql-t5)',
+        background: isActive ? 'var(--uql-tab-active)' : 'transparent',
+        borderTopColor: isActive ? 'var(--uql-t1)' : 'transparent',
       }}
-      onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#cccccc'; }}
-      onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = '#888888'; }}
+      onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--uql-t3)'; }}
+      onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--uql-t5)'; }}
     >
       <Icon className="w-3 h-3" />
       {label}
@@ -449,13 +449,13 @@ function ExportBtn({ label, onClick }: { label: string; onClick: () => void }) {
       style={{
         fontSize: 10,
         fontFamily: "'IBM Plex Mono', monospace",
-        color: '#777',
-        borderColor: '#2a2a2a',
+        color: 'var(--uql-t6)',
+        borderColor: 'var(--uql-b3)',
         borderRadius: 3,
         background: 'transparent',
       }}
-      onMouseEnter={e => { e.currentTarget.style.color = '#cccccc'; e.currentTarget.style.borderColor = '#444'; }}
-      onMouseLeave={e => { e.currentTarget.style.color = '#777'; e.currentTarget.style.borderColor = '#2a2a2a'; }}
+      onMouseEnter={e => { e.currentTarget.style.color = 'var(--uql-t3)'; e.currentTarget.style.borderColor = 'var(--uql-t7)'; }}
+      onMouseLeave={e => { e.currentTarget.style.color = 'var(--uql-t6)'; e.currentTarget.style.borderColor = 'var(--uql-b3)'; }}
     >
       <Download className="w-2.5 h-2.5" />
       {label}
@@ -469,9 +469,9 @@ function PaginationBtn({ children, onClick, disabled }: { children: React.ReactN
       onClick={onClick}
       disabled={disabled}
       className="p-0.5 transition-colors disabled:opacity-30"
-      style={{ color: '#666', borderRadius: 2 }}
-      onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.color = '#cccccc'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#666'; }}
+      style={{ color: 'var(--uql-t7)', borderRadius: 2 }}
+      onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.color = 'var(--uql-t3)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--uql-t7)'; }}
     >
       {children}
     </button>
@@ -480,10 +480,10 @@ function PaginationBtn({ children, onClick, disabled }: { children: React.ReactN
 
 function InfoSection({ title, icon: Icon, children }: { title: string; icon: any; children: React.ReactNode }) {
   return (
-    <div className="border" style={{ borderColor: '#2e2e2e', borderRadius: 3 }}>
-      <div className="flex items-center gap-2 px-4 py-2 border-b" style={{ borderColor: '#2e2e2e', background: '#1a1a1a' }}>
-        <Icon className="w-3.5 h-3.5" style={{ color: '#888888' }} />
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#cccccc', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+    <div className="border" style={{ borderColor: 'var(--uql-b1)', borderRadius: 3 }}>
+      <div className="flex items-center gap-2 px-4 py-2 border-b" style={{ borderColor: 'var(--uql-b1)', background: 'var(--uql-header)' }}>
+        <Icon className="w-3.5 h-3.5" style={{ color: 'var(--uql-t5)' }} />
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t3)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           {title}
         </span>
       </div>
@@ -495,10 +495,10 @@ function InfoSection({ title, icon: Icon, children }: { title: string; icon: any
 function InfoRow({ label, value, mono, highlight }: { label: string; value: string; mono?: boolean; highlight?: boolean }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", color: '#777', fontSize: 11 }}>{label}</span>
+      <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", color: 'var(--uql-t6)', fontSize: 11 }}>{label}</span>
       <span style={{
         fontFamily: mono || highlight ? "'IBM Plex Mono', monospace" : "'IBM Plex Sans', sans-serif",
-        color: highlight ? '#8a8' : '#aaa',
+        color: highlight ? '#8a8' : 'var(--uql-t4)',
         fontSize: 11,
       }}>
         {value}
