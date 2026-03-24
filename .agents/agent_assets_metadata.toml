@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "-m2Kiv2DhqlJeLPUqeWW1"
+uri = "file://Elegent-Interfacee/README.md"
+type = "text"
+title = "UQL Studio — README.md"
