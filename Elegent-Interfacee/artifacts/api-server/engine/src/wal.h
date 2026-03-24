@@ -58,13 +58,13 @@ public:
             WalEntry e;
             if (!read_entry(f, e)) break;
             entries.push_back(e);
-            if (e.op == WalOp::COMMIT)   committed.insert(e.txn_id);
-            if (e.op == WalOp::ROLLBACK) rolled_back.insert(e.txn_id);
+            if (e.op == WalOp::COMMIT_OP)   committed.insert(e.txn_id);
+            if (e.op == WalOp::ROLLBACK_OP) rolled_back.insert(e.txn_id);
         }
 
         for (auto& e : entries) {
             bool data_op = (e.op==WalOp::INSERT || e.op==WalOp::UPDATE ||
-                           e.op==WalOp::DELETE || e.op==WalOp::CREATE_DB ||
+                           e.op==WalOp::DELETE_OP || e.op==WalOp::CREATE_DB ||
                            e.op==WalOp::DROP_DB || e.op==WalOp::CREATE_COL ||
                            e.op==WalOp::DROP_COL);
             if (data_op) {

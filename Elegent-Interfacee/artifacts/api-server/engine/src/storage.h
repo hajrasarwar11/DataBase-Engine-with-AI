@@ -545,7 +545,7 @@ public:
                 json rec = json::parse(rec_str);
                 if (!where.is_null() && !matches(rec, where)) return;
                 to_delete.push_back({id, rec});
-                if (txn_id) txn_mgr_.add_undo(txn_id, {WalOp::DELETE, db, col, rec, (uint32_t)id});
+                if (txn_id) txn_mgr_.add_undo(txn_id, {WalOp::DELETE_OP, db, col, rec, (uint32_t)id});
             } catch (...) {}
         });
 
@@ -563,7 +563,7 @@ public:
             page_delete(buf, sl);
             cs.pages->write_page(pg, buf);
             cs.index.remove(id);
-            log(db, col, WalOp::DELETE, {{"id",id}}, txn_id);
+            log(db, col, WalOp::DELETE_OP, {{"id",id}}, txn_id);
             deleted++;
         }
         flush_sec_indexes(cs);
@@ -688,25 +688,25 @@ public:
     // ── Transactions ─────────────────────────────────────────────────────────
     json begin_txn() {
         uint32_t id = txn_mgr_.begin();
-        log("", "", WalOp::BEGIN, {{"txn",id}}, id);
+        log("", "", WalOp::BEGIN_OP, {{"txn",id}}, id);
         return {{"ok",true},{"txn_id",id}};
     }
 
     json commit_txn(uint32_t txn_id) {
         txn_mgr_.commit(txn_id);
-        log("", "", WalOp::COMMIT, {{"txn",txn_id}}, txn_id);
+        log("", "", WalOp::COMMIT_OP, {{"txn",txn_id}}, txn_id);
         return {{"ok",true}};
     }
 
     json rollback_txn(uint32_t txn_id) {
         auto undo = txn_mgr_.rollback(txn_id);
-        log("", "", WalOp::ROLLBACK, {{"txn",txn_id}}, txn_id);
+        log("", "", WalOp::ROLLBACK_OP, {{"txn",txn_id}}, txn_id);
         for (auto& u : undo) {
             try {
                 if (u.original_op == WalOp::INSERT) {
                     json w = {{"id", u.record_id}};
                     remove(u.db, u.collection, w, 0);
-                } else if (u.original_op == WalOp::UPDATE || u.original_op == WalOp::DELETE) {
+                } else if (u.original_op == WalOp::UPDATE || u.original_op == WalOp::DELETE_OP) {
                     insert(u.db, u.collection, u.before, 0);
                 }
             } catch (...) {}

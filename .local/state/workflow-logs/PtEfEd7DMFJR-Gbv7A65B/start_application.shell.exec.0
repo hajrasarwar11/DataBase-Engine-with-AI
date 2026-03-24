@@ -1,0 +1,1215 @@
+
+[36m┌────────────────────────────────────────┐
+│          UQL Studio — Dev Server       │
+│                                        │
+│  Frontend : http://localhost:5000      │
+│  API      : http://localhost:3000      │
+└────────────────────────────────────────┘[0m
+
+[32m[start][0m Starting UQL Studio…
+[36m[web][0m 
+[36m[web][0m > @workspace/uql-studio@0.0.0 dev /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio
+[36m[web][0m > vite --config vite.config.ts --host 0.0.0.0
+[36m[web][0m 
+[35m[api][0m 
+[35m[api][0m > @workspace/api-server@0.0.0 dev /home/runner/workspace/Elegent-Interfacee/artifacts/api-server
+[35m[api][0m > cross-env NODE_ENV=development tsx ./src/index.ts
+[35m[api][0m 
+[36m[web][0m 
+[36m[web][0m   VITE v7.3.1  ready in 391 ms
+[36m[web][0m 
+[36m[web][0m   ➜  Local:   http://localhost:5000/
+[36m[web][0m   ➜  Network: http://172.31.76.34:5000/
+[35m[api][0m [UQLStore] Loaded from /home/runner/workspace/Elegent-Interfacee/artifacts/api-server/.uql-data/store.json
+[35m[api][0m [engine] Already running on port 5544
+[35m[api][0m [api] Listening on port 3000
+[36m[web][0m 1:07:39 PM [vite] (client) hmr update /src/components/panels/ai-assistant.tsx, /src/index.css
+[36m[web][0m 1:07:49 PM [vite] (client) hmr update /src/components/panels/ai-assistant.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:07:50 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m 1:07:50 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m 1:08:10 PM [vite] (client) hmr update /src/components/panels/ai-assistant.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async viteTransformMiddleware (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:24542:20) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:08:10 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async viteTransformMiddleware (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:24542:20) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:08:10 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m 1:08:24 PM [vite] (client) hmr update /src/components/panels/ai-assistant.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async viteTransformMiddleware (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:24542:20) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:08:24 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async viteTransformMiddleware (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:24542:20) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:08:24 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m 1:08:51 PM [vite] (client) hmr update /src/components/panels/ai-assistant.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async viteTransformMiddleware (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:24542:20) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:08:51 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async viteTransformMiddleware (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:24542:20) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:08:51 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m 1:09:09 PM [vite] (client) hmr update /src/components/panels/ai-assistant.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async viteTransformMiddleware (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:24542:20) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:09:09 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async viteTransformMiddleware (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:24542:20) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:09:10 PM [vite] Internal server error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m       at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m       at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m       at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m       at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m       at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m       at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m       at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m       at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m       at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m       at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m       at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m       at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m       at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m       at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m       at parser (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/parser/index.js:41:34)
+[36m[web][0m       at parser.next (<anonymous>)
+[36m[web][0m       at normalizeFile (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+[36m[web][0m       at normalizeFile.next (<anonymous>)
+[36m[web][0m       at run (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transformation/index.js:22:50)
+[36m[web][0m       at run.next (<anonymous>)
+[36m[web][0m       at transform (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/transform.js:22:33)
+[36m[web][0m       at transform.next (<anonymous>)
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:261:32)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:189:28
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+core@7.29.0/node_modules/@babel/core/lib/gensync-utils/async.js:67:7
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:113:33
+[36m[web][0m       at step (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:287:14)
+[36m[web][0m       at /home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:273:13
+[36m[web][0m       at async.call.result.err.err (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync/index.js:223:11)
+[36m[web][0m 1:09:19 PM [vite] (client) hmr update /src/pages/studio.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async DevEnvironment.warmupRequest (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:34839:4) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:09:19 PM [vite] (client) Pre-transform error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m 1:09:28 PM [vite] (client) hmr update /src/pages/studio.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async DevEnvironment.warmupRequest (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:34839:4) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:09:29 PM [vite] (client) Pre-transform error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m 1:09:39 PM [vite] (client) hmr update /src/pages/studio.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async DevEnvironment.warmupRequest (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:34839:4) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:09:39 PM [vite] (client) Pre-transform error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m 1:10:13 PM [vite] (client) hmr update /src/pages/studio.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async DevEnvironment.warmupRequest (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:34839:4) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:10:13 PM [vite] (client) Pre-transform error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m 1:10:22 PM [vite] (client) hmr update /src/pages/studio.tsx, /src/index.css
+[36m[web][0m [replit-cartographer] Error processing /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: SyntaxError: Missing initializer in const declaration. (97:73)
+[36m[web][0m     at constructor (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)
+[36m[web][0m     at TypeScriptParserMixin.raise (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)
+[36m[web][0m     at TypeScriptParserMixin.parseVar (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13391:16)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13230:10)
+[36m[web][0m     at TypeScriptParserMixin.parseVarStatement (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9408:31)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12851:23)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementListItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12747:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13934:17)
+[36m[web][0m     at TypeScriptParserMixin.parseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9629:85)
+[36m[web][0m     at TypeScriptParserMixin.maybeParseExportDeclaration (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13893:31)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13812:29)
+[36m[web][0m     at TypeScriptParserMixin.parseExport (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9385:20)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12878:27)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementContent (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:9508:18)
+[36m[web][0m     at TypeScriptParserMixin.parseStatementLike (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12767:17)
+[36m[web][0m     at TypeScriptParserMixin.parseModuleItem (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12744:17)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13316:36)
+[36m[web][0m     at TypeScriptParserMixin.parseBlockBody (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:13309:10)
+[36m[web][0m     at TypeScriptParserMixin.parseProgram (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12622:10)
+[36m[web][0m     at TypeScriptParserMixin.parseTopLevel (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:12612:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14488:25)
+[36m[web][0m     at TypeScriptParserMixin.parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:10126:18)
+[36m[web][0m     at parse (/home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:14522:38)
+[36m[web][0m     at TransformPluginContext.handler (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/@replit+vite-plugin-cartographer@0.5.0/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:112:23)
+[36m[web][0m     at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:28797:14)
+[36m[web][0m     at async loadAndTransform (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:22670:26)
+[36m[web][0m     at async DevEnvironment.warmupRequest (file:///home/runner/workspace/Elegent-Interfacee/node_modules/.pnpm/vite@7.3.1_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:34839:4) {
+[36m[web][0m   code: 'BABEL_PARSER_SYNTAX_ERROR',
+[36m[web][0m   reasonCode: 'DeclarationMissingInitializer',
+[36m[web][0m   loc: Position { line: 97, column: 73, index: 4302 },
+[36m[web][0m   pos: 4302,
+[36m[web][0m   syntaxPlugin: undefined
+[36m[web][0m }
+[36m[web][0m 1:10:23 PM [vite] (client) Pre-transform error: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx: Missing initializer in const declaration. (97:73)
+[36m[web][0m 
+[36m[web][0m    95 | }
+[36m[web][0m    96 |
+[36m[web][0m >  97 | export const AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps, ref) {
+[36m[web][0m       |                                                                          ^
+[36m[web][0m    98 |   const queryClient = useQueryClient();
+[36m[web][0m    99 |   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[36m[web][0m   100 |   const [messages, setMessages] = useState<LocalMessage[]>([]);
+[36m[web][0m   Plugin: vite:react-babel
+[36m[web][0m   File: /home/runner/workspace/Elegent-Interfacee/artifacts/uql-studio/src/components/panels/ai-assistant.tsx:97:73
+[36m[web][0m   95 |  }
+[36m[web][0m   96 |  
+[36m[web][0m   97 |  ...AIAssistant = forwardRef<AIAssistantHandle, AIAssistantProps>(function AIAssistantInner({ activeDatabaseId, active...
+[36m[web][0m      |                                                                 ^
+[36m[web][0m   98 |    const queryClient = useQueryClient();
+[36m[web][0m   99 |    const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+[33m[start][0m Shutting down…

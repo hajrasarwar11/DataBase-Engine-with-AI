@@ -20,11 +20,16 @@ function buildEngine() {
 
   if (IS_WINDOWS) {
     // On Windows try make first (MSYS2/MinGW), fallback to direct g++ invocation
-    let r = spawnSync("make", ["-C", ENGINE_DIR], { stdio: "inherit", shell: true });
+    // Use quotes around ENGINE_DIR to handle spaces in path
+    let r = spawnSync("make", ["-C", `\"${ENGINE_DIR}\"`], { stdio: "inherit", shell: true });
     if (r.status !== 0) {
       console.log("[engine] make failed, trying g++ directly…");
       const outBin = join(ENGINE_DIR, "build", ENGINE_BIN_NAME);
-      const mkdirR = spawnSync("cmd", ["/c", `if not exist "${join(ENGINE_DIR, "build")}" mkdir "${join(ENGINE_DIR, "build")}"`], { stdio: "inherit" });
+      // Use Node's fs.mkdirSync to create build directory if missing
+      const fs = require("fs");
+      if (!fs.existsSync(join(ENGINE_DIR, "build"))) {
+        fs.mkdirSync(join(ENGINE_DIR, "build"), { recursive: true });
+      }
       r = spawnSync("g++", [
         "-std=c++17", "-O2", "-pthread",
         `-I${join(ENGINE_DIR, "include")}`,

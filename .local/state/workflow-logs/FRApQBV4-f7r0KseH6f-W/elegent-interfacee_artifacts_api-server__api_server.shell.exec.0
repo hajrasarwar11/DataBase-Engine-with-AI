@@ -1,0 +1,12 @@
+
+> @workspace/api-server@0.0.0 dev /home/runner/workspace/Elegent-Interfacee/artifacts/api-server
+> cross-env NODE_ENV=development tsx ./src/index.ts
+
+[UQLStore] Loaded from /home/runner/workspace/Elegent-Interfacee/artifacts/api-server/.uql-data/store.json
+[engine] Spawned PID 492
+[engine] Waiting for engine to be ready…
+[engine] [UQL Engine] Starting — data dir: .uql-data
+[UQL Engine] Storage engine opened
+[UQL Engine] Listening on port 5544
+[engine] Engine ready.
+[api] Listening on port 8080

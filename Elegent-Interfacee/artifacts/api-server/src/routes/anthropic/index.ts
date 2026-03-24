@@ -16,19 +16,21 @@ const router: IRouter = Router();
 // ── Ollama local model helpers ────────────────────────────────────────────────
 
 const OLLAMA_BASE = "http://localhost:11434";
-const PHI_CANDIDATES = ["phi4", "phi3.5", "phi3:mini", "phi3", "phi"];
+const PHI_CANDIDATES = ["phi:latest", "phi4", "phi3.5", "phi3:mini", "phi3", "phi"];
 
 interface OllamaModel { name: string }
 
 async function getOllamaStatus(): Promise<{ available: boolean; model: string | null; models: string[] }> {
   try {
-    const res = await fetch(`${OLLAMA_BASE}/api/tags`, { signal: AbortSignal.timeout(1500) });
+    const res = await fetch(`${OLLAMA_BASE}/api/tags`, { signal: AbortSignal.timeout(5000) });
     if (!res.ok) return { available: false, model: null, models: [] };
     const data = (await res.json()) as { models: OllamaModel[] };
-    const names = (data.models ?? []).map((m) => m.name.split(":")[0]);
-    const pick = PHI_CANDIDATES.find((c) => names.some((n) => n === c || n.startsWith(c)));
+    const modelNames = (data.models ?? []).map((m) => m.name);
+    // Always prefer phi:latest if available
+    const phiLatest = modelNames.find((n) => n === "phi:latest");
+    const pick = phiLatest ?? PHI_CANDIDATES.find((c) => modelNames.some((n) => n.startsWith(c)));
     const anyModel = pick ?? (data.models[0]?.name ?? null);
-    return { available: !!anyModel, model: anyModel, models: data.models.map((m) => m.name) };
+    return { available: !!anyModel, model: anyModel, models: modelNames };
   } catch {
     return { available: false, model: null, models: [] };
   }
@@ -124,19 +126,11 @@ When the user attaches a file and asks you to do something with it:
 - Generate the **full** set of queries needed — don't abbreviate.`;
 
 // Shorter prompt for local Phi models (they struggle with very long system prompts)
-const PHI_SYSTEM_PROMPT = `You are UQL Copilot, an AI assistant inside UQL Studio, a multi-model database IDE.
-
-UQL syntax:
-- CREATE DB <name>
-- CREATE TABLE|GRAPH|DOCUMENT <name> [IN <db>]
-- ADD <col> VALUES { key: value } [IN <db>]
-- FIND <col> [WHERE field op val] [LIMIT n] [IN <db>]
-- MODIFY <col> SET field=val WHERE ... [IN <db>]
-- REMOVE <col> WHERE ... [IN <db>]
-- DROP TABLE|GRAPH|DOCUMENT <col> [IN <db>]
-- WHERE operators: = != > >= < <= AND
-
-Always wrap UQL in \`\`\`uql blocks so users can click Run. One query per block. Use schema context when provided. Be concise and direct.`;
+const PHI_SYSTEM_PROMPT = `You are UQL Copilot, an expert assistant for UQL Studio. Always answer user questions simply and directly. 
+If the user asks how to do something in the UI, give clear, step-by-step instructions (e.g., 'Go to the Databases tab, click New Database, enter a name, and click Create').
+If there is a query method, show the query in a code block and ask if the user wants to run it.
+Be concise, avoid irrelevant information, and never invent logic puzzles or unrelated content.
+`;
 
 // ── Conversation routes ───────────────────────────────────────────────────────
 
@@ -294,10 +288,19 @@ router.post("/anthropic/conversations/:id/messages", async (req, res) => {
       "present them in ```uql code blocks so the user can run them.";
   }
 
-  // Resolve which Ollama model to use — honour user selection if valid
+  // Resolve which Ollama model to use — always use the first available phi model if selectedModel is not set or not found
   let ollamaModel = ollamaStatus.model!;
-  if (useLocal && selectedModel && ollamaStatus.models.includes(selectedModel)) {
-    ollamaModel = selectedModel;
+  if (useLocal) {
+    // Always use phi:latest if available
+    if (ollamaStatus.models.includes("phi:latest")) {
+      ollamaModel = "phi:latest";
+    } else if (selectedModel && ollamaStatus.models.includes(selectedModel)) {
+      ollamaModel = selectedModel;
+    } else if (ollamaStatus.models.length > 0) {
+      // Prefer a phi model if available
+      const phiModel = ollamaStatus.models.find(m => m.toLowerCase().startsWith('phi'));
+      if (phiModel) ollamaModel = phiModel;
+    }
   }
 
   // ── SSE setup ─────────────────────────────────────────────────────────────

@@ -8,7 +8,7 @@
   #include <ws2tcpip.h>
   #pragma comment(lib, "ws2_32.lib")
   typedef SOCKET socket_t;
-  typedef int    ssize_t;
+    // ssize_t is already defined on Windows, do not redefine
   #define CLOSE_SOCKET(s) closesocket(s)
   #define INVALID_SOCK    INVALID_SOCKET
   #define MSG_NOSIGNAL    0

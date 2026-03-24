@@ -1,3 +1,17 @@
+#ifdef _WIN32
+#ifdef DELETE
+#undef DELETE
+#endif
+#ifdef BEGIN
+#undef BEGIN
+#endif
+#ifdef COMMIT
+#undef COMMIT
+#endif
+#ifdef ROLLBACK
+#undef ROLLBACK
+#endif
+#endif
 #pragma once
 #include <string>
 #include <vector>
@@ -63,8 +77,8 @@ struct DatabaseMeta {
 
 enum class WalOp : uint8_t {
     CREATE_DB=0, DROP_DB=1, CREATE_COL=2, DROP_COL=3,
-    INSERT=4, UPDATE=5, DELETE=6,
-    BEGIN=7, COMMIT=8, ROLLBACK=9,
+    INSERT=4, UPDATE=5, DELETE_OP=6,
+    BEGIN_OP=7, COMMIT_OP=8, ROLLBACK_OP=9,
     CHECKPOINT=10
 };
 

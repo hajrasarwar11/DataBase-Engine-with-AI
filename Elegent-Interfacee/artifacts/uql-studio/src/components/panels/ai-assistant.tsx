@@ -3,8 +3,28 @@ import {
   Sparkles, Plus, LayoutList, Send, X, Trash2,
   Copy, Play, Check, Database, ChevronDown,
   MessageSquare, Loader2, AlertCircle, Table2, Zap, Mic, MicOff,
-  Paperclip, FileText, FileCode, FileType, Download,
+  Paperclip, FileText, FileCode, FileType, Download, User,
 } from "lucide-react";
+import { useRef as usePopoverRef } from "react";
+// Simple popover/modal for login
+function LoginPopover({ onClose }: { onClose: () => void }) {
+  return (
+    <div style={{ position: 'absolute', top: 36, right: 0, zIndex: 100, background: 'var(--uql-header)', border: '1px solid var(--uql-b3)', borderRadius: 6, boxShadow: '0 2px 12px #0002', minWidth: 220 }}>
+      <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t5)', fontWeight: 600, marginBottom: 4 }}>Sign in</div>
+        <a href="/api/auth/github" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: 8, borderRadius: 4, border: '1px solid var(--uql-b3)', color: 'var(--uql-t5)', textDecoration: 'none', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, background: 'var(--uql-panel)' }}>
+          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" style={{ width: 20, height: 20, borderRadius: 3 }} />
+          Continue with GitHub
+        </a>
+        <a href="/api/auth/google" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: 8, borderRadius: 4, border: '1px solid var(--uql-b3)', color: 'var(--uql-t5)', textDecoration: 'none', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, background: 'var(--uql-panel)' }}>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" style={{ width: 20, height: 20, borderRadius: 3 }} />
+          Continue with Google
+        </a>
+        <button onClick={onClose} style={{ marginTop: 8, color: 'var(--uql-linenum)', background: 'none', border: 'none', fontSize: 11, cursor: 'pointer' }}>Cancel</button>
+      </div>
+    </div>
+  );
+}
 import { motion, AnimatePresence } from "framer-motion";
 import {
   useListAnthropicConversations,
@@ -98,6 +118,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
   { activeDatabaseId, activeDatabaseName, onInsertQuery, lastResult, lastQuery, hideHeader, onStateChange }: AIAssistantProps,
   ref: React.Ref<AIAssistantHandle>
 ) {
+  const [showLoginPopover, setShowLoginPopover] = useState(false);
   const queryClient = useQueryClient();
   const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
   const [messages, setMessages] = useState<LocalMessage[]>([]);
@@ -130,7 +151,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
     fetch("/api/ai/local/models").then(r => r.json()).then((d: { available: boolean; models: string[]; defaultModel: string | null }) => {
       if (d.available && d.models.length > 0) {
         setAvailableModels(d.models);
-        if (!selectedModel) setSelectedModel(d.defaultModel);
+        // Always prefer phi if available
+        const phiModel = d.models.find(m => m.toLowerCase().startsWith('phi'));
+        setSelectedModel(phiModel ?? d.defaultModel);
       }
     }).catch(() => {});
   }, []);
@@ -184,7 +207,8 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
 
   const buildSchemaContext = useCallback((): string => {
     if (!collections.length) return "";
-    return collections.map(c => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return collections.map((c: any) => {
       const type = (c.type ?? "collection").toUpperCase();
       const count = (c as any).recordCount != null ? ` (${(c as any).recordCount} records)` : "";
       let line = `${type} ${c.name}${count}`;
@@ -388,7 +412,9 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
             AI
           </span>
         </div>
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-0.5" style={{ position: 'relative' }}>
+          {/* User/Profile/Login state */}
+          {/* Declare state at the top of the component */}
           <AiBtn onClick={() => setShowSessions(s => !s)} active={showSessions} title="Sessions">
             <LayoutList className="w-3 h-3" />
             {conversations.length > 0 && (
@@ -403,9 +429,28 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
           <AiBtn onClick={handleNewChat} title="New Chat">
             <Plus className="w-3 h-3" />
           </AiBtn>
+          {/* User/Profile/Login button */}
+          <button
+            onClick={() => setShowLoginPopover(true)}
+            title="Sign in"
+            style={{ marginLeft: 4, background: 'none', border: 'none', padding: 0, cursor: 'pointer', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 24, width: 24 }}
+          >
+            <User className="w-4 h-4" style={{ color: 'var(--uql-t5)' }} />
+          </button>
+          {showLoginPopover && <LoginPopover onClose={() => setShowLoginPopover(false)} />}
 
-          {/* Model selector — shown when Ollama is available */}
-          {authStatus?.localModel?.available && (
+          {/* User/Profile/Login button */}
+          <button
+            onClick={() => setShowLoginPopover(true)}
+            title="Sign in"
+            style={{ marginLeft: 4, background: 'none', border: 'none', padding: 0, cursor: 'pointer', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 24, width: 24 }}
+          >
+            <User className="w-4 h-4" style={{ color: 'var(--uql-t5)' }} />
+          </button>
+          {showLoginPopover && <LoginPopover onClose={() => setShowLoginPopover(false)} />}
+
+          {/* Model selector — always show if any local models are available */}
+          {availableModels.length > 0 && (
             <div ref={modelSelectorRef} className="relative ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)' }}>
               <button
                 onClick={() => setShowModelSelector(s => !s)}
@@ -417,7 +462,10 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
               >
                 <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'var(--uql-t8)' }} />
                 <span className="max-w-[55px] truncate">
-                  {selectedModel?.split(":")[0] ?? authStatus.localModel.model?.split(":")[0] ?? "local"}
+                  {selectedModel?.split(":")[0]
+                    ?? (authStatus && authStatus.localModel && authStatus.localModel.model
+                        ? authStatus.localModel.model.split(":")[0]
+                        : "local")}
                 </span>
                 <ChevronDown className="w-2 h-2" />
               </button>
@@ -517,7 +565,8 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
               </div>
             ) : (
               <div className="pb-1">
-                {conversations.map(conv => (
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {conversations.map((conv: any) => (
                   <div
                     key={conv.id}
                     onClick={() => loadConversation(conv.id)}
@@ -555,45 +604,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
       </AnimatePresence>
 
       {/* Rate Limit Banner */}
-      <AnimatePresence>
-        {rateLimitHit && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="mx-3 mt-2 border p-3 shrink-0"
-            style={{ borderColor: '#3a3a1a', background: '#1a1a0a', borderRadius: 3 }}
-          >
-            <div className="flex items-start gap-2 mb-2">
-              <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: 'var(--uql-t5)' }} />
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)' }}>
-                GitHub Models rate limit reached. Use a local Ollama model or a GitHub Pro/Education account.
-              </div>
-              <button onClick={() => setRateLimitHit(false)} style={{ color: 'var(--uql-linenum)', marginLeft: 'auto', borderRadius: 2 }}>
-                <X className="w-3 h-3" />
-              </button>
-            </div>
-            <div className="flex gap-2">
-              <a href="https://ollama.com/library/phi4" target="_blank" rel="noreferrer"
-                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 border transition-colors"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)', borderColor: 'var(--uql-b2)', borderRadius: 3, background: 'var(--uql-deeper)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-deeper)')}
-              >
-                Install Phi (local)
-              </a>
-              <a href="/api/auth/github"
-                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 border transition-colors"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)', borderColor: 'var(--uql-b2)', borderRadius: 3, background: 'var(--uql-deeper)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-deeper)')}
-              >
-                Sign in with GitHub
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Login popover is now handled by the user icon at the top right */}
 
       {/* Chat Area */}
       <div className="flex-1 overflow-y-auto min-h-0">
