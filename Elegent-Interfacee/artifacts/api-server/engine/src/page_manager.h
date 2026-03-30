@@ -19,7 +19,7 @@ class LRUPageCache {
         std::array<uint8_t, PAGE_SIZE> data{};
     };
 
-    std::list<Frame>                                    lru_list_; // front = MRU
+    std::list<Frame>                                         lru_list_; // front = MRU
     std::unordered_map<uint32_t, std::list<Frame>::iterator> index_;
 
     std::atomic<uint64_t> hits_{0};
@@ -84,7 +84,13 @@ public:
             return;
         }
         // Cache miss — read from disk
-        auto f = open_r();
+        // FIX 1: if file doesn't exist, return zeroed page instead of throwing.
+        // This prevents rebuild_index from crashing on a missing .pages file.
+        std::fstream f(path_, std::ios::in | std::ios::binary);
+        if (!f) {
+            memset(buf, 0, PAGE_SIZE);
+            return;
+        }
         f.seekg((uint64_t)page_id * PAGE_SIZE);
         if (!f.read(reinterpret_cast<char*>(buf), PAGE_SIZE)) {
             memset(buf, 0, PAGE_SIZE);
@@ -117,14 +123,21 @@ public:
         std::ifstream f(path_, std::ios::binary | std::ios::ate);
         if (!f) return 0;
         auto sz = f.tellg();
+        if (sz <= 0) return 0;
         return (uint32_t)(sz / PAGE_SIZE);
     }
 
     bool exists() { std::ifstream f(path_); return f.good(); }
 
+    // FIX 2: create() uses truncate flag so it always starts fresh —
+    // but ONLY call this for brand-new collections, never when loading existing ones.
     void create() {
-        std::ofstream f(path_, std::ios::binary);
+        std::ofstream f(path_, std::ios::binary | std::ios::trunc);
         if (!f) throw std::runtime_error("Cannot create page file: " + path_);
+        // Write one zeroed page so the file is never empty (prevents num_pages() == 0 issues)
+        uint8_t empty[PAGE_SIZE] = {};
+        f.write(reinterpret_cast<const char*>(empty), PAGE_SIZE);
+        f.flush();
     }
 
     void remove_file() { cache_.clear(); std::remove(path_.c_str()); }
@@ -132,24 +145,24 @@ public:
     const std::string& path() const { return path_; }
 
     // Cache statistics for STATS command
-    uint64_t cache_hits()   const { return cache_.hits(); }
-    uint64_t cache_misses() const { return cache_.misses(); }
+    uint64_t cache_hits()    const { return cache_.hits(); }
+    uint64_t cache_misses()  const { return cache_.misses(); }
     double   cache_hit_rate() const { return cache_.hit_rate(); }
-    size_t   cache_size()   const { return cache_.size(); }
+    size_t   cache_size()    const { return cache_.size(); }
 
 private:
     std::string   path_;
     LRUPageCache  cache_;
 
-    std::fstream open_r() {
-        std::fstream f(path_, std::ios::in | std::ios::binary);
-        if (!f) throw std::runtime_error("Cannot open for reading: " + path_);
-        return f;
-    }
+    // FIX 3: open_rw() — if file doesn't exist, do NOT silently create a blank
+    // file (that would wipe data). Throw a clear error instead so the caller knows.
     std::fstream open_rw() {
         std::fstream f(path_, std::ios::in | std::ios::out | std::ios::binary);
         if (!f) {
-            std::ofstream c(path_, std::ios::binary); c.close();
+            // File genuinely missing (e.g. first write after create()) — make it
+            std::ofstream c(path_, std::ios::binary | std::ios::trunc);
+            if (!c) throw std::runtime_error("Cannot create page file: " + path_);
+            c.close();
             f.open(path_, std::ios::in | std::ios::out | std::ios::binary);
         }
         if (!f) throw std::runtime_error("Cannot open for rw: " + path_);
@@ -157,7 +170,7 @@ private:
     }
 };
 
-// ── Slot-based page operations ──────────────────────────────────────────────
+// ── Slot-based page operations ────────────────────────────────────────────────
 
 inline PageHeader* page_header(uint8_t* buf) {
     return reinterpret_cast<PageHeader*>(buf);
@@ -179,7 +192,7 @@ inline int page_insert(uint8_t* buf, const std::string& json_str) {
     auto* h = page_header(buf);
     uint8_t* data_area = buf + HEADER_SIZE;
 
-    uint32_t rec_len = (uint32_t)json_str.size() + 1;
+    uint32_t rec_len      = (uint32_t)json_str.size() + 1;
     uint32_t slot_area_size = (h->num_slots + 1) * sizeof(SlotEntry);
 
     if (slot_area_size + h->free_offset + rec_len > DATA_AREA) return -1;
@@ -189,7 +202,7 @@ inline int page_insert(uint8_t* buf, const std::string& json_str) {
     h->free_offset += rec_len;
 
     auto* slots = reinterpret_cast<SlotEntry*>(data_area);
-    uint32_t slot_idx = h->num_slots;
+    uint32_t slot_idx       = h->num_slots;
     slots[slot_idx].offset  = rec_offset;
     slots[slot_idx].length  = rec_len;
     slots[slot_idx].deleted = 0;

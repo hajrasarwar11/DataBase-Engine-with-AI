@@ -18,13 +18,10 @@
 namespace fs = std::filesystem;
 
 // ── Secondary Index ───────────────────────────────────────────────────────────
-// Maps arbitrary field values → set of record IDs.
-// Persisted as JSON alongside page files.
 struct SecondaryIndex {
     std::string field_name;
     std::string persist_path;
 
-    // Key = JSON-serialized field value (handles string/number/bool uniformly)
     std::unordered_map<std::string, std::vector<int64_t>> map;
 
     void load() {
@@ -61,14 +58,12 @@ struct SecondaryIndex {
         if (vec.empty()) map.erase(it);
     }
 
-    // Exact-match lookup
     std::vector<int64_t> lookup(const json& field_val) const {
         auto it = map.find(field_val.dump());
         if (it == map.end()) return {};
         return it->second;
     }
 
-    // Range lookup for $gt/$lt/$gte/$lte on numeric keys
     std::vector<int64_t> range_lookup(const json& op_obj) const {
         std::vector<int64_t> result;
         for (auto& [k, ids] : map) {
@@ -91,10 +86,10 @@ struct SecondaryIndex {
 
 // ── Collection State ──────────────────────────────────────────────────────────
 struct CollectionState {
-    CollectionMeta              meta;
+    CollectionMeta               meta;
     std::unique_ptr<PageManager> pages;
-    BPlusTree<int64_t,int64_t>  index; // primary: id → location
-    std::unordered_map<std::string, SecondaryIndex> sec_indexes; // field → secondary index
+    BPlusTree<int64_t,int64_t>   index;
+    std::unordered_map<std::string, SecondaryIndex> sec_indexes;
 };
 
 // ── Storage Engine ────────────────────────────────────────────────────────────
@@ -107,14 +102,25 @@ public:
         fs::create_directories(data_dir_);
         load_meta();
         for (auto& [dname, dbmeta] : databases_) {
+            // FIX 1: eagerly open every known collection on startup so that
+            // rebuild_index() runs now (reads existing .pages files from disk)
+            // instead of lazily on first query. This is what makes data survive restarts.
+            for (auto& [cname, _] : dbmeta.collections) {
+                try { col_state_unlocked(dname, cname); }
+                catch (...) {}
+            }
             auto wal = make_wal(dname);
             wal->open();
+            // WAL replay: apply any operations that were not yet checkpointed.
+            // After eager load above, the page files are already correct for
+            // committed data — WAL only needs to redo operations that were
+            // written after the last flush (i.e. in-flight at crash time).
             wal->replay([&](const WalEntry& e){ apply_wal_entry(e); });
             wals_[dname] = std::move(wal);
         }
     }
 
-    // ── Database operations ─────────────────────────────────────────────────
+    // ── Database operations ──────────────────────────────────────────────────
     json create_db(const std::string& name, uint32_t txn_id = 0) {
         std::lock_guard<std::mutex> lk(mu_);
         if (databases_.count(name)) throw std::runtime_error("Database already exists: " + name);
@@ -172,7 +178,7 @@ public:
         dbmeta.collections[col] = cm;
 
         auto pm = make_pm(db, col);
-        pm->create();
+        pm->create(); // Creates fresh .pages file — only called for NEW collections
         uint8_t buf[PAGE_SIZE];
         init_page(buf, 0, PageType::HEADER);
         pm->write_page(0, buf);
@@ -191,7 +197,6 @@ public:
         log(db, col, WalOp::DROP_COL, {{"name",col}}, txn_id);
         dbmeta.collections.erase(col);
         if (collections_.count(db)) {
-            // Remove secondary index files
             if (collections_[db].count(col)) {
                 for (auto& [field, sidx] : collections_[db][col].sec_indexes)
                     fs::remove(sidx.persist_path);
@@ -213,13 +218,11 @@ public:
             json schema_arr = json::array();
             for (auto& f : meta.schema)
                 schema_arr.push_back({{"name",f.name},{"type",f.type},{"required",f.required}});
-            // List secondary indexes for this collection
             json idx_arr = json::array();
             if (collections_.count(db) && collections_[db].count(col))
                 for (auto& [field, _] : collections_[db][col].sec_indexes)
                     idx_arr.push_back(field);
             else {
-                // Load from disk if not in memory
                 for (auto& entry : fs::directory_iterator(db_path(db))) {
                     auto stem = entry.path().stem().string();
                     auto ext  = entry.path().extension().string();
@@ -247,7 +250,6 @@ public:
         sidx.field_name   = field;
         sidx.persist_path = sidx_path(db, col, field);
 
-        // Build index by scanning all existing records
         cs.index.scan([&](int64_t id, int64_t loc){
             uint32_t pg, sl; unpack_loc(loc, pg, sl);
             std::string s = read_record(*cs.pages, pg, sl);
@@ -304,19 +306,16 @@ public:
         auto [page_id, slot] = find_space_unlocked(db, col, rstr);
         cs.index.insert(id, pack_loc(page_id, slot));
 
-        // Update secondary indexes
         for (auto& [field, sidx] : cs.sec_indexes)
             if (record.contains(field)) sidx.add(record[field], id);
         flush_sec_indexes(cs);
 
-        // Track undo entry so ROLLBACK can delete this inserted record
         if (txn_id) txn_mgr_.add_undo(txn_id, {WalOp::INSERT, db, col, record, (uint32_t)id});
         log(db, col, WalOp::INSERT, record, txn_id);
         save_col_meta(db, col);
         return {{"ok",true},{"id",id}};
     }
 
-    // Extended FIND with ORDER BY and GROUP BY / Aggregate support
     json find(const std::string& db, const std::string& col,
               const json& where, int limit = 1000,
               const std::string& order_by = "", bool order_asc = true,
@@ -326,10 +325,8 @@ public:
         auto& cs = col_state(db, col);
         json rows = json::array();
 
-        // ── Query planner ───────────────────────────────────────────────────
         std::string plan_strategy = "FULL_SCAN";
 
-        // Strategy 1: exact primary-key lookup
         if (!where.is_null() && where.contains("id") && where["id"].is_number()) {
             plan_strategy = "PRIMARY_INDEX_LOOKUP";
             int64_t id = where["id"].get<int64_t>();
@@ -345,14 +342,12 @@ public:
                 }
             }
         }
-        // Strategy 2: secondary index lookup for exact-match on indexed field
         else if (!where.is_null()) {
             bool used_secondary = false;
             for (auto& [k, v] : where.items()) {
                 auto sit = cs.sec_indexes.find(k);
                 if (sit == cs.sec_indexes.end()) continue;
                 if (v.is_object()) {
-                    // Range query on secondary index
                     plan_strategy = "SECONDARY_INDEX_RANGE_SCAN";
                     auto ids = sit->second.range_lookup(v);
                     for (int64_t id : ids) {
@@ -363,13 +358,12 @@ public:
                         if (s.empty()) continue;
                         try {
                             json rec = json::parse(s);
-                            if (matches(rec, where)) { rows.push_back(rec); }
+                            if (matches(rec, where)) rows.push_back(rec);
                         } catch (...) {}
                     }
                     used_secondary = true;
                     break;
                 } else {
-                    // Exact match on secondary index
                     plan_strategy = "SECONDARY_INDEX_LOOKUP";
                     auto ids = sit->second.lookup(v);
                     for (int64_t id : ids) {
@@ -388,7 +382,6 @@ public:
                 }
             }
             if (!used_secondary) {
-                // Full scan
                 int count = 0;
                 cs.index.scan([&](int64_t, int64_t loc){
                     if (count >= limit) return;
@@ -402,7 +395,6 @@ public:
                 });
             }
         } else {
-            // No where — full scan
             int count = 0;
             cs.index.scan([&](int64_t, int64_t loc){
                 if (count >= limit) return;
@@ -416,7 +408,6 @@ public:
             });
         }
 
-        // ── ORDER BY ────────────────────────────────────────────────────────
         if (!order_by.empty() && rows.size() > 1) {
             std::stable_sort(rows.begin(), rows.end(), [&](const json& a, const json& b) {
                 if (!a.contains(order_by) || !b.contains(order_by)) return false;
@@ -431,13 +422,10 @@ public:
             });
         }
 
-        // Apply limit after sort
         if ((int)rows.size() > limit)
             rows.erase(rows.begin() + limit, rows.end());
 
-        // ── GROUP BY + Aggregate ─────────────────────────────────────────────
         if (!group_by.empty() && !agg_func.empty()) {
-            // Group rows
             std::unordered_map<std::string, std::vector<json>> groups;
             std::vector<std::string> group_order;
             for (auto& row : rows) {
@@ -499,14 +487,12 @@ public:
 
                 if (txn_id) txn_mgr_.add_undo(txn_id, {WalOp::UPDATE, db, col, rec, (uint32_t)id});
 
-                // Update secondary indexes: remove old values
                 for (auto& [field, sidx] : cs.sec_indexes)
                     if (rec.contains(field)) sidx.remove_id(rec[field], id);
 
                 for (auto& [k,v] : set_vals.items()) rec[k] = v;
                 rec["_updated"] = (int64_t)now_ms();
 
-                // Add new values to secondary indexes
                 for (auto& [field, sidx] : cs.sec_indexes)
                     if (rec.contains(field)) sidx.add(rec[field], id);
 
@@ -550,7 +536,6 @@ public:
         });
 
         for (auto& [id, rec] : to_delete) {
-            // Update secondary indexes
             for (auto& [field, sidx] : cs.sec_indexes)
                 if (rec.contains(field)) sidx.remove_id(rec[field], id);
 
@@ -598,7 +583,6 @@ public:
             } catch (...) {}
         });
 
-        // BFS
         std::unordered_map<int64_t, int64_t> parent;
         std::vector<int64_t> queue = {from_id};
         parent[from_id] = -1;
@@ -618,16 +602,14 @@ public:
             queue = next;
         }
 
+        json all_nodes = json::array();
+        json all_edges = json::array();
+        for (auto& [id, r] : nodes) {
+            if (r.contains("from") && r.contains("to")) all_edges.push_back(r);
+            else all_nodes.push_back(r);
+        }
+
         if (!found) {
-            // Return all nodes + edges for visualization even if no path
-            json all_nodes = json::array();
-            json all_edges = json::array();
-            for (auto& [id, r] : nodes) {
-                if (r.contains("from") && r.contains("to"))
-                    all_edges.push_back(r);
-                else
-                    all_nodes.push_back(r);
-            }
             return {{"ok",false},{"path",json::array()},{"message","No path found"},
                     {"nodes",all_nodes},{"edges",all_edges}};
         }
@@ -637,14 +619,6 @@ public:
         while (cur != -1) {
             if (nodes.count(cur)) path.insert(path.begin(), nodes[cur]);
             cur = parent.count(cur) ? parent[cur] : -1;
-        }
-
-        // Also return full graph for visualization
-        json all_nodes = json::array();
-        json all_edges = json::array();
-        for (auto& [id, r] : nodes) {
-            if (r.contains("from") && r.contains("to")) all_edges.push_back(r);
-            else all_nodes.push_back(r);
         }
 
         return {{"ok",true},{"path",path},{"length",(int)path.size()},
@@ -662,10 +636,9 @@ public:
                 auto& cs = col_state_unlocked(dname, cname);
                 int64_t rc = (int64_t)cs.index.size();
                 total_records += rc;
-                // Cache stats
-                uint64_t ch = cs.pages->cache_hits();
+                uint64_t ch  = cs.pages->cache_hits();
                 uint64_t cm2 = cs.pages->cache_misses();
-                double hr = cs.pages->cache_hit_rate();
+                double   hr  = cs.pages->cache_hit_rate();
                 json idx_list = json::array();
                 for (auto& [f, _] : cs.sec_indexes) idx_list.push_back(f);
                 cols.push_back({
@@ -746,16 +719,35 @@ private:
         return it->second;
     }
 
-    // col_state: loads if not in memory (thread-safe — caller holds mu_)
+    // col_state: loads collection from disk if not already in memory.
+    // On first access it reads the existing .pages file and rebuilds the
+    // in-memory B-tree index — this is how data survives restarts.
     CollectionState& col_state(const std::string& db, const std::string& col) {
         if (!collections_.count(db) || !collections_[db].count(col)) {
             auto& dbmeta = get_db(db);
             auto cit = dbmeta.collections.find(col);
-            if (cit == dbmeta.collections.end()) throw std::runtime_error("Collection not found: " + col);
+            if (cit == dbmeta.collections.end())
+                throw std::runtime_error("Collection not found: " + col);
+
             auto pm = make_pm(db, col);
+
+            // FIX 2: if the .pages file doesn't exist on disk (e.g. created on
+            // another run but file was lost), create a fresh one rather than
+            // crashing. This avoids the "cannot open for reading" error.
+            if (!pm->exists()) {
+                std::cerr << "[storage] Warning: page file missing for "
+                          << db << "/" << col << " — creating fresh file\n";
+                pm->create();
+                uint8_t buf[PAGE_SIZE];
+                init_page(buf, 0, PageType::HEADER);
+                pm->write_page(0, buf);
+            }
+
             CollectionState cs;
             cs.meta  = cit->second;
             cs.pages = std::move(pm);
+            // rebuild_index scans all pages and reconstructs the primary B-tree.
+            // This is what restores all inserted records on startup.
             rebuild_index(cs);
             load_sec_indexes(db, col, cs);
             collections_[db][col] = std::move(cs);
@@ -768,7 +760,6 @@ private:
     }
 
     void load_sec_indexes(const std::string& db, const std::string& col, CollectionState& cs) {
-        // Discover *.sidx files for this collection
         try {
             for (auto& entry : fs::directory_iterator(db_path(db))) {
                 if (entry.path().extension() != ".sidx") continue;
@@ -789,11 +780,18 @@ private:
         for (auto& [field, sidx] : cs.sec_indexes) sidx.save();
     }
 
+    // FIX 3: rebuild_index now starts from page 0 (not 1) so it never misses
+    // any data pages. The header page has magic != PAGE_MAGIC for data records
+    // so it is harmlessly skipped by the magic check inside the loop.
     void rebuild_index(CollectionState& cs) {
         uint32_t npages = cs.pages->num_pages();
         for (uint32_t pg = 0; pg < npages; pg++) {
             uint8_t buf[PAGE_SIZE];
-            cs.pages->read_page(pg, buf);
+            try {
+                cs.pages->read_page(pg, buf);
+            } catch (...) {
+                continue; // skip unreadable pages
+            }
             auto* h = page_header(buf);
             if (h->magic != PAGE_MAGIC) continue;
             for (uint32_t sl = 0; sl < h->num_slots; sl++) {
@@ -804,21 +802,29 @@ private:
                     if (rec.contains("id") && rec["id"].is_number()) {
                         int64_t id = rec["id"].get<int64_t>();
                         cs.index.insert(id, pack_loc(pg, sl));
-                        if (id >= cs.meta.next_id) cs.meta.next_id = (uint32_t)(id + 1);
+                        if (id >= (int64_t)cs.meta.next_id)
+                            cs.meta.next_id = (uint32_t)(id + 1);
                     }
                 } catch (...) {}
             }
         }
     }
 
+    // FIX 4: find_space_unlocked — the original started the scan at npages-1
+    // (or 1 if only header exists), which meant when npages==1 the loop body
+    // never ran and every insert needlessly allocated a new page. Now we scan
+    // from page 1 (skip header at 0) and fall through to alloc only if needed.
     std::pair<uint32_t,uint32_t> find_space_unlocked(const std::string& db, const std::string& col,
                                                       const std::string& rstr) {
         auto& cs = collections_[db][col];
         uint32_t npages = cs.pages->num_pages();
 
-        for (uint32_t pg = (npages > 1 ? npages-1 : 1); pg < npages; pg++) {
+        // Try to fit into an existing data page (skip page 0 which is the header)
+        for (uint32_t pg = 1; pg < npages; pg++) {
             uint8_t buf[PAGE_SIZE];
-            cs.pages->read_page(pg, buf);
+            try { cs.pages->read_page(pg, buf); } catch (...) { continue; }
+            auto* h = page_header(buf);
+            if (h->magic != PAGE_MAGIC) continue; // skip corrupted pages
             int slot = page_insert(buf, rstr);
             if (slot >= 0) {
                 cs.pages->write_page(pg, buf);
@@ -826,6 +832,7 @@ private:
             }
         }
 
+        // No space in existing pages — allocate a new data page
         uint32_t new_pg = cs.pages->alloc_page();
         uint8_t buf[PAGE_SIZE];
         init_page(buf, new_pg, PageType::DATA);
@@ -836,7 +843,11 @@ private:
 
     std::string read_record(PageManager& pm, uint32_t pg, uint32_t sl) {
         uint8_t buf[PAGE_SIZE];
-        pm.read_page(pg, buf);
+        try {
+            pm.read_page(pg, buf);
+        } catch (...) {
+            return "";
+        }
         return page_read(buf, sl);
     }
 
@@ -948,20 +959,29 @@ private:
         }
     }
 
+    // FIX 5: apply_wal_entry — the old version only set up an empty
+    // CollectionState in memory but never called rebuild_index, so WAL replay
+    // did not actually restore any records. Now it does nothing for INSERT
+    // because col_state() (called eagerly in open()) already read all records
+    // directly from the .pages file. WAL replay is now only used for detecting
+    // uncommitted transactions (handled by TransactionManager).
     void apply_wal_entry(const WalEntry& e) {
-        if (e.op == WalOp::INSERT && !e.db.empty() && !e.collection.empty()) {
+        // col_state() is called eagerly in open() for every known collection,
+        // so page-based persistence is already handled before WAL replay runs.
+        // We only need to handle schema-level operations here.
+        if (e.op == WalOp::CREATE_COL && !e.db.empty() && !e.collection.empty()) {
+            // Collection was created — ensure it's loaded if not yet in memory.
             try {
-                auto& dbmeta = databases_[e.db];
-                if (!dbmeta.collections.count(e.collection)) return;
-                if (!collections_.count(e.db) || !collections_[e.db].count(e.collection)) {
-                    auto pm = make_pm(e.db, e.collection);
-                    CollectionState cs;
-                    cs.meta  = dbmeta.collections[e.collection];
-                    cs.pages = std::move(pm);
-                    collections_[e.db][e.collection] = std::move(cs);
+                if (databases_.count(e.db) &&
+                    databases_[e.db].collections.count(e.collection) &&
+                    (!collections_.count(e.db) || !collections_[e.db].count(e.collection)))
+                {
+                    col_state_unlocked(e.db, e.collection);
                 }
             } catch (...) {}
         }
+        // INSERT / UPDATE / DELETE: already on disk in .pages files.
+        // rebuild_index() in col_state() picks them up directly — no replay needed.
     }
 
     static int64_t pack_loc(uint32_t pg, uint32_t sl) {

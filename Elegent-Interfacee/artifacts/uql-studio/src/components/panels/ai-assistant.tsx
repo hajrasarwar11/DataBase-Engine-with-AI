@@ -3,10 +3,20 @@ import {
   Sparkles, Plus, LayoutList, Send, X, Trash2,
   Copy, Play, Check, Database, ChevronDown,
   MessageSquare, Loader2, AlertCircle, Table2, Zap, Mic, MicOff,
-  Paperclip, FileText, FileCode, FileType, Download, User,
+  Paperclip, FileText, FileCode, FileType, Download, User, Square,
+  Image, RefreshCw,
 } from "lucide-react";
-import { useRef as usePopoverRef } from "react";
-// Simple popover/modal for login
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  useListAnthropicConversations,
+  useCreateAnthropicConversation,
+  useDeleteAnthropicConversation,
+  useListCollections,
+  getListAnthropicConversationsQueryKey,
+} from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
+
+// ── Login Popover ─────────────────────────────────────────────────────────────
 function LoginPopover({ onClose }: { onClose: () => void }) {
   return (
     <div style={{ position: 'absolute', top: 36, right: 0, zIndex: 100, background: 'var(--uql-header)', border: '1px solid var(--uql-b3)', borderRadius: 6, boxShadow: '0 2px 12px #0002', minWidth: 220 }}>
@@ -25,17 +35,8 @@ function LoginPopover({ onClose }: { onClose: () => void }) {
     </div>
   );
 }
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  useListAnthropicConversations,
-  useCreateAnthropicConversation,
-  useDeleteAnthropicConversation,
-  useListCollections,
-  getListAnthropicConversationsQueryKey,
-} from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { cn } from "@/lib/utils";
 
+// ── Types ─────────────────────────────────────────────────────────────────────
 type AttachmentFile = {
   id: string; name: string; mediaType: string; fileType: "image" | "text" | "document";
   data: string; preview?: string; size: number;
@@ -44,6 +45,14 @@ type MessageAttachment = { name: string; fileType: "image" | "text" | "document"
 type LocalMessage = { id: string; role: "user" | "assistant"; content: string; isStreaming?: boolean; attachments?: MessageAttachment[]; };
 type RunResult = { messageId: string; query: string; result: { success: boolean; rows?: any[]; rowCount?: number; error?: string }; };
 type PendingRun = { query: string; messageId: string; };
+
+// ── Ollama status type ────────────────────────────────────────────────────────
+type OllamaStatus = {
+  available: boolean;
+  model: string | null;
+  models: string[];
+  visionModel: string | null;
+};
 
 function parseContent(content: string): Array<{ type: "text" | "uql"; value: string }> {
   const parts: Array<{ type: "text" | "uql"; value: string }> = [];
@@ -133,9 +142,14 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
   const [attachments, setAttachments] = useState<AttachmentFile[]>([]);
   const [attachError, setAttachError] = useState<string | null>(null);
   const [taHeight, setTaHeight] = useState(38);
-  const [availableModels, setAvailableModels] = useState<string[]>([]);
+
+  // ── Ollama state — replaces the old availableModels/selectedModel ──────────
+  const [ollamaStatus, setOllamaStatus] = useState<OllamaStatus>({
+    available: false, model: null, models: [], visionModel: null,
+  });
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [showModelSelector, setShowModelSelector] = useState(false);
+  const [ollamaLoading, setOllamaLoading] = useState(true);
   const modelSelectorRef = useRef<HTMLDivElement>(null);
 
   type AuthStatus = { user: { login: string; name: string; avatar_url: string } | null; provider: "github" | "anthropic" | "local" | null; localModel: { available: boolean; model: string | null } | null; };
@@ -143,24 +157,52 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
   const [rateLimitHit, setRateLimitHit] = useState(false);
 
   const refreshAuth = () => {
-    fetch("/api/auth/me", { credentials: "include" }).then(r => r.json()).then((d: AuthStatus) => setAuthStatus(d)).catch(() => setAuthStatus({ user: null, provider: null, localModel: null }));
+    fetch("/api/auth/me", { credentials: "include" })
+      .then(r => r.json())
+      .then((d: AuthStatus) => setAuthStatus(d))
+      .catch(() => setAuthStatus({ user: null, provider: null, localModel: null }));
   };
   useEffect(() => { refreshAuth(); }, []);
 
-  useEffect(() => {
-    fetch("/api/ai/local/models").then(r => r.json()).then((d: { available: boolean; models: string[]; defaultModel: string | null }) => {
-      if (d.available && d.models.length > 0) {
-        setAvailableModels(d.models);
-        // Always prefer phi if available
-        const phiModel = d.models.find(m => m.toLowerCase().startsWith('phi'));
-        setSelectedModel(phiModel ?? d.defaultModel);
-      }
-    }).catch(() => {});
+  // ── Fetch Ollama status (with retry) ─────────────────────────────────────
+  const fetchOllamaStatus = useCallback(async () => {
+    setOllamaLoading(true);
+    try {
+      const res = await fetch("/api/ai/local/models");
+      if (!res.ok) throw new Error("Status fetch failed");
+      const data: { available: boolean; models: string[]; defaultModel: string | null; visionModel: string | null } = await res.json();
+
+      setOllamaStatus({
+        available: data.available,
+        model: data.defaultModel,
+        models: data.models ?? [],
+        visionModel: data.visionModel,
+      });
+
+      // Auto-select model: keep user's choice if it's still valid, else use default
+      setSelectedModel(prev => {
+        if (prev && data.models.includes(prev)) return prev;
+        return data.defaultModel ?? null;
+      });
+    } catch {
+      setOllamaStatus({ available: false, model: null, models: [], visionModel: null });
+      setSelectedModel(null);
+    } finally {
+      setOllamaLoading(false);
+    }
   }, []);
 
   useEffect(() => {
+    fetchOllamaStatus();
+    // Re-check every 30 seconds in case Ollama starts up late
+    const interval = setInterval(fetchOllamaStatus, 30000);
+    return () => clearInterval(interval);
+  }, [fetchOllamaStatus]);
+
+  useEffect(() => {
     const handle = (e: MouseEvent) => {
-      if (modelSelectorRef.current && !modelSelectorRef.current.contains(e.target as Node)) setShowModelSelector(false);
+      if (modelSelectorRef.current && !modelSelectorRef.current.contains(e.target as Node))
+        setShowModelSelector(false);
     };
     document.addEventListener("mousedown", handle);
     return () => document.removeEventListener("mousedown", handle);
@@ -195,7 +237,6 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
     const padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
     const borV = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
     const oneRow = Math.ceil(lineH + padV + borV);
-
     el.style.height = "1px";
     const scrollH = el.scrollHeight + borV;
     const h = Math.min(el.value.trim() ? Math.max(scrollH, oneRow) : oneRow, 160);
@@ -207,7 +248,6 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
 
   const buildSchemaContext = useCallback((): string => {
     if (!collections.length) return "";
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return collections.map((c: any) => {
       const type = (c.type ?? "collection").toUpperCase();
       const count = (c as any).recordCount != null ? ` (${(c as any).recordCount} records)` : "";
@@ -217,8 +257,6 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
         const fields = schema.map((f: any) => (typeof f === "string" ? f : f.name ?? f.field ?? String(f))).filter(Boolean);
         if (fields.length > 0) line += ` fields:[${fields.join(", ")}]`;
       }
-      const indexes = (c as any).indexes;
-      if (Array.isArray(indexes) && indexes.length > 0) line += ` indexes:[${indexes.join(", ")}]`;
       return line;
     }).join("\n");
   }, [collections]);
@@ -245,6 +283,7 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
     onStateChange?.({ conversationCount: conversations.length, showSessions });
   }, [conversations.length, showSessions]);
 
+  // ── Process file helper ───────────────────────────────────────────────────
   const processFile = useCallback((file: File): Promise<AttachmentFile> => {
     return new Promise((resolve, reject) => {
       const MAX = 10 * 1024 * 1024;
@@ -272,8 +311,30 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
     if (results.length) setAttachments(prev => [...prev, ...results]);
   }, [processFile]);
 
+  const handlePaste = useCallback(async (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const items = Array.from(e.clipboardData?.items ?? []);
+    const imageItems = items.filter(item => item.type.startsWith("image/"));
+    if (imageItems.length === 0) return;
+    e.preventDefault(); setAttachError(null);
+    for (const item of imageItems) {
+      const file = item.getAsFile();
+      if (!file) continue;
+      const ext = item.type.split("/")[1] ?? "png";
+      const namedFile = new File([file], `pasted-image-${Date.now()}.${ext}`, { type: item.type });
+      try { const att = await processFile(namedFile); setAttachments(prev => [...prev, att]); }
+      catch (err: any) { setAttachError(err.message ?? "Failed to read pasted image"); }
+    }
+  }, [processFile]);
+
   const removeAttachment = useCallback((id: string) => setAttachments(prev => prev.filter(a => a.id !== id)), []);
 
+  const handleStop = useCallback(() => {
+    if (abortRef.current) { abortRef.current.abort(); abortRef.current = null; }
+    setIsStreaming(false);
+    setMessages(prev => prev.map(m => m.isStreaming ? { ...m, isStreaming: false, content: m.content || "_(stopped)_" } : m));
+  }, []);
+
+  // ── Send message ──────────────────────────────────────────────────────────
   const sendMessage = useCallback(async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed && attachments.length === 0) return;
@@ -311,8 +372,11 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
           schema: buildSchemaContext() || undefined,
           lastQuery: lastQuery?.trim() || undefined,
           lastResult: lastResult ?? undefined,
+          // Send the currently selected model so backend can honor it
           selectedModel: selectedModel ?? undefined,
-          attachments: sentAttachments.length > 0 ? sentAttachments.map(a => ({ name: a.name, mediaType: a.mediaType, fileType: a.fileType, data: a.data })) : undefined,
+          attachments: sentAttachments.length > 0
+            ? sentAttachments.map(a => ({ name: a.name, mediaType: a.mediaType, fileType: a.fileType, data: a.data }))
+            : undefined,
         }),
         signal: abortRef.current.signal,
         credentials: "include",
@@ -351,6 +415,8 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
     } catch (err: any) {
       if (err?.name !== "AbortError") {
         setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: "Sorry, I encountered an error. Please try again.", isStreaming: false } : m));
+      } else {
+        setMessages(prev => prev.map(m => m.id === asstMsgId && m.isStreaming ? { ...m, isStreaming: false } : m));
       }
     } finally { setIsStreaming(false); abortRef.current = null; }
   }, [activeConversationId, isStreaming, activeDatabaseName, buildSchemaContext, createConversation, refetchConversations, queryClient, attachments, lastQuery, lastResult, selectedModel]);
@@ -383,193 +449,169 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
     await refetchConversations();
   };
 
+  // ── Derive provider state ──────────────────────────────────────────────────
+  const hasGitHub = authStatus?.provider === "github" && !!authStatus.user;
+  const hasAnyProvider = ollamaStatus.available || hasGitHub || !!authStatus?.provider;
   const isEmpty = messages.length === 0;
 
+  // Show no-provider screen only if we've finished loading and truly have nothing
+  const showNoProvider = !ollamaLoading && authStatus !== null && !hasAnyProvider;
+
   return (
-    <div
-      className="flex flex-col h-full overflow-hidden relative"
-      style={{ background: 'var(--uql-panel)', borderLeft: '1px solid var(--uql-b1)' }}
-    >
-      {/* Header — hidden when rendered in parent strip */}
-      {!hideHeader && <div
-        className="flex items-center justify-between px-3 py-2 shrink-0 border-b"
-        style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b1)' }}
-      >
-        <div className="flex items-center gap-2">
-          <div
-            className="w-5 h-5 flex items-center justify-center"
-            style={{ background: 'var(--uql-header)', border: '1px solid var(--uql-b2)', borderRadius: 3 }}
-          >
-            <Sparkles className="w-3 h-3" style={{ color: 'var(--uql-t5)' }} />
-          </div>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)', fontWeight: 600 }}>
-            UQL Copilot
-          </span>
-          <span
-            className="px-1"
-            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)', background: 'var(--uql-deeper)', border: '1px solid var(--uql-b3)', borderRadius: 2 }}
-          >
-            AI
-          </span>
-        </div>
-        <div className="flex items-center gap-0.5" style={{ position: 'relative' }}>
-          {/* User/Profile/Login state */}
-          {/* Declare state at the top of the component */}
-          <AiBtn onClick={() => setShowSessions(s => !s)} active={showSessions} title="Sessions">
-            <LayoutList className="w-3 h-3" />
-            {conversations.length > 0 && (
-              <span
-                className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full flex items-center justify-center"
-                style={{ background: 'var(--uql-b2)', fontSize: 8, color: 'var(--uql-t4)', fontFamily: "'IBM Plex Mono', monospace" }}
-              >
-                {conversations.length > 9 ? "9+" : conversations.length}
-              </span>
+    <div className="flex flex-col h-full overflow-hidden relative" style={{ background: 'var(--uql-panel)', borderLeft: '1px solid var(--uql-b1)' }}>
+
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      {!hideHeader && (
+        <div className="flex items-center justify-between px-3 py-2 shrink-0 border-b" style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b1)' }}>
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 flex items-center justify-center" style={{ background: 'var(--uql-header)', border: '1px solid var(--uql-b2)', borderRadius: 3 }}>
+              <Sparkles className="w-3 h-3" style={{ color: 'var(--uql-t5)' }} />
+            </div>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)', fontWeight: 600 }}>UQL Copilot</span>
+            <span className="px-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)', background: 'var(--uql-deeper)', border: '1px solid var(--uql-b3)', borderRadius: 2 }}>AI</span>
+
+            {/* Ollama status dot */}
+            {ollamaLoading ? (
+              <Loader2 className="w-2.5 h-2.5 animate-spin" style={{ color: 'var(--uql-linenum)' }} />
+            ) : ollamaStatus.available ? (
+              <span className="w-1.5 h-1.5 rounded-full" title={`Ollama: ${ollamaStatus.model}`} style={{ background: '#5a8', display: 'inline-block' }} />
+            ) : (
+              <span className="w-1.5 h-1.5 rounded-full" title="Ollama not available" style={{ background: '#c44', display: 'inline-block' }} />
             )}
-          </AiBtn>
-          <AiBtn onClick={handleNewChat} title="New Chat">
-            <Plus className="w-3 h-3" />
-          </AiBtn>
-          {/* User/Profile/Login button */}
-          <button
-            onClick={() => setShowLoginPopover(true)}
-            title="Sign in"
-            style={{ marginLeft: 4, background: 'none', border: 'none', padding: 0, cursor: 'pointer', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 24, width: 24 }}
-          >
-            <User className="w-4 h-4" style={{ color: 'var(--uql-t5)' }} />
-          </button>
-          {showLoginPopover && <LoginPopover onClose={() => setShowLoginPopover(false)} />}
+          </div>
 
-          {/* User/Profile/Login button */}
-          <button
-            onClick={() => setShowLoginPopover(true)}
-            title="Sign in"
-            style={{ marginLeft: 4, background: 'none', border: 'none', padding: 0, cursor: 'pointer', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 24, width: 24 }}
-          >
-            <User className="w-4 h-4" style={{ color: 'var(--uql-t5)' }} />
-          </button>
-          {showLoginPopover && <LoginPopover onClose={() => setShowLoginPopover(false)} />}
-
-          {/* Model selector — always show if any local models are available */}
-          {availableModels.length > 0 && (
-            <div ref={modelSelectorRef} className="relative ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)' }}>
-              <button
-                onClick={() => setShowModelSelector(s => !s)}
-                title="Select Ollama model"
-                className="flex items-center gap-1 px-1.5 py-0.5 transition-colors"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-t7)', borderRadius: 2 }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t4)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
-              >
-                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'var(--uql-t8)' }} />
-                <span className="max-w-[55px] truncate">
-                  {selectedModel?.split(":")[0]
-                    ?? (authStatus && authStatus.localModel && authStatus.localModel.model
-                        ? authStatus.localModel.model.split(":")[0]
-                        : "local")}
+          <div className="flex items-center gap-0.5" style={{ position: 'relative' }}>
+            <AiBtn onClick={() => setShowSessions(s => !s)} active={showSessions} title="Sessions">
+              <LayoutList className="w-3 h-3" />
+              {conversations.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full flex items-center justify-center" style={{ background: 'var(--uql-b2)', fontSize: 8, color: 'var(--uql-t4)', fontFamily: "'IBM Plex Mono', monospace" }}>
+                  {conversations.length > 9 ? "9+" : conversations.length}
                 </span>
-                <ChevronDown className="w-2 h-2" />
-              </button>
-              <AnimatePresence>
-                {showModelSelector && availableModels.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.1 }}
-                    className="absolute right-0 top-full mt-0.5 z-50 min-w-[130px] border overflow-hidden"
-                    style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3 }}
-                  >
-                    <div className="px-2.5 pt-2 pb-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                      Ollama models
-                    </div>
-                    {availableModels.map(m => (
-                      <button
-                        key={m}
-                        onClick={() => { setSelectedModel(m); setShowModelSelector(false); }}
-                        className="w-full flex items-center gap-2 px-2.5 py-1.5 text-left transition-colors"
-                        style={{
-                          fontFamily: "'IBM Plex Mono', monospace", fontSize: 11,
-                          color: selectedModel === m ? 'var(--uql-t2)' : 'var(--uql-t7)',
-                          background: selectedModel === m ? 'var(--uql-header)' : 'transparent',
-                        }}
-                        onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
-                        onMouseLeave={e => (e.currentTarget.style.background = selectedModel === m ? 'var(--uql-header)' : 'transparent')}
-                      >
-                        {selectedModel === m ? <Check className="w-2.5 h-2.5 shrink-0" /> : <span className="w-2.5 shrink-0" />}
-                        <span className="truncate">{m}</span>
-                      </button>
-                    ))}
-                    <div className="px-2.5 pb-2 pt-1 border-t" style={{ borderColor: 'var(--uql-b4)', marginTop: 4 }}>
-                      <a href="https://ollama.com/library" target="_blank" rel="noreferrer"
-                        className="flex items-center gap-1.5 transition-colors"
-                        style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)' }}
-                        onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t5)')}
-                        onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-linenum)')}
-                      >
-                        <Download className="w-2.5 h-2.5" />
-                        Get more models
-                      </a>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
+              )}
+            </AiBtn>
+            <AiBtn onClick={handleNewChat} title="New Chat">
+              <Plus className="w-3 h-3" />
+            </AiBtn>
 
-          {/* GitHub auth indicator */}
-          {authStatus?.provider === "github" && authStatus.user && (
-            <div className="flex items-center gap-1.5 ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)' }}>
-              <img src={authStatus.user.avatar_url} alt={authStatus.user.name} title={`Signed in as ${authStatus.user.name}`} className="w-4 h-4 rounded-full" style={{ outline: '1px solid var(--uql-b2)' }} />
+            {/* Refresh Ollama status */}
+            <AiBtn onClick={fetchOllamaStatus} title="Refresh Ollama status">
+              <RefreshCw className={`w-3 h-3 ${ollamaLoading ? "animate-spin" : ""}`} />
+            </AiBtn>
+
+            {/* Login button */}
+            <div style={{ position: 'relative' }}>
               <button
-                onClick={async () => { await fetch("/api/auth/logout", { method: "POST", credentials: "include" }); refreshAuth(); }}
-                title="Sign out"
-                className="transition-colors"
-                style={{ color: 'var(--uql-linenum)', padding: 2, borderRadius: 2 }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-linenum)')}
+                onClick={() => setShowLoginPopover(v => !v)}
+                title="Sign in"
+                style={{ marginLeft: 4, background: 'none', border: 'none', padding: 0, cursor: 'pointer', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 24, width: 24 }}
               >
-                <X className="w-2.5 h-2.5" />
+                <User className="w-4 h-4" style={{ color: 'var(--uql-t5)' }} />
               </button>
+              {showLoginPopover && <LoginPopover onClose={() => setShowLoginPopover(false)} />}
             </div>
-          )}
-          {authStatus?.provider === "anthropic" && (
-            <div className="ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)' }}>
-              Claude
-            </div>
-          )}
-        </div>
-      </div>}
 
-      {/* Sessions Panel */}
+            {/* Model selector — only shown when Ollama is available */}
+            {ollamaStatus.available && ollamaStatus.models.length > 0 && (
+              <div ref={modelSelectorRef} className="relative ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)' }}>
+                <button
+                  onClick={() => setShowModelSelector(s => !s)}
+                  title="Select Ollama model"
+                  className="flex items-center gap-1 px-1.5 py-0.5 transition-colors"
+                  style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-t7)', borderRadius: 2 }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t4)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#5a8' }} />
+                  <span className="max-w-[65px] truncate">
+                    {selectedModel?.split(":")[0] ?? "local"}
+                  </span>
+                  <ChevronDown className="w-2 h-2" />
+                </button>
+                <AnimatePresence>
+                  {showModelSelector && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.1 }}
+                      className="absolute right-0 top-full mt-0.5 z-50 min-w-[150px] border overflow-hidden"
+                      style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3 }}
+                    >
+                      <div className="px-2.5 pt-2 pb-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Ollama models</div>
+                      {ollamaStatus.models.map(m => (
+                        <button key={m} onClick={() => { setSelectedModel(m); setShowModelSelector(false); }}
+                          className="w-full flex items-center gap-2 px-2.5 py-1.5 text-left transition-colors"
+                          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: selectedModel === m ? 'var(--uql-t2)' : 'var(--uql-t7)', background: selectedModel === m ? 'var(--uql-header)' : 'transparent' }}
+                          onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
+                          onMouseLeave={e => (e.currentTarget.style.background = selectedModel === m ? 'var(--uql-header)' : 'transparent')}
+                        >
+                          {selectedModel === m ? <Check className="w-2.5 h-2.5 shrink-0" /> : <span className="w-2.5 shrink-0" />}
+                          <span className="truncate">{m}</span>
+                        </button>
+                      ))}
+                      <div className="px-2.5 pb-2 pt-1 border-t" style={{ borderColor: 'var(--uql-b4)', marginTop: 4 }}>
+                        <a href="https://ollama.com/library" target="_blank" rel="noreferrer"
+                          className="flex items-center gap-1.5 transition-colors"
+                          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)' }}
+                          onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t5)')}
+                          onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-linenum)')}
+                        >
+                          <Download className="w-2.5 h-2.5" /> Get more models
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {/* GitHub auth indicator */}
+            {hasGitHub && (
+              <div className="flex items-center gap-1.5 ml-1 pl-1.5 border-l" style={{ borderColor: 'var(--uql-b3)' }}>
+                <img src={authStatus!.user!.avatar_url} alt={authStatus!.user!.name} title={`Signed in as ${authStatus!.user!.name}`} className="w-4 h-4 rounded-full" style={{ outline: '1px solid var(--uql-b2)' }} />
+                <button
+                  onClick={async () => { await fetch("/api/auth/logout", { method: "POST", credentials: "include" }); refreshAuth(); }}
+                  title="Sign out"
+                  className="transition-colors"
+                  style={{ color: 'var(--uql-linenum)', padding: 2, borderRadius: 2 }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-linenum)')}
+                >
+                  <X className="w-2.5 h-2.5" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── No-model warning banner (not a full screen) ────────────────────── */}
+      {!ollamaLoading && !ollamaStatus.available && !hasGitHub && (
+        <div className="mx-3 mt-2 px-3 py-2 border shrink-0" style={{ borderColor: '#3a2a0a', background: '#1a1400', borderRadius: 3 }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#c8a040', marginBottom: 4, fontWeight: 600 }}>⚠ No AI model available</div>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#8a7030', lineHeight: 1.6 }}>
+            Ollama is not running or has no models.<br />
+            Run: <code style={{ color: '#c8a040' }}>ollama pull phi3:mini</code><br />
+            Then click <strong>↺</strong> to refresh.
+          </div>
+        </div>
+      )}
+
+      {/* ── Sessions Panel ──────────────────────────────────────────────────── */}
       <AnimatePresence>
         {showSessions && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", maxHeight: 220, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.15 }}
+            initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", maxHeight: 220, opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.15 }}
             className="border-b overflow-y-auto shrink-0"
             style={{ borderColor: 'var(--uql-b1)', background: 'var(--uql-header)' }}
           >
             <div className="px-3 py-1.5 flex items-center justify-between sticky top-0 z-10 border-b" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b4)' }}>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                Sessions
-              </span>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)' }}>
-                {conversations.length}
-              </span>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Sessions</span>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)' }}>{conversations.length}</span>
             </div>
             {conversations.length === 0 ? (
-              <div className="px-3 py-4 text-center" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-linenum)', fontSize: 11 }}>
-                no sessions yet
-              </div>
+              <div className="px-3 py-4 text-center" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-linenum)', fontSize: 11 }}>no sessions yet</div>
             ) : (
               <div className="pb-1">
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {conversations.map((conv: any) => (
-                  <div
-                    key={conv.id}
-                    onClick={() => loadConversation(conv.id)}
+                  <div key={conv.id} onClick={() => loadConversation(conv.id)}
                     className="flex items-center justify-between px-3 py-1.5 cursor-pointer group transition-colors"
                     style={{ background: activeConversationId === conv.id ? 'var(--uql-row-a)' : 'transparent' }}
                     onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-deeper)')}
@@ -577,16 +619,11 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                   >
                     <div className="flex items-center gap-2 min-w-0">
                       <MessageSquare className="w-3 h-3 shrink-0" style={{ color: 'var(--uql-linenum)' }} />
-                      <span className="truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t5)', fontSize: 11 }}>
-                        {conv.title}
-                      </span>
+                      <span className="truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t5)', fontSize: 11 }}>{conv.title}</span>
                     </div>
                     <div className="flex items-center gap-1 shrink-0 ml-2">
-                      <span className="group-hover:hidden" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-linenum)', fontSize: 10 }}>
-                        {formatRelativeTime(conv.createdAt)}
-                      </span>
-                      <button
-                        onClick={e => handleDeleteConversation(conv.id, e)}
+                      <span className="group-hover:hidden" style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-linenum)', fontSize: 10 }}>{formatRelativeTime(conv.createdAt)}</span>
+                      <button onClick={e => handleDeleteConversation(conv.id, e)}
                         className="hidden group-hover:flex p-0.5 transition-colors"
                         style={{ color: 'var(--uql-t8)', borderRadius: 2 }}
                         onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#c44')}
@@ -603,25 +640,23 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
         )}
       </AnimatePresence>
 
-      {/* Rate Limit Banner */}
-      {/* Login popover is now handled by the user icon at the top right */}
-
-      {/* Chat Area */}
+      {/* ── Chat Area ───────────────────────────────────────────────────────── */}
       <div className="flex-1 overflow-y-auto min-h-0">
-        {isEmpty && authStatus?.provider === null ? (
+        {showNoProvider ? (
           <NoProviderScreen />
         ) : isEmpty ? (
-          <WelcomeScreen activeDatabaseName={activeDatabaseName} onPromptClick={p => sendMessage(p)} />
+          <WelcomeScreen
+            activeDatabaseName={activeDatabaseName}
+            ollamaModel={selectedModel}
+            onPromptClick={p => sendMessage(p)}
+          />
         ) : (
           <div className="p-3 space-y-3 pb-4">
             {messages.map(msg => (
               <MessageBubble
-                key={msg.id}
-                message={msg}
-                onInsert={onInsertQuery}
-                onRun={q => handleRunQuery(q, msg.id)}
-                onCopy={handleCopy}
-                copiedId={copiedId}
+                key={msg.id} message={msg}
+                onInsert={onInsertQuery} onRun={q => handleRunQuery(q, msg.id)}
+                onCopy={handleCopy} copiedId={copiedId}
                 runResults={runResults.filter(r => r.messageId === msg.id)}
               />
             ))}
@@ -630,13 +665,10 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
         )}
       </div>
 
-      {/* Pending Run Banner */}
+      {/* ── Pending Run Banner ──────────────────────────────────────────────── */}
       <AnimatePresence>
         {pendingRun && (
-          <motion.div
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 10, opacity: 0 }}
+          <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }}
             className="mx-3 mb-2 border p-3 shrink-0"
             style={{ borderColor: 'var(--uql-b2)', background: 'var(--uql-deeper)', borderRadius: 3 }}
           >
@@ -644,14 +676,11 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
               <Zap className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: 'var(--uql-t7)' }} />
               <div>
                 <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)', marginBottom: 4 }}>Run this query?</div>
-                <div className="px-2 py-1.5 border" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t3)', background: 'var(--uql-panel)', borderColor: 'var(--uql-b3)', borderRadius: 2 }}>
-                  {pendingRun.query}
-                </div>
+                <div className="px-2 py-1.5 border" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t3)', background: 'var(--uql-panel)', borderColor: 'var(--uql-b3)', borderRadius: 2 }}>{pendingRun.query}</div>
               </div>
             </div>
             <div className="flex gap-2">
-              <button
-                onClick={confirmRun} disabled={isRunning}
+              <button onClick={confirmRun} disabled={isRunning}
                 className="flex-1 flex items-center justify-center gap-1.5 py-1.5 border transition-colors disabled:opacity-40"
                 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-exec-bg)', background: 'var(--uql-toolbar)', borderColor: 'var(--uql-linenum)', borderRadius: 3 }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-b3)')}
@@ -660,15 +689,12 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                 {isRunning ? <Loader2 className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3" />}
                 Yes, run it
               </button>
-              <button
-                onClick={() => setPendingRun(null)}
+              <button onClick={() => setPendingRun(null)}
                 className="px-3 py-1.5 border transition-colors"
                 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t7)', borderColor: 'var(--uql-b3)', borderRadius: 3 }}
                 onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t4)')}
                 onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
-              >
-                Cancel
-              </button>
+              >Cancel</button>
             </div>
           </motion.div>
         )}
@@ -677,38 +703,41 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
       {/* File Input */}
       <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf,.txt,.csv,.json,.md,.sql,.py,.js,.ts,.tsx,.jsx,.html,.xml,.yaml,.yml,.log,.sh,.env" className="hidden" onChange={handleFileSelect} />
 
-      {/* Input Area */}
+      {/* ── Input Area ──────────────────────────────────────────────────────── */}
       <div className="border-t p-2.5 shrink-0" style={{ borderColor: 'var(--uql-b1)', background: 'var(--uql-header)' }}>
+
         {/* Attachment chips */}
         <AnimatePresence>
           {attachments.length > 0 && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="flex flex-wrap gap-1.5 mb-2">
               {attachments.map(att => (
-                <motion.div
-                  key={att.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                <motion.div key={att.id} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
                   className="flex items-center gap-1.5 pl-1.5 pr-1 py-0.5 border"
                   style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t5)' }}
                 >
                   {att.fileType === "image" && att.preview
                     ? <img src={att.preview} alt={att.name} className="w-3.5 h-3.5 object-cover" style={{ borderRadius: 2 }} />
-                    : att.fileType === "document"
-                    ? <FileType className="w-3 h-3 shrink-0" />
-                    : att.name.match(/\.(js|ts|jsx|tsx|py|sql|sh)$/i)
-                    ? <FileCode className="w-3 h-3 shrink-0" />
+                    : att.fileType === "document" ? <FileType className="w-3 h-3 shrink-0" />
+                    : att.name.match(/\.(js|ts|jsx|tsx|py|sql|sh)$/i) ? <FileCode className="w-3 h-3 shrink-0" />
                     : <FileText className="w-3 h-3 shrink-0" />
                   }
                   <span className="max-w-[90px] truncate">{att.name}</span>
-                  <button onClick={() => removeAttachment(att.id)} style={{ color: 'var(--uql-linenum)', borderRadius: 2, padding: 2 }} onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')} onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-linenum)')}>
-                    <X className="w-2.5 h-2.5" />
-                  </button>
+                  <button onClick={() => removeAttachment(att.id)} style={{ color: 'var(--uql-linenum)', borderRadius: 2, padding: 2 }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
+                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-linenum)')}
+                  ><X className="w-2.5 h-2.5" /></button>
                 </motion.div>
               ))}
             </motion.div>
           )}
         </AnimatePresence>
+
+        {attachments.length === 0 && !isStreaming && (
+          <div className="flex items-center gap-1 mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)' }}>
+            <Image className="w-2.5 h-2.5" />
+            <span>Ctrl+V to paste a screenshot</span>
+          </div>
+        )}
 
         {/* Error */}
         <AnimatePresence>
@@ -724,34 +753,24 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
           )}
         </AnimatePresence>
 
-        {/* DB label */}
-        {activeDatabaseName && (
+        {/* DB label + listening indicator */}
+        {(activeDatabaseName || speech.isListening) && (
           <div className="flex items-center gap-1.5 mb-2">
-            <div className="flex items-center gap-1 px-1.5 py-0.5 border" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t8)' }}>
-              <Database className="w-2.5 h-2.5" />
-              {activeDatabaseName}
-            </div>
+            {activeDatabaseName && (
+              <div className="flex items-center gap-1 px-1.5 py-0.5 border" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b3)', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t8)' }}>
+                <Database className="w-2.5 h-2.5" /> {activeDatabaseName}
+              </div>
+            )}
             {speech.isListening && (
               <div className="flex items-center gap-1 px-1.5 py-0.5 border" style={{ background: '#1a0a0a', borderColor: '#3a1a1a', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#c44' }}>
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#c44' }} />
-                Listening
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#c44' }} /> Listening
               </div>
             )}
           </div>
         )}
-        {!activeDatabaseName && speech.isListening && (
-          <div className="flex items-center gap-1.5 mb-2">
-            <div className="flex items-center gap-1 px-1.5 py-0.5 border" style={{ background: '#1a0a0a', borderColor: '#3a1a1a', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#c44' }}>
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#c44' }} />
-              Listening
-            </div>
-          </div>
-        )}
 
         <div className="flex gap-1.5 items-end">
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isStreaming}
+          <button onClick={() => fileInputRef.current?.click()} disabled={isStreaming}
             title="Attach file"
             className="mb-1 p-1.5 transition-colors disabled:opacity-40 shrink-0"
             style={{ color: 'var(--uql-linenum)', borderRadius: 3 }}
@@ -767,11 +786,17 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
               value={speech.isListening && interimText ? interimText : inputText}
               onChange={e => { if (!speech.isListening) { setInputText(e.target.value); autoResizeTextarea(); } }}
               onKeyDown={handleKeyDown}
-              placeholder={isStreaming ? "AI is responding…" : speech.isListening ? "Speak now…" : attachments.length > 0 ? "Add a message…" : "Ask me anything…"}
-              disabled={isStreaming}
+              onPaste={handlePaste}
+              placeholder={
+                isStreaming ? "AI is responding…"
+                : speech.isListening ? "Speak now…"
+                : !ollamaStatus.available && !hasGitHub ? "⚠ Pull a model first: ollama pull phi3:mini"
+                : attachments.length > 0 ? "Add a message… (Ctrl+V for images)"
+                : "Ask me anything… (Ctrl+V to paste image)"
+              }
               readOnly={speech.isListening}
               rows={1}
-              className="uql-ai-input w-full border px-3 pr-16 py-2 outline-none resize-none leading-relaxed transition-colors disabled:opacity-60"
+              className="uql-ai-input w-full border px-3 pr-20 py-2 outline-none resize-none leading-relaxed transition-colors"
               style={{
                 background: 'var(--uql-editor)',
                 borderColor: speech.isListening ? '#4a2a2a' : 'var(--uql-b3)',
@@ -800,41 +825,52 @@ export const AIAssistant = forwardRef(function AIAssistantInner(
                   {speech.isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
                 </button>
               )}
-              <button
-                onClick={() => sendMessage(inputText)}
-                disabled={(!inputText.trim() && attachments.length === 0) || isStreaming || speech.isListening}
-                className="p-1.5 transition-colors disabled:opacity-30"
-                style={{
-                  background: (inputText.trim() || attachments.length > 0) && !isStreaming ? 'var(--uql-exec-bg)' : 'transparent',
-                  color: (inputText.trim() || attachments.length > 0) && !isStreaming ? 'var(--uql-exec-text)' : 'var(--uql-t5)',
-                  borderRadius: 4,
-                }}
-              >
-                {isStreaming ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
-              </button>
+              {isStreaming ? (
+                <button
+                  onClick={handleStop}
+                  title="Stop response"
+                  className="p-1.5 transition-colors"
+                  style={{ background: '#3a1010', color: '#e55', borderRadius: 4, border: '1px solid #5a2020' }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = '#4a1818')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = '#3a1010')}
+                >
+                  <Square className="w-3.5 h-3.5" fill="currentColor" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => sendMessage(inputText)}
+                  disabled={(!inputText.trim() && attachments.length === 0) || speech.isListening}
+                  className="p-1.5 transition-colors disabled:opacity-30"
+                  style={{
+                    background: (inputText.trim() || attachments.length > 0) ? 'var(--uql-exec-bg)' : 'transparent',
+                    color: (inputText.trim() || attachments.length > 0) ? 'var(--uql-exec-text)' : 'var(--uql-t5)',
+                    borderRadius: 4,
+                  }}
+                >
+                  <Send className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
           </div>
         </div>
         <div className="mt-1.5 text-center" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)' }}>
-          Enter to send · Shift+Enter for newline
+          Enter to send · Shift+Enter for newline · Ctrl+V to paste image
         </div>
       </div>
     </div>
   );
 });
 
+// ── Small reusable components ─────────────────────────────────────────────────
+
 function AiBtn({ children, onClick, active, title }: { children: React.ReactNode; onClick: () => void; active?: boolean; title?: string }) {
   return (
-    <button
-      onClick={onClick}
-      title={title}
+    <button onClick={onClick} title={title}
       className="relative w-6 h-6 flex items-center justify-center transition-colors"
       style={{ color: active ? 'var(--uql-t3)' : 'var(--uql-linenum)', background: active ? 'var(--uql-header)' : 'transparent', borderRadius: 3 }}
       onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
       onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = active ? 'var(--uql-t3)' : 'var(--uql-linenum)')}
-    >
-      {children}
-    </button>
+    >{children}</button>
   );
 }
 
@@ -845,14 +881,10 @@ function NoProviderScreen() {
         <div className="w-10 h-10 flex items-center justify-center mb-4 border" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b2)', borderRadius: 3 }}>
           <Sparkles className="w-5 h-5" style={{ color: 'var(--uql-linenum)' }} />
         </div>
-        <h3 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t5)', fontWeight: 600, marginBottom: 4 }}>
-          UQL Copilot
-        </h3>
+        <h3 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t5)', fontWeight: 600, marginBottom: 4 }}>UQL Copilot</h3>
         <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginBottom: 20, maxWidth: 200, lineHeight: 1.6 }}>
           Choose how to power your AI — locally or via GitHub.
         </p>
-
-        {/* Local Phi */}
         <div className="w-full mb-3 border p-3 text-left" style={{ borderColor: 'var(--uql-b3)', background: 'var(--uql-panel)', borderRadius: 3 }}>
           <div className="flex items-center gap-2 mb-2">
             <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t5)', fontWeight: 600 }}>Local Phi — offline, no login</span>
@@ -866,23 +898,15 @@ function NoProviderScreen() {
                   style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)', borderColor: 'var(--uql-b3)', borderRadius: 2, background: 'var(--uql-deeper)' }}
                   onMouseEnter={e => (e.currentTarget.style.color = 'var(--uql-t4)')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'var(--uql-t7)')}
-                >
-                  {label}
-                </a>
+                >{label}</a>
               ))}
             </div>
             <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>Step 2 — Pull a model</div>
             <div className="space-y-0.5">
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)' }}>
-                <span style={{ color: 'var(--uql-t8)' }}>$ </span>ollama pull phi4 <span style={{ color: 'var(--uql-linenum)' }}># 9 GB</span>
-              </div>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)' }}>
-                <span style={{ color: 'var(--uql-t8)' }}>$ </span>ollama pull phi3:mini <span style={{ color: 'var(--uql-linenum)' }}># 2 GB</span>
-              </div>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)' }}><span style={{ color: 'var(--uql-t8)' }}>$ </span>ollama pull phi3:mini <span style={{ color: 'var(--uql-linenum)' }}># 2 GB — recommended</span></div>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t7)' }}><span style={{ color: 'var(--uql-t8)' }}>$ </span>ollama pull phi4 <span style={{ color: 'var(--uql-linenum)' }}># 9 GB — more powerful</span></div>
             </div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginTop: 2 }}>
-              Step 3 — Refresh this page
-            </div>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginTop: 2 }}>Step 3 — Refresh this page or click ↺</div>
           </div>
           <a href="https://ollama.com" target="_blank" rel="noreferrer"
             className="w-full flex items-center justify-center gap-2 py-2 border transition-colors"
@@ -890,17 +914,14 @@ function NoProviderScreen() {
             onMouseEnter={e => (e.currentTarget.style.background = 'var(--uql-header)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'var(--uql-deeper)')}
           >
-            <Download className="w-3.5 h-3.5" />
-            Download Ollama
+            <Download className="w-3.5 h-3.5" /> Download Ollama
           </a>
         </div>
-
         <div className="flex items-center w-full gap-2 mb-3">
           <div className="flex-1 h-px" style={{ background: 'var(--uql-b4)' }} />
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)' }}>or</span>
           <div className="flex-1 h-px" style={{ background: 'var(--uql-b4)' }} />
         </div>
-
         <a href="/api/auth/github"
           className="w-full flex items-center justify-center gap-2 py-2 border transition-colors"
           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-exec-text)', background: 'var(--uql-exec-bg)', borderColor: 'var(--uql-exec-bg)', borderRadius: 3 }}
@@ -910,43 +931,51 @@ function NoProviderScreen() {
           <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" style={{ fill: "var(--uql-exec-text)" }}>
             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
           </svg>
-          <span style={{ color: 'var(--uql-exec-text)' }}>Continue with GitHub</span>
+          <span>Continue with GitHub</span>
         </a>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginTop: 8 }}>
-          Free via GitHub Models — Education &amp; Pro plans
-        </p>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginTop: 8 }}>Free via GitHub Models — Education &amp; Pro plans</p>
       </div>
     </div>
   );
 }
 
-function WelcomeScreen({ activeDatabaseName, onPromptClick }: { activeDatabaseName?: string | null; onPromptClick: (p: string) => void }) {
+function WelcomeScreen({
+  activeDatabaseName,
+  ollamaModel,
+  onPromptClick,
+}: {
+  activeDatabaseName?: string | null;
+  ollamaModel?: string | null;
+  onPromptClick: (p: string) => void;
+}) {
   const prompts = activeDatabaseName
-    ? [`Show me all collections in ${activeDatabaseName}`, `Create a sample table in ${activeDatabaseName}`, `Write a query to find records in ${activeDatabaseName}`, "Explain UQL syntax with examples"]
-    : ["How do I create a new database?", "Write a query to insert sample data", "Explain TABLE vs GRAPH vs DOCUMENT", "Show me how to do a graph traversal"];
-
+    ? [`How many tables are in ${activeDatabaseName}?`, `Write a query to find all records in ${activeDatabaseName}`, `Create a sample table in ${activeDatabaseName}`, "Explain UQL syntax briefly"]
+    : ["How do I create a new database?", "Write a query to insert sample data", "Explain TABLE vs GRAPH vs DOCUMENT", "How do I do a graph traversal?"];
   return (
     <div className="flex flex-col items-center justify-center h-full p-4">
       <div className="w-10 h-10 flex items-center justify-center mb-4 border" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b2)', borderRadius: 3 }}>
         <Sparkles className="w-5 h-5" style={{ color: 'var(--uql-t8)' }} />
       </div>
       <h3 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t5)', fontWeight: 600, marginBottom: 4 }}>UQL Copilot</h3>
+      {ollamaModel && (
+        <div className="flex items-center gap-1 mb-2 px-2 py-0.5 border" style={{ borderColor: 'var(--uql-b3)', background: 'var(--uql-deeper)', borderRadius: 3 }}>
+          <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#5a8', display: 'inline-block' }} />
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-t8)' }}>{ollamaModel}</span>
+        </div>
+      )}
       <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', marginBottom: 20, lineHeight: 1.6, textAlign: 'center', maxWidth: 200 }}>
-        Ask me to write queries, explain UQL syntax, or help design your schema.
+        Ask questions about your database. Paste screenshots with Ctrl+V.
       </p>
       <div className="w-full space-y-1.5">
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>Try asking</div>
         {prompts.map(prompt => (
-          <button
-            key={prompt}
-            onClick={() => onPromptClick(prompt)}
+          <button key={prompt} onClick={() => onPromptClick(prompt)}
             className="w-full text-left px-3 py-2 border transition-colors flex items-center gap-2"
             style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--uql-t7)', background: 'var(--uql-panel)', borderColor: 'var(--uql-b4)', borderRadius: 3 }}
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--uql-deeper)'; e.currentTarget.style.color = 'var(--uql-t4)'; e.currentTarget.style.borderColor = 'var(--uql-b3)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'var(--uql-panel)'; e.currentTarget.style.color = 'var(--uql-t7)'; e.currentTarget.style.borderColor = 'var(--uql-b4)'; }}
           >
-            <span style={{ color: 'var(--uql-linenum)' }}>›</span>
-            {prompt}
+            <span style={{ color: 'var(--uql-linenum)' }}>›</span>{prompt}
           </button>
         ))}
       </div>
@@ -973,8 +1002,7 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
                 >
                   {att.fileType === "image" && att.preview
                     ? <img src={att.preview} alt={att.name} className="w-4 h-4 object-cover" style={{ borderRadius: 2 }} />
-                    : att.fileType === "document"
-                    ? <FileType className="w-3 h-3 shrink-0" />
+                    : att.fileType === "document" ? <FileType className="w-3 h-3 shrink-0" />
                     : <FileText className="w-3 h-3 shrink-0" />
                   }
                   <span className="max-w-[100px] truncate">{att.name}</span>
@@ -985,9 +1013,7 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
           {message.content && (
             <div className="px-3 py-2 border"
               style={{ background: 'var(--uql-header)', borderColor: 'var(--uql-b2)', borderRadius: 3, fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t2)', lineHeight: 1.6 }}
-            >
-              {message.content}
-            </div>
+            >{message.content}</div>
           )}
         </div>
       </div>
@@ -1013,9 +1039,7 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
                 return (
                   <div key={i} className="whitespace-pre-wrap"
                     style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t5)', lineHeight: 1.7 }}
-                  >
-                    {part.value}
-                  </div>
+                  >{part.value}</div>
                 );
               }
               const copyKey = `${message.id}-uql-${i}`;
@@ -1025,28 +1049,17 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
                   <div className="flex items-center justify-between px-3 py-1 border-b" style={{ background: 'var(--uql-deeper)', borderColor: 'var(--uql-b4)' }}>
                     <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--uql-linenum)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>UQL</span>
                     <div className="flex items-center gap-0.5">
-                      <CodeBtn onClick={() => onInsert?.(part.value)} title="Insert into editor">
-                        <Table2 className="w-2.5 h-2.5" />
-                        <span>Insert</span>
-                      </CodeBtn>
-                      <CodeBtn onClick={() => onRun?.(part.value)} title="Run query">
-                        <Play className="w-2.5 h-2.5" />
-                        <span>Run</span>
-                      </CodeBtn>
-                      <button
-                        onClick={() => onCopy(part.value, copyKey)}
+                      <CodeBtn onClick={() => onInsert?.(part.value)} title="Insert into editor"><Table2 className="w-2.5 h-2.5" /><span>Insert</span></CodeBtn>
+                      <CodeBtn onClick={() => onRun?.(part.value)} title="Run query"><Play className="w-2.5 h-2.5" /><span>Run</span></CodeBtn>
+                      <button onClick={() => onCopy(part.value, copyKey)}
                         className="p-1 transition-colors"
                         style={{ color: copiedId === copyKey ? '#8a8' : 'var(--uql-linenum)', borderRadius: 2 }}
                         onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
                         onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = copiedId === copyKey ? '#8a8' : 'var(--uql-linenum)')}
-                      >
-                        {copiedId === copyKey ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}
-                      </button>
+                      >{copiedId === copyKey ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}</button>
                     </div>
                   </div>
-                  <div className="px-3 py-2.5" style={{ background: 'var(--uql-editor)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t2)', lineHeight: 1.6 }}>
-                    {part.value}
-                  </div>
+                  <div className="px-3 py-2.5" style={{ background: 'var(--uql-editor)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--uql-t2)', lineHeight: 1.6 }}>{part.value}</div>
                   {existingResult && <InlineResult result={existingResult.result} />}
                 </div>
               );
@@ -1063,16 +1076,12 @@ function MessageBubble({ message, onInsert, onRun, onCopy, copiedId, runResults 
 
 function CodeBtn({ onClick, title, children }: { onClick: () => void; title: string; children: React.ReactNode }) {
   return (
-    <button
-      onClick={onClick}
-      title={title}
+    <button onClick={onClick} title={title}
       className="flex items-center gap-1 px-2 py-0.5 transition-colors"
       style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-t8)', borderRadius: 2 }}
       onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t4)')}
       onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--uql-t8)')}
-    >
-      {children}
-    </button>
+    >{children}</button>
   );
 }
 
@@ -1110,18 +1119,14 @@ function InlineResult({ result }: { result: { success: boolean; rows?: any[]; ro
                   {Object.values(row).map((v: any, j) => (
                     <td key={j} className="px-2 py-0.5 whitespace-nowrap max-w-[80px] overflow-hidden text-ellipsis"
                       style={{ fontFamily: "'IBM Plex Mono', monospace", color: 'var(--uql-t5)' }}
-                    >
-                      {typeof v === "object" ? JSON.stringify(v) : String(v)}
-                    </td>
+                    >{typeof v === "object" ? JSON.stringify(v) : String(v)}</td>
                   ))}
                 </tr>
               ))}
             </tbody>
           </table>
           {rows.length > 5 && (
-            <div className="px-2 py-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)' }}>
-              + {rows.length - 5} more rows
-            </div>
+            <div className="px-2 py-1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--uql-linenum)' }}>+ {rows.length - 5} more rows</div>
           )}
         </div>
       )}

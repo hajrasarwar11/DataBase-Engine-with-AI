@@ -31,9 +31,10 @@ function formatCount(n: number): string {
 }
 
 const FOLDERS = [
-  { name: "Tables",    icon: TableIcon, types: ["table"],               createHint: "CREATE TABLE",    emptyHint: "table" },
+  { name: "Tables",    icon: TableIcon, types: ["table"],                 createHint: "CREATE TABLE",    emptyHint: "table" },
   { name: "Graphs",    icon: Share2,    types: ["graph", "node", "edge"], createHint: "CREATE GRAPH",    emptyHint: "graph" },
-  { name: "Documents", icon: FileText,  types: ["collection"],           createHint: "CREATE DOCUMENT", emptyHint: "document" },
+  // FIX 2: was ["collection"], must be ["document"] to match what the API returns
+  { name: "Documents", icon: FileText,  types: ["document"],              createHint: "CREATE DOCUMENT", emptyHint: "document" },
 ];
 
 export function SchemaExplorer({
@@ -305,6 +306,8 @@ function FolderNode({ folder, items, dbName, dbId, databaseId, onCollectionClick
 
 const TYPE_TO_DROP: Record<string, string> = {
   table: "TABLE", graph: "GRAPH", collection: "DOCUMENT", node: "GRAPH", edge: "GRAPH",
+  // FIX: also map "document" directly so DROP works for the corrected type
+  document: "DOCUMENT",
 };
 
 function CollectionItem({ item, dbId, dbName, databaseId, onCollectionClick }: any) {
@@ -411,8 +414,11 @@ function CollectionItem({ item, dbId, dbName, databaseId, onCollectionClick }: a
                 >
                   <Hash className="w-2.5 h-2.5 shrink-0" style={{ color: 'var(--uql-t8)' }} />
                   <span className="flex-1">{field}</span>
+                  {/* FIX 1: removed invalid title prop from Zap icon — use a wrapping span with title instead */}
                   {hasIndex && (
-                    <Zap className="w-2.5 h-2.5 shrink-0" style={{ color: 'var(--uql-t6)' }} title="Secondary index" />
+                    <span title="Secondary index">
+                      <Zap className="w-2.5 h-2.5 shrink-0" style={{ color: 'var(--uql-t6)' }} />
+                    </span>
                   )}
                 </div>
               );
